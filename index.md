@@ -27,7 +27,7 @@ title: RSJロボット工学セミナー第113回 ～移動ロボットの制御
 ## 事前準備
 
 - [Ubuntu LinuxとROSのインストール](linux_and_ros_install.html)
-- [Linuxの基本操作](linux_basics.html)|
+- [Linuxの基本操作](linux_basics.html)
 
 ## スケジュール
 
