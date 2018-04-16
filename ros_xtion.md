@@ -31,5 +31,5 @@ $ rosrun rviz rviz -d view_scan.rviz
 ```
 下図のように2次元の点群が表示されれば成功です。
 
-!!!ここにrviz 画像を貼る
+![XtionScan](images/xtion_view_scan.png)
 
