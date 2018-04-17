@@ -210,11 +210,8 @@ PassThrough 実行後の結果と比較すると点がまばらになってい�
 #include <pcl/common/common.h>
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/segmentation/extract_clusters.h>
-#include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
-
-ここで #include <visualization_msgs/Marker.h> はクラスタリング結果をrvizで可視化するために必要なヘッダファイルです。
 
 rsj_pointcloud_test_node クラスの冒頭に、pcl::search::KdTree クラスのポインタ、 pcl::EuclideanClusterExtraction クラスのインスタンス、検出されたクラスタの可視化情報をパブリッシュする pub_cluster を追加します。
 
