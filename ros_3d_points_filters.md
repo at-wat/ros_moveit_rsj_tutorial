@@ -17,6 +17,7 @@ $ cd catkin_ws/src/rsj_pointcloud_test/src
 ```c++
 #include <pcl/point_types.h>
 #include <pcl/filters/passthrough.h>
+#include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 typedef pcl::PointCloud<PointT> PointCloud;
 ```
@@ -28,9 +29,10 @@ rsj_pointcloud_test_node クラスの冒頭に、pcl::PassThrough フィルタ�
 class rsj_pointcloud_test_node
 {
 private:
-  ros::Subscriber sub_points;
+略
+  PointCloud::Ptr cloud_tranform;
   pcl::PassThrough<PointT> pass;
-  pcl::PointCloud<PointT>::Ptr cloud_passthrough;
+  PointCloud::Ptr cloud_passthrough;
   ros::Publisher pub_passthrough;
 ```
 rsj_pointcloud_test_node クラスのコンストラクタで passthrough フィルタの設定、 cloud_passthrough および pub_passthrough を初期化します。
@@ -38,10 +40,10 @@ rsj_pointcloud_test_node クラスのコンストラクタで passthrough フィ
 ```c++
   rsj_pointcloud_test_node()
   {
-    ros::NodeHandle nh("~");
-    sub_points = nh.subscribe("/camera/depth_registered/points", 5, &rsj_pointcloud_test_node::cb_points, this);
-    pass.setFilterFieldName("y");
-    pass.setFilterLimits(-1.0, -0.5);
+    略
+    cloud_tranform.reset(new PointCloud());
+    pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
+    pass.setFilterLimits(0.5, 1.0); // 0.5 〜 1.0 m の間にある点群を抽出
     cloud_passthrough.reset(new PointCloud());
     pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
   }
@@ -53,10 +55,12 @@ cb_points 関数を次のように変更します。
   void cb_points(const PointCloud::ConstPtr &msg)
   {
     try{
-        pass.setInputCloud(msg);
-        pass.filter(*cloud_passthrough);
-        pub_passthrough.publish(cloud_passthrough);
-        ROS_INFO("points (src: %zu, paththrough: %zu)", msg->size(), cloud_passthrough->size()); 
+      略
+      // ここに cloud_src に対するフィルタ処理を書く
+      pass.setInputCloud(cloud_src);
+      pass.filter(*cloud_passthrough);
+      pub_passthrough.publish(cloud_passthrough);
+      ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size());
     }catch (std::exception &e){
       ROS_ERROR("%s", e.what());
     }
@@ -70,32 +74,38 @@ cb_points 関数を次のように変更します。
 $ cd ~/catkin_ws
 $ catkin_make 
 ```
-
-次にお手持ちの３次元センサを起動します。
+次にお手持ちの３次元センサごとに次のようにノードを起動します。
 
 ### Xtion PRO Live の場合
 
+ターミナルでセンサを起動します。
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/launch
 $ roslaunch rsj_pointcloud_to_laserscan.launch
 ```
 
+新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
+```shell
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+[ INFO] [1524040063.315596383]: target_frame='camera_link'
+[ INFO] [1524040063.315656650]: topic_name='/camera/depth_registered/points'
+[ INFO] [1524040063.320448185]: Hello Point Cloud!
+[ INFO] [1524040064.148595331]: points (src: 307200, paththrough: 34350)
+```
+
 ### YVT-35LX の場合
 
-？？？？
-
-新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
-
+ターミナルでセンサを起動します。
 ```shell
-$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node
-[ INFO] [1523936864.252130797]: Hello Point Cloud!
-[ INFO] [1523936865.030358434]: points (src: 307200, paththrough: 1454)
+？？？？
+```
+新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
+```shell
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
 ```
 
 このように「points (src: xxxx, paththrough: xxx)」というメッセージが表示されれば成功です。
-src, paththrough に続けて表示されている値はセンサから得られたもとの PointCloud における点の個数と passthrough フィルタ実行後の点の個数を示しています。paththrough フィルタ実行後の点の個数がゼロの場合は pass.setFilterLimits(-1.0, -0.5); の引数を調節してみてください。
-
-!!!PCLとROSの座標系の違い!!!
+src, paththrough に続けて表示されている値はセンサから得られたもとの PointCloud における点の個数と passthrough フィルタ実行後の点の個数を示しています。paththrough フィルタ実行後の点の個数がゼロの場合は pass.setFilterLimits(0.5, 1.0); の引数を調節してみてください。
 
 ## フィルタ実行結果の可視化
 
@@ -124,6 +134,7 @@ VoxelGrid フィルタは等間隔に点群をダウンサンプリングしま�
 ```c++
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>
+#include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
 
@@ -137,7 +148,7 @@ private:
 略
   ros::Publisher pub_passthrough;
   pcl::VoxelGrid<PointT> voxel;
-  pcl::PointCloud<PointT>::Ptr cloud_voxel;
+  PointCloud::Ptr cloud_voxel;
   ros::Publisher pub_voxel;
 ```
 rsj_pointcloud_test_node クラスのコンストラクタで voxelgrid フィルタの設定、 cloud_voxel および pub_voxel を初期化します。
@@ -147,7 +158,7 @@ rsj_pointcloud_test_node クラスのコンストラクタで voxelgrid フィ�
   {
 略
     pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
-    voxel.setLeafSize (0.025f, 0.025f, 0.025f);
+    voxel.setLeafSize (0.025f, 0.025f, 0.025f); // 0.025 m 間隔でダウンサンプリング
     cloud_voxel.reset(new PointCloud());
     pub_voxel = nh.advertise<PointCloud>("voxel", 1);
   }
@@ -160,11 +171,11 @@ cb_points 関数を次のように変更します。
   {
     try{
 略
-        pub_passthrough.publish(cloud_passthrough);
-        voxel.setInputCloud(cloud_passthrough);
-        voxel.filter(*cloud_voxel);
-        pub_voxel.publish(cloud_voxel);
-        ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size());
+      pub_passthrough.publish(cloud_passthrough);
+      voxel.setInputCloud(cloud_passthrough);
+      voxel.filter(*cloud_voxel);
+      pub_voxel.publish(cloud_voxel);
+      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size());
     }catch (std::exception &e){
       ROS_ERROR("%s", e.what());
     }
@@ -172,6 +183,7 @@ cb_points 関数を次のように変更します。
 ```
 
 ## ビルド＆実行
+
 passthrough フィルタのときと同様にビルドして実行してください。
 
 ## フィルタ実行結果の可視化
@@ -187,18 +199,14 @@ rviz の左にある PointCloud2 の一番下のチェックだけをONにする
 
 ![XtionPointsVoxel](images/xtion_view_voxel.png)
 
-PassThrough 実行後の結果と比較すると点がまばらになっていることが分かると思います。もし違いがわかりにくい場合は次のように setLeafSize 関数の引数を大きくしてみてください（確認後は元の値に戻しておいてください）。
-
+PassThrough 実行後の結果と比較すると点がまばらになっていることが分かると思います。もし違いがわかりにくい場合は setLeafSize 関数の引数を
 ```c++
   rsj_pointcloud_test_node()
   {
 略
-    pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
     voxel.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
-    cloud_voxel.reset(new PointCloud());
-    pub_voxel = nh.advertise<PointCloud>("voxel", 1);
-  }
 ```
+のように大きくしてみてください（確認後は元の値に戻しておいてください）。
 
 ## クラスタリング
 
@@ -210,6 +218,7 @@ PassThrough 実行後の結果と比較すると点がまばらになってい�
 #include <pcl/common/common.h>
 #include <pcl/kdtree/kdtree.h>
 #include <pcl/segmentation/extract_clusters.h>
+#include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
 
@@ -269,7 +278,7 @@ cb_points 関数を次のように変更します。
       {
         Eigen::Vector4f min_pt, max_pt;
         pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
-        marker_array.markers.push_back(make_marker(msg->header.frame_id, marker_id, min_pt, max_pt));
+        marker_array.markers.push_back(make_marker(frame_id, marker_id, min_pt, max_pt));
       }
       if (marker_array.markers.empty() == false)
       {
@@ -298,3 +307,4 @@ $ rviz -d view_filters.rviz
 
 rviz の左にある PointCloud2 の一番下のチェックだけをONにすると VoxelGrid フィルタ実行後の点群だけが表示されます。
 さらにクラスタリング結果が半透明の緑のBOXで表示されているのが分かります。
+これはプログラム中でクラスタリング結果を rviz が可視化可能な型である visualization_msgs::MarkerArray に変換してパブリッシュしているからです。

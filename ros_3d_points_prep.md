@@ -52,7 +52,16 @@ rsj_pointcloud_test_node クラスにある、「PointCloud」用のコールバ
 ```c++
   void cb_points(const PointCloud::ConstPtr &msg)
   {
-    ROS_INFO("width: %d, height: %d", msg->width, msg->height);
+    try
+    {
+      略
+      // ここに cloud_src に対するフィルタ処理を書く
+      ROS_INFO("width: %zu, height: %zu", cloud_src->width, cloud_src->height);
+    }
+    catch (std::exception &e)
+    {
+      ROS_ERROR("%s", e.what());
+    }
   }
 ```
 
@@ -64,26 +73,36 @@ rsj_pointcloud_test_node クラスにある、「PointCloud」用のコールバ
 $ cd ~/catkin_ws
 $ catkin_make 
 ```
-次にお手持ちの３次元センサを起動します。
+次にお手持ちの３次元センサごとに次のようにノードを起動します。
 
 ### Xtion PRO Live の場合
 
+ターミナルでセンサを起動します。
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/launch
 $ roslaunch rsj_pointcloud_to_laserscan.launch
 ```
 
+新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
+```shell
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+[ INFO] [1524039160.481736901]: target_frame='camera_link'
+[ INFO] [1524039160.481783905]: topic_name='/camera/depth_registered/points'
+[ INFO] [1524039160.485222004]: Hello Point Cloud!
+[ INFO] [1524039161.311438819]: width: 640, height: 480
+```
+
 ### YVT-35LX の場合
 
-？？？？
-
-新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
-
+ターミナルでセンサを起動します。
 ```shell
-$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node 
-[ INFO] [1523925497.474555840]: Hello ROS World!
-[ INFO] [1523925498.184072011]: width: 640, height: 480
+？？？？
 ```
+新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
+```shell
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+```
+
 このように「width: xxx, height: xxx」というメッセージが表示されれば「PointCloud」は受信できています。
 width, height とは３次元点群の縦・横の点の数を示しています（２次元画像の解像度に対応しています）。
 
@@ -112,14 +131,24 @@ private:
   ros::Subscriber sub_points;
 ```
 
-rsj_pointcloud_test_node のコンストラクタには、「PointCloud」用のサブスクライバ初期化コードが記述されています。
+rsj_pointcloud_test_node のコンストラクタには、このノードが必要としているパラメータの取得や「PointCloud」用のサブスクライバ初期化コードが記述されています。
 
 ```c++
 rsj_pointcloud_test_node()
-{
+{ 
   ros::NodeHandle nh("~");
-  sub_points = nh.subscribe("/camera/depth_registered/points", 5, &rsj_robot_test_node::cb_points, this);
+  target_frame = "";
+  std::string topic_name = "/camera/depth_registered/points";
+  nh.getParam("target_frame", target_frame);
+  nh.getParam("topic_name", topic_name);
+  ROS_INFO("target_frame='%s'", target_frame.c_str());
+  ROS_INFO("topic_name='%s'", topic_name.c_str());
+  sub_points = nh.subscribe(topic_name, 5, &rsj_pointcloud_test_node::cb_points, this);
 ```
+
+topic_name はセンサが出力する PointCloud のトピック名を、target_frame は得られた点群を処理しやすい座標系に変換する際の座標系の名前を示しています。
+特に Xtion の場合は点群の座標系はロボットのローカル座標系と異なっているため、 cb_points 関数の冒頭で座標変換をしています。
+target_frame が空白の場合は座標変換を行いません（YVT-35LX の場合）。
 
 CMakeLists.txtではPCLをROSで扱えるようにしています。
 
