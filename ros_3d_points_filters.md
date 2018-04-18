@@ -23,7 +23,7 @@ typedef pcl::PointCloud<PointT> PointCloud;
 ```
 
 rsj_pointcloud_test_node クラスの冒頭に、pcl::PassThrough フィルタのインスタンスを追加します。
-また、フィルタの結果を格納するための PointCloud 型変数 cloud_passthrough 、および処理結果を publish するためのパブリッシャ 、pub_passthrough を追加します。
+また、フィルタの結果を格納するための PointCloud 型変数 cloud_passthrough 、および処理結果を publish するためのパブリッシャ 「 pub_passthrough 」を追加します。
 
 ```c++
 class rsj_pointcloud_test_node
@@ -35,7 +35,7 @@ private:
   PointCloud::Ptr cloud_passthrough;
   ros::Publisher pub_passthrough;
 ```
-rsj_pointcloud_test_node クラスのコンストラクタで passthrough フィルタの設定、 cloud_passthrough および pub_passthrough を初期化します。
+rsj_pointcloud_test_node クラスのコンストラクタで PassThrough フィルタの設定、 cloud_passthrough および pub_passthrough を初期化します。
 
 ```c++
   rsj_pointcloud_test_node()
@@ -105,7 +105,7 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_na
 ```
 
 このように「points (src: xxxx, paththrough: xxx)」というメッセージが表示されれば成功です。
-src, paththrough に続けて表示されている値はセンサから得られたもとの PointCloud における点の個数と passthrough フィルタ実行後の点の個数を示しています。paththrough フィルタ実行後の点の個数がゼロの場合は pass.setFilterLimits(0.5, 1.0); の引数を調節してみてください。
+src, paththrough に続けて表示されている値はセンサから得られたもとの PointCloud における点の個数と PassThrough フィルタ実行後の点の個数を示しています。フィルタ実行後の点の個数がゼロの場合は pass.setFilterLimits(0.5, 1.0); の引数を調節してみてください。
 
 ## フィルタ実行結果の可視化
 
@@ -138,8 +138,8 @@ VoxelGrid フィルタは等間隔に点群をダウンサンプリングしま�
 typedef pcl::PointXYZ PointT;
 ```
 
-rsj_pointcloud_test_node クラスの冒頭に、pcl::PassThrough フィルタのインスタンスを追加します。
-また、フィルタの結果を格納するための PointCloud 型変数 cloud_passthrough 、および処理結果を publish するためのパブリッシャ 、pub_passthrough を追加します。
+rsj_pointcloud_test_node クラスの冒頭に、pcl::VoxelGrid フィルタのインスタンスを追加します。
+また、フィルタの結果を格納するための PointCloud 型変数 cloud_passthrough 、および処理結果を publish するためのパブリッシャ 「 pub_voxel 」を追加します。
 
 ```c++
 class rsj_pointcloud_test_node
@@ -151,7 +151,7 @@ private:
   PointCloud::Ptr cloud_voxel;
   ros::Publisher pub_voxel;
 ```
-rsj_pointcloud_test_node クラスのコンストラクタで voxelgrid フィルタの設定、 cloud_voxel および pub_voxel を初期化します。
+rsj_pointcloud_test_node クラスのコンストラクタで VoxelGrid フィルタの設定、 cloud_voxel および pub_voxel を初期化します。
 
 ```c++
   rsj_pointcloud_test_node()
@@ -184,7 +184,7 @@ cb_points 関数を次のように変更します。
 
 ## ビルド＆実行
 
-passthrough フィルタのときと同様にビルドして実行してください。
+PassThrough フィルタのときと同様にビルドして実行してください。
 
 ## フィルタ実行結果の可視化
 

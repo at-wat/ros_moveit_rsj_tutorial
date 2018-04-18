@@ -87,24 +87,33 @@ $ catkin_make
 ```shell
 $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
 ```
-### YVT-35LX の場合
-？？？
 
 ### Xtion PRO Live の場合
 ```shell
 $ roslaunch rsj_pointcloud_to_laserscan xtion_integration.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
-## rsj_pointcloud_test_node と rsj_robot_test_node の起動
+### YVT-35LX の場合
+？？？
 
-新しいターミナルで rsj_pointcloud_test_node を起動します。
+## rsj_pointcloud_test_node と rsj_robot_test_node の起動
+3次元センサをお持ちの場合は新しいターミナルを開き rsj_pointcloud_test_node を起動します。
+
+### Xtion PRO Live の場合
 ```shell
-$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node 
-[ INFO] [1524018997.112430222]: Hello Point Cloud!
-[ INFO] [1524018997.528759865]: points (src: 307200, paththrough: 37417, voxelgrid: 5345, cluster: 4)
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+[ INFO] [1524040063.315596383]: target_frame='camera_link'
+[ INFO] [1524040063.315656650]: topic_name='/camera/depth_registered/points'
+[ INFO] [1524040063.320448185]: Hello Point Cloud!
+[ INFO] [1524040064.148595331]: points (src: 307200, paththrough: 34350)
 ```
 
-別のターミナルで rsj_robot_test_node を起動します。
+### YVT-35LX の場合
+```shell
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+```
+
+さらに別のターミナルで rsj_robot_test_node を起動します。
 ```shell
 $ rosrun  rsj_robot_test rsj_robot_test_node 
 [ INFO] [1523957582.691740639]: Hello ROS World!
