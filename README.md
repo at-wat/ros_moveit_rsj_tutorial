@@ -2,7 +2,7 @@
 
 Tutorial text for using a actual mobile robot with ROS.
 
-https://bnd-tc.github.io/ros_moveit_rsj_tutorial/
+https://bnd-tc.github.io/ros_mobile_robot_rsj_tutorial/
 
 The following parts were forked from https://gbiggs.github.io/ros_moveit_rsj_tutorial/
 
