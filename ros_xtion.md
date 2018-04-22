@@ -1,6 +1,12 @@
+---
+title: Xtion PRO Live からのデータ取得
+date: 2018-04-23
+---
+
 # Xtion PRO Live からのデータ取得
 
 ## パッケージのインストール
+
 ```shell
 $ sudo apt install ros-kinetic-openni2-camera
 $ sudo apt install ros-kinetic-openni2-launch
@@ -13,6 +19,7 @@ $ sudo apt install ros-kinetic-pointcloud-to-laserscan
 $ cd ~/catkin_ws/src
 $ git clone https://github.com/KMiyawaki/rsj_pointcloud_to_laserscan.git
 ```
+
 ## 動作確認
 
 PC の USB ポートに Xtion PRO Live を接続し、次のコマンドを実行します。
@@ -37,4 +44,3 @@ $ rosrun rviz rviz -d view_scan.rviz
 下図のように2次元の点群が表示されれば成功です。
 
 ![XtionScan](images/xtion_view_scan.png)
-

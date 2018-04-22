@@ -1,6 +1,6 @@
 ---
 title: ROSの基本操作
-date: 2018-04-10
+date: 2018-04-23
 ---
 
 - Table of contents
@@ -47,7 +47,6 @@ CMakeLists.txt
 $ cd ..
 $ ls
 src
-$
 ```
 
 `catkin_ws`ディレクトリ内にある、`build`、`devel`は、`catkin`システムがプログラムをビルドする際に使用するものなので、ユーザが触る必要はありません。
@@ -60,7 +59,6 @@ $ cd ~/catkin_ws/src
 $ git clone https://github.com/openspur/ypspur_ros.git
 $ ls
 CMakeLists.txt  ypspur_ros
-$
 ```
 
 git は、ソースコードなどの変更履歴を記録して管理する、分散型バージョン管理システムと呼ばれるものです。
@@ -82,7 +80,6 @@ $ ls msg/
 ControlMode.msg  DigitalOutput.msg  JointPositionControl.msg
 $ ls src/
 getID.sh  joint_tf_publisher.cpp  ypspur_ros.cpp
-$
 ```
 
 `CMakeLists.txt`と`package.xml`には、使っているライブラリの一覧や、生成する実行ファイルとC++のソースコードの対応など、このパッケージをビルドするために必要な情報が書かれています。
@@ -258,7 +255,7 @@ nh.advertise<geometry_msgs::Twist>("/ypspur_ros/cmd_vel", 5);
 
 `advertise` 関数についている `<geometry_msgs::Twist>` の部分は、メッセージの型を指定しています。
 これは、幾何的・運動学的な値を扱うメッセージを定義している `geometry_msgs` パッケージの、並進・回転速度を表す `Twist` 型です。
-この指定方法は、C++のテンプレートという機能を利用していますが、ここでは「 `advertise` のときはメッセージの型指定を `< >` の中に書く」とだけ覚えておけば問題ありません。
+この指定方法は、 C++ のテンプレートという機能を利用していますが、ここでは「 `advertise` のときはメッセージの型指定を `< >` の中に書く」とだけ覚えておけば問題ありません。
 
 以下のコードを、`mainloop`関数の中(「ここに速度指令の出力コード」の部分)に入れることで、速度指令のメッセージを出力(`publish`)します。
 
@@ -277,7 +274,8 @@ $ catkin_make
 
 この際、ビルドエラーが出ていないか、良く確認して下さい。エラーが出ている場合は、ソースコードの該当箇所を確認・修正して下さい。
 
-実行の際、まず `roscore` と、 `ypspur_ros` を起動します。 `ypspur_ros` の中では、ロボットの動作テストの際に使用した、 `ypspur-coordinator` が動いています。なお、 `roscore` は、前のものを実行し続けている場合は、そのままで使用できます。コマンド入力の際は、タブ補完を活用しましょう。
+実行の際、まず `roscore` と、 `ypspur_ros` を起動します。 `ypspur_ros` の中では、ロボットの動作テストの際に使用した、 `ypspur-coordinator` が動いています。
+なお、 `roscore` は、前のものを実行し続けている場合は、そのままで使用できます。コマンド入力の際は、タブ補完を活用しましょう。
 
 ```shell
 $ roscore
@@ -333,7 +331,7 @@ nh.subscribe("/ypspur_ros/odom", 5, &rsj_robot_test_node::cb_odom, this);
 `this`
 : メッセージを受け取ったときに呼び出す関数がクラスの中にある場合にクラスの実体を指定 (とりあえず、おまじないと思って構いません。)
 
-これにより、`rsj_robot_test_node`ノードは、`/odom`トピックからメッセージをうけとると、cb_odom関数が呼び出されるようになります。
+これにより、`rsj_robot_test_node`ノードは、`/odom`トピックからメッセージをうけとると、`cb_odom`関数が呼び出されるようになります。
 
 続いて`cb_odom`関数の中身を確認しましょう。
 
@@ -477,7 +475,7 @@ void cb_odom(const nav_msgs::Odometry::ConstPtr &msg)
 }
 ```
 
-また、class rsj_robot_test_nodeの先頭に下記の変数定義を追加します。
+また、`class rsj_robot_test_node`の先頭に下記の変数定義を追加します。
 
 ```c++
 class rsj_robot_test_node

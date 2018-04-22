@@ -1,18 +1,26 @@
+---
+title: PointCloud に対するフィルタ
+date: 2018-04-23
+---
+
+- Table of contents
+{:toc}
+
 # PointCloud に対するフィルタ
 
 ３次元点群に対して様々なフィルタを施し、移動ロボットの追跡対象など意味のある情報を抽出します。
 
 ## PassThrough フィルタ
 
-PassThrough フィルタは得られた点群のうち、一定の範囲内にある点群のみを抽出します。
-テキストエディタで rsj_pointcloud_test_node.cpp を開いてください。
+`PassThrough`フィルタは得られた点群のうち、一定の範囲内にある点群のみを抽出します。
+テキストエディタで`rsj_pointcloud_test_node.cpp`を開いてください。
 
 ```shell
 $ cd catkin_ws/src/rsj_pointcloud_test/src
 任意のテキストエディタで rsj_pointcloud_test_node.cpp を開く
 ```
 
-プログラム冒頭に include 文を追記してください。
+プログラム冒頭に`include`文を追記してください。
 
 ```c++
 #include <pcl/point_types.h>
@@ -22,8 +30,8 @@ typedef pcl::PointXYZ PointT;
 typedef pcl::PointCloud<PointT> PointCloud;
 ```
 
-rsj_pointcloud_test_node クラスの冒頭に、pcl::PassThrough フィルタのインスタンスを追加します。
-また、フィルタの結果を格納するための PointCloud 型変数 cloud_passthrough 、および処理結果を publish するためのパブリッシャ 「 pub_passthrough 」を追加します。
+`rsj_pointcloud_test_node`クラスの冒頭に、`pcl::PassThrough`フィルタのインスタンスを追加します。
+また、フィルタの結果を格納するための`PointCloud`型変数`cloud_passthrough`、および処理結果を`publish`するためのパブリッシャ`pub_passthrough`を追加します。
 
 ```c++
 class rsj_pointcloud_test_node
@@ -35,7 +43,8 @@ private:
   PointCloud::Ptr cloud_passthrough;
   ros::Publisher pub_passthrough;
 ```
-rsj_pointcloud_test_node クラスのコンストラクタで PassThrough フィルタの設定、 cloud_passthrough および pub_passthrough を初期化します。
+
+`rsj_pointcloud_test_node`クラスのコンストラクタで`PassThrough`フィルタの設定、`cloud_passthrough`および`pub_passthrough`を初期化します。
 
 ```c++
   rsj_pointcloud_test_node()
@@ -49,7 +58,7 @@ rsj_pointcloud_test_node クラスのコンストラクタで PassThrough フィ
   }
 ```
 
-cb_points 関数を次のように変更します。
+`cb_points`関数を次のように変更します。
 
 ```c++
   void cb_points(const PointCloud::ConstPtr &msg)
@@ -69,22 +78,26 @@ cb_points 関数を次のように変更します。
 
 ## ビルド＆実行
 
-まず、catkin_wsでcatkin_makeを実行して、追加したコードをビルドします。
+まず、`catkin_ws`で`catkin_make`を実行して、追加したコードをビルドします。
+
 ```shell
 $ cd ~/catkin_ws
 $ catkin_make 
 ```
+
 次にお手持ちの３次元センサごとに次のようにノードを起動します。
 
 ### Xtion PRO Live の場合
 
 ターミナルでセンサを起動します。
+
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/launch
 $ roslaunch rsj_pointcloud_to_laserscan.launch
 ```
 
-新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
+新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
+
 ```shell
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524040063.315596383]: target_frame='camera_link'
@@ -96,20 +109,24 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 ### YVT-35LX の場合
 
 ターミナルでセンサを起動します。
+
 ```shell
 ？？？？
 ```
-新しいターミナルを開き、 rsj_pointcloud_test_node を起動します。
+
+新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
+
 ```shell
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
 ```
 
-このように「points (src: xxxx, paththrough: xxx)」というメッセージが表示されれば成功です。
-src, paththrough に続けて表示されている値はセンサから得られたもとの PointCloud における点の個数と PassThrough フィルタ実行後の点の個数を示しています。フィルタ実行後の点の個数がゼロの場合は pass.setFilterLimits(0.5, 1.0); の引数を調節してみてください。
+このように`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
+`src`、`paththrough`に続けて表示されている値はセンサから得られた、もとの`PointCloud`における点の個数と`PassThrough`フィルタ実行後の点の個数を示しています。
+フィルタ実行後の点の個数がゼロの場合は`pass.setFilterLimits(0.5, 1.0);`の引数を調節してみてください。
 
 ## フィルタ実行結果の可視化
 
-rviz でフィルタ実行後の点群の様子を可視化します。rsj_pointcloud_test_node を起動したまま、新しいターミナルを開き、 rviz を起動します。
+RViz でフィルタ実行後の点群の様子を可視化します。rsj_pointcloud_test_node を起動したまま、新しいターミナルを開き、 RViz を起動します。
 
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
@@ -120,16 +137,16 @@ $ rviz -d view_filters.rviz
 
 ![XtionPointsOrigin](images/xtion_view_filter_origin.png)
 
-rviz の左にある PointCloud2 の上の方のチェックを外すとフィルタ実行後の点群だけが表示されます。
+RViz の左にある PointCloud2 の上の方のチェックを外すとフィルタ実行後の点群だけが表示されます。
 
 ![XtionPointsPassThrough](images/xtion_view_passthrough.png)
 
 # VoxelGrid フィルタ
 
-３次元点群の処理には時間がかかることが多いため、低スペックのPCの場合はある程度点を間引いておいた方が都合が良いことがあります。
-VoxelGrid フィルタは等間隔に点群をダウンサンプリングします。
-引き続き rsj_pointcloud_test_node.cpp を編集します。
-プログラム冒頭に include 文を追記してください。
+３次元点群の処理には時間がかかることが多いため、低スペックの PC の場合はある程度点を間引いておいた方が都合が良いことがあります。
+`VoxelGrid`フィルタは等間隔に点群をダウンサンプリングします。
+引き続き`rsj_pointcloud_test_node.cpp`を編集します。
+プログラム冒頭に`include`文を追記してください。
 
 ```c++
 #include <pcl/filters/passthrough.h>
@@ -138,8 +155,8 @@ VoxelGrid フィルタは等間隔に点群をダウンサンプリングしま�
 typedef pcl::PointXYZ PointT;
 ```
 
-rsj_pointcloud_test_node クラスの冒頭に、pcl::VoxelGrid フィルタのインスタンスを追加します。
-また、フィルタの結果を格納するための PointCloud 型変数 cloud_passthrough 、および処理結果を publish するためのパブリッシャ 「 pub_voxel 」を追加します。
+`rsj_pointcloud_test_node`クラスの冒頭に、`pcl::VoxelGrid`フィルタのインスタンスを追加します。
+また、フィルタの結果を格納するための`PointCloud`型変数`cloud_passthrough`、および処理結果を`publish`するためのパブリッシャ`pub_voxel`を追加します。
 
 ```c++
 class rsj_pointcloud_test_node
@@ -151,7 +168,8 @@ private:
   PointCloud::Ptr cloud_voxel;
   ros::Publisher pub_voxel;
 ```
-rsj_pointcloud_test_node クラスのコンストラクタで VoxelGrid フィルタの設定、 cloud_voxel および pub_voxel を初期化します。
+
+`rsj_pointcloud_test_node`クラスのコンストラクタで`VoxelGrid`フィルタの設定、`cloud_voxel`および`pub_voxel`を初期化します。
 
 ```c++
   rsj_pointcloud_test_node()
@@ -164,7 +182,7 @@ rsj_pointcloud_test_node クラスのコンストラクタで VoxelGrid フィ�
   }
 ```
 
-cb_points 関数を次のように変更します。
+`cb_points`関数を次のように変更します。
 
 ```c++
   void cb_points(const PointCloud::ConstPtr &msg)
@@ -184,34 +202,38 @@ cb_points 関数を次のように変更します。
 
 ## ビルド＆実行
 
-PassThrough フィルタのときと同様にビルドして実行してください。
+`PassThrough`フィルタのときと同様にビルドして実行してください。
 
 ## フィルタ実行結果の可視化
 
-rviz でフィルタ実行後の点群の様子を可視化します。rsj_pointcloud_test_node を起動したまま、新しいターミナルを開き、 rviz を起動します。
+RViz でフィルタ実行後の点群の様子を可視化します。
+`rsj_pointcloud_test_node`を起動したまま、新しいターミナルを開き、 RViz を起動します。
 
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
 ```
 
-rviz の左にある PointCloud2 の一番下のチェックだけをONにすると VoxelGrid フィルタ実行後の点群だけが表示されます。
+RViz の左にある`PointCloud2`の一番下のチェックだけをONにすると`VoxelGrid`フィルタ実行後の点群だけが表示されます。
 
 ![XtionPointsVoxel](images/xtion_view_voxel.png)
 
-PassThrough 実行後の結果と比較すると点がまばらになっていることが分かると思います。もし違いがわかりにくい場合は setLeafSize 関数の引数を
+`PassThrough`実行後の結果と比較すると点がまばらになっていることが分かると思います。
+もし違いがわかりにくい場合は`setLeafSize`関数の引数を
+
 ```c++
   rsj_pointcloud_test_node()
   {
 略
     voxel.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
 ```
+
 のように大きくしてみてください（確認後は元の値に戻しておいてください）。
 
 ## クラスタリング
 
 点群のクラスタリング（いくつかの塊に分離すること）により物体認識などをする際の物体領域候補が検出できます。
-プログラム冒頭に include 文を追記してください。
+プログラム冒頭に`include`文を追記してください。
 
 ```c++
 #include <pcl/filters/voxel_grid.h>
@@ -222,7 +244,7 @@ PassThrough 実行後の結果と比較すると点がまばらになってい�
 typedef pcl::PointXYZ PointT;
 ```
 
-rsj_pointcloud_test_node クラスの冒頭に、pcl::search::KdTree クラスのポインタ、 pcl::EuclideanClusterExtraction クラスのインスタンス、検出されたクラスタの可視化情報をパブリッシュする pub_cluster を追加します。
+`rsj_pointcloud_test_node`クラスの冒頭に、`pcl::search::KdTree`クラスのポインタ、`pcl::EuclideanClusterExtraction`クラスのインスタンス、検出されたクラスタの可視化情報をパブリッシュする `pub_cluster`を追加します。
 
 ```c++
 class rsj_pointcloud_test_node
@@ -235,7 +257,7 @@ private:
   ros::Publisher pub_clusters;
 ```
 
-rsj_pointcloud_test_node クラスのコンストラクタで pcl::EuclideanClusterExtraction の設定、 tree 、 pub_clusters の初期化をします。
+`rsj_pointcloud_test_node`クラスのコンストラクタで`pcl::EuclideanClusterExtraction`の設定、`tree`、`pub_clusters`の初期化をします。
 
 ```c++
   rsj_pointcloud_test_node()
@@ -251,15 +273,18 @@ rsj_pointcloud_test_node クラスのコンストラクタで pcl::EuclideanClus
   }
 ```
 
-pcl::EuclideanClusterExtraction の設定部分のプログラムは次のとおりです。
+`pcl::EuclideanClusterExtraction`の設定部分のプログラムは次のとおりです。
 
-ec.setClusterTolerance(0.15);…15cm以上離れていれば別のクラスタだとみなす
+`ec.setClusterTolerance(0.15);`
+: 15cm以上離れていれば別のクラスタだとみなす
 
-ec.setMinClusterSize(100); ec.setMaxClusterSize(5000); …クラスタを構成する点の数は最低でも100個、最高で5000個
+`ec.setMinClusterSize(100); ec.setMaxClusterSize(5000);`
+: クラスタを構成する点の数は最低でも100個、最高で5000個
 
-ec.setSearchMethod(tree);…ある点とクラスタを形成可能な点の探索方法としてKD木を使用する。
+`ec.setSearchMethod(tree);`
+: ある点とクラスタを形成可能な点の探索方法としてKD木を使用する。
 
-cb_points 関数を次のように変更します。
+`cb_points`関数を次のように変更します。
 
 ```c++
   void cb_points(const PointCloud::ConstPtr &msg)
@@ -294,17 +319,19 @@ cb_points 関数を次のように変更します。
 ```
 
 ## ビルド＆実行
-VoxelGrid フィルタのときと同様にビルドして実行してください。
+
+`VoxelGrid`フィルタのときと同様にビルドして実行してください。
 
 ## フィルタ実行結果の可視化
 
-rviz でフィルタ実行後の点群の様子を可視化します。rsj_pointcloud_test_node を起動したまま、新しいターミナルを開き、 rviz を起動します。
+RViz でフィルタ実行後の点群の様子を可視化します。
+`rsj_pointcloud_test_node`を起動したまま新しいターミナルを開き、 RViz を起動します。
 
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
 ```
 
-rviz の左にある PointCloud2 の一番下のチェックだけをONにすると VoxelGrid フィルタ実行後の点群だけが表示されます。
-さらにクラスタリング結果が半透明の緑のBOXで表示されているのが分かります。
-これはプログラム中でクラスタリング結果を rviz が可視化可能な型である visualization_msgs::MarkerArray に変換してパブリッシュしているからです。
+RViz の左にある`PointCloud2`の一番下のチェックだけを ON にすると`VoxelGrid`フィルタ実行後の点群だけが表示されます。
+さらにクラスタリング結果が半透明の緑の BOX で表示されているのが分かります。
+これはプログラム中でクラスタリング結果を RViz が可視化可能な型である `visualization_msgs::MarkerArray`に変換してパブリッシュしているからです。
