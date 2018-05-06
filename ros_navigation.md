@@ -12,7 +12,7 @@ navigationパッケージは、自己位置推定、大域的な経路計画、�
 下記コマンドを用いて、地図生成に用いる、slam_gmappingパッケージと、マウスでロボットを操縦するmouse_teleopパッケージをインストールします。navigationパッケージは、サイズが非常に大きいため、Live USBに既にインストールしてあります。
 
 ```shell
-$ sudo apt-get install ros-indigo-slam-gmapping ros-indigo-mouse-teleop
+$ sudo apt-get install ros-kinetic-slam-gmapping ros-kinetic-mouse-teleop
 ```
 
 また、セミナー教材用にパラメータを調整してある地図生成や自律ナビゲーションのlaunchファイルが入ったパッケージをダウンロードします。
