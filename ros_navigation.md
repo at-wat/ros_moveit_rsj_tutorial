@@ -41,7 +41,7 @@ $ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/ubuntu/para
 
 ### Xtion PRO Live の場合
 ```shell
-$ roslaunch rsj_pointcloud_to_laserscan xtion_mapping.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation xtion_mapping.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 RViz が起動し、下記のように複数のURGもしくはXtionのスキャンデータをつなげて、大きな占有格子地図を生成し始めます。
@@ -86,7 +86,7 @@ $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/ubuntu/p
 
 ### Xtion PRO Live の場合
 ```shell
-$ roslaunch rsj_pointcloud_to_laserscan xtion_navigation.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation xtion_navigation.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 RViz が起動し、下記のように先ほど作成した地図が表示されます。この例では、地図と、オレンジ色でプロットされているURGの現在のデータがずれており、自己位置がずれていることがわかります。また、水色のたくさんの矢印は、推定している自己位置の候補を表しています。

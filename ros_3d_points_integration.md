@@ -101,7 +101,7 @@ $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/ubuntu/p
 ### Xtion PRO Live の場合
 
 ```shell
-$ roslaunch rsj_pointcloud_to_laserscan xtion_integration.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 ### YVT-35LX の場合
