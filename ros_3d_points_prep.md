@@ -57,7 +57,7 @@ $ git clone https://github.com/KMiyawaki/rsj_pointcloud_test.git
 テキストエディタで`rsj_pointcloud_test_node.cpp`を開いてください。
 
 ```shell
-$ cd catkin_ws/src/rsj_pointcloud_test/src
+$ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 任意のテキストエディタで rsj_pointcloud_test_node.cpp を開く
 ```
 
