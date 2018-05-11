@@ -287,6 +287,13 @@ $ roscore
 $ rosrun ypspur_ros ypspur_ros _param_file:=/home/ubuntu/params/rsj-seminar20??.param <u>該当するものに置き換えること</u> _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
 ```
 
+続いて、別の端末でrsj_robot_test_nodeノードを実行します。まずは、ロボットのホイールを浮かせて、走り出さない状態にして実行してみましょう。
+
+```shell
+$ rosrun rsj_robot_test rsj_robot_test_node
+Hello ROS World!
+```
+
 ゆっくりとホイールが回れば、正しく動作しています。 __Ctrl+c__{: style="border: 1px solid black" } で終了します。
 
 ### 少課題
