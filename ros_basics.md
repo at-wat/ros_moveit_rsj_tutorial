@@ -106,9 +106,9 @@ $ git clone https://github.com/at-wat/rsj_robot_test.git
 ソースファイルの編集にはお好みのテキストエディターが利用可能です。
 本セミナーの説明ではメジャーなテキストエディタである`emacs` を用います。Linuxがはじめての方には`gedit`もおすすめです。
 
-お好みのテキストエディターで`~/catkin_ws/src/rsj_robot_test.cpp`を開きます。
+お好みのテキストエディターで`~/catkin_ws/src/rsj_robot_test/src/rsj_robot_test.cpp`を開きます。
 
-![greeter.cpp](images/greeter_cpp_in_editor.png)
+![rsj_robot_test_cpp_in_editor](images/rsj_robot_test_cpp_in_editor.png)
 
 ### 基本的なコードを読み解く
 
