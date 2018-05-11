@@ -149,13 +149,3 @@ $ rosrun  rsj_robot_test rsj_robot_test_node
 
 ![XtionViewNavigation](images/xtion_view_navigation.png)
 
-## 特定の条件に合致するクラスタだけを送信する
-
-`rsj_pointcloud_test_node`で検出したクラスタのうち、一定の大きさをもつものだけを抽出するようにしましょう。
-最終的にはゴミ箱や人間の足など、特定の大きさ・高さを持つものに向かって走行するように制御します。
-テキストエディタで`rsj_robot_test_node.cpp`を開いてください。
-
-```shell
-$ cd ~/catkin_ws/src/rsj_robot_test/src
-任意のテキストエディタで rsj_robot_test_node.cpp を開く
-```

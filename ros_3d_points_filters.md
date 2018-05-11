@@ -16,7 +16,7 @@ date: 2018-04-23
 テキストエディタで`rsj_pointcloud_test_node.cpp`を開いてください。
 
 ```shell
-$ cd catkin_ws/src/rsj_pointcloud_test/src
+$ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 任意のテキストエディタで rsj_pointcloud_test_node.cpp を開く
 ```
 
@@ -52,7 +52,7 @@ private:
     略
     cloud_tranform.reset(new PointCloud());
     pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
-    pass.setFilterLimits(0.5, 1.0); // 0.5 〜 1.0 m の間にある点群を抽出
+    pass.setFilterLimits(0.1, 1.0); // 0.1 〜 1.0 m の間にある点群を抽出
     cloud_passthrough.reset(new PointCloud());
     pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
   }
@@ -307,7 +307,7 @@ private:
       {
         Eigen::Vector4f min_pt, max_pt;
         pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
-        marker_array.markers.push_back(make_marker(frame_id, marker_id, min_pt, max_pt));
+        marker_array.markers.push_back(make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
       }
       if (marker_array.markers.empty() == false)
       {
@@ -339,3 +339,71 @@ $ rviz -d view_filters.rviz
 RViz の左にある`PointCloud2`の一番下のチェックだけを ON にすると`VoxelGrid`フィルタ実行後の点群だけが表示されます。
 さらにクラスタリング結果が半透明の緑の BOX で表示されているのが分かります。
 これはプログラム中でクラスタリング結果を RViz が可視化可能な型である `visualization_msgs::MarkerArray`に変換してパブリッシュしているからです。
+
+![XtionClusters](images/xtion_view_clusters.png)
+
+## 特定の条件に合致するクラスタだけを送信する
+
+検出したクラスタのうち、一定の大きさをもつものだけを抽出するようにしましょう。
+最終的にはゴミ箱や人間の足など、特定の大きさなど何らかの条件を満たすクラスタに向かって走行するように制御します。
+
+`cb_points`関数を次のように変更します。
+```c++
+  void cb_points(const PointCloud::ConstPtr &msg)
+  {
+    try
+    {
+        略
+      visualization_msgs::MarkerArray marker_array;
+      int marker_id = 0;
+      size_t ok = 0;
+      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+      {
+        Eigen::Vector4f min_pt, max_pt;
+        pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
+        Eigen::Vector4f cluster_size = max_pt - min_pt;
+        bool is_ok = true;
+        if (cluster_size.x() < 0.05 || cluster_size.x() > 0.4)
+        {
+          is_ok = false;
+        }
+        else if (cluster_size.y() < 0.05 || cluster_size.y() > 0.6)
+        {
+          is_ok = false;
+        }
+        else if (cluster_size.z() < 0.05 || cluster_size.z() > 0.5)
+        {
+          is_ok = false;
+        }
+        if (is_ok)
+        {
+          marker_array.markers.push_back(make_marker(frame_id, "ok_cluster", marker_id, min_pt, max_pt, 1.0f, 0.0f, 0.0f, 0.5f));
+          ok++;
+        }
+        else
+        {
+          marker_array.markers.push_back(make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
+        }
+      }
+      if (marker_array.markers.empty() == false)
+      {
+        pub_clusters.publish(marker_array);
+      }
+      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    }
+    catch (std::exception &e)
+    {
+      ROS_ERROR("%s", e.what());
+    }
+  }
+```
+
+## ビルド＆実行
+
+クラスタリングときと同様にビルドして実行してください。
+
+## フィルタ実行結果の可視化
+
+クラスタリングときと同様に RViz で可視化してください。ある一定の大きさのクラスタだけを赤く表示しているのが分かります。
+
+![XtionClusters](images/xtion_view_specific_clusters.png)
