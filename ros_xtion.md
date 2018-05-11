@@ -7,13 +7,16 @@ date: 2018-04-23
 
 ## パッケージのインストール
 
+Xtion PRO Live を利用するためのパッケージと３次元点群から２次元データに変換するためのパッケージをインストールします。
+[準備のページ](linux_and_ros_install.html)に同様の手順を書いていますので、すでにインストールされている方はこの手順は不要です。
+
 ```shell
 $ sudo apt install ros-kinetic-openni2-camera
 $ sudo apt install ros-kinetic-openni2-launch
 $ sudo apt install ros-kinetic-pointcloud-to-laserscan 
 ```
 
-## 3次元から2次元への変換ソフトのダウンロード
+## 点群を3次元から2次元データに変換するパッケージの launch ファイル等をダウンロード
 
 ```shell
 $ cd ~/catkin_ws/src
