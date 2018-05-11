@@ -34,6 +34,8 @@ $ catkin_make
 
 ### URG-04LX-UG01 の場合
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 ### YVT-35LX の場合
@@ -41,6 +43,8 @@ $ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユー�
 
 ### Xtion PRO Live の場合
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation xtion_mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
@@ -79,6 +83,8 @@ map.yamlをダブルクリックして開くと、地図の解像度や原点の
 
 ### URG-04LX-UG01 の場合
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 ### YVT-35LX の場合
@@ -86,6 +92,8 @@ $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユ�
 
 ### Xtion PRO Live の場合
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation xtion_navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 

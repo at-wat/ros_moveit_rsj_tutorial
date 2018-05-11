@@ -47,6 +47,15 @@ CMakeLists.txt
 $ cd ..
 $ ls
 src
+$ catkin_make
+ase path: /home/【ユーザ名】/catkin_tmp
+Source space: /home/【ユーザ名】/catkin_tmp/src
+Build space: /home/【ユーザ名】/catkin_tmp/build
+Devel space: /home/【ユーザ名】/catkin_tmp/devel
+Install space: /home/【ユーザ名】/catkin_tmp/install
+・・・
+$ ls
+build  devel  src
 ```
 
 `catkin_ws`ディレクトリ内にある、`build`、`devel`は、`catkin`システムがプログラムをビルドする際に使用するものなので、ユーザが触る必要はありません。
@@ -213,6 +222,8 @@ ROS でワークスペースを利用するとき、端末でそのワークス�
 2つ目の端末で下記を実行します。
 
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ rosrun rsj_robot_test rsj_robot_test_node
 [ INFO] [1466002781.136800000]: Hello ROS World!
 ```
@@ -284,12 +295,16 @@ $ roscore
 2番目の端末を開いて、下記を実行します。
 
 ```shell
-$ rosrun ypspur_ros ypspur_ros _param_file:=/home/ubuntu/params/rsj-seminar20??.param <u>該当するものに置き換えること</u> _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param <u>該当するものに置き換えること</u> _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
 ```
 
 続いて、別の端末でrsj_robot_test_nodeノードを実行します。まずは、ロボットのホイールを浮かせて、走り出さない状態にして実行してみましょう。
 
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ rosrun rsj_robot_test rsj_robot_test_node
 Hello ROS World!
 ```
@@ -416,12 +431,21 @@ $ catkin_make
 
 ```shell
 $ roscore
-$ rosrun ypspur_ros ypspur_ros _param_file:=/home/ubuntu/params/rsj-seminar20??.param <u>該当するものに置き換えること</u> _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+```
+
+2番目の端末を開いて、下記を実行します。
+
+```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param <u>該当するものに置き換えること</u> _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
 ```
 
 続いて、`rsj_robot_test_node`ノードを実行します。
 
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ rosrun rsj_robot_test rsj_robot_test_node
 Hello ROS World!
 vel: 0.0500

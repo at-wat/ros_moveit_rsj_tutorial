@@ -25,7 +25,9 @@ $ git clone https://github.com/KMiyawaki/rsj_pointcloud_to_laserscan.git
 PC の USB ポートに Xtion PRO Live を接続し、次のコマンドを実行します。
 
 ```shell
-$ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/launch
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ cd src/rsj_pointcloud_to_laserscan/launch
 $ roslaunch rsj_pointcloud_to_laserscan.launch
 ```
 

@@ -92,7 +92,9 @@ $ catkin_make
 ターミナルでセンサを起動します。
 
 ```shell
-$ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/launch
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ cd src/rsj_pointcloud_to_laserscan/launch
 $ roslaunch rsj_pointcloud_to_laserscan.launch
 ```
 
@@ -117,7 +119,9 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
 
 ```shell
-$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
 ```
 
 このように`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。

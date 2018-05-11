@@ -95,13 +95,17 @@ $ catkin_make
 ### URG-04LX-UG01 の場合
 
 ```shell
-$ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 ### Xtion PRO Live の場合
 
 ```shell
-$ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 ### YVT-35LX の場合
@@ -124,7 +128,9 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 ### YVT-35LX の場合
 
 ```shell
-$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
 ```
 
 さらに別のターミナルで`rsj_robot_test_node`を起動します。
