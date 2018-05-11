@@ -128,7 +128,8 @@ $ wget https://at-wat.github.io/ROS-quick-start-up/files/rsj-seminar2014.param
 
 1.  端末を開いて、下記コマンドで制御ソフトを起動
 ```shell
-$ ypspur-coordinator -p ~/params/rsj-seminar20??.param【該当するものに置き換えること】 -d /dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+$ ypspur-coordinator -p ~/params/rsj-seminar20??.param【該当するものに置き換えること】\
+ -d /dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
 ```
 
 1.  ホイールを持ち上げて走り出さない状態、もしくは、ひっくり返してホイールが浮いている状態にしてサンプルプログラムを起動 (端末をもう1つ開いて実行します。)

@@ -3,6 +3,8 @@ title: ROSを用いた点群取得
 date: 2018-05-11
 ---
 
+# ROSを用いた点群取得
+
 - Table of contents
 {:toc}
 
@@ -98,13 +100,16 @@ $ roscore
 2つ目の端末でypspur_rosを起動
 
 ```shell
-$ rosrun ypspur_ros ypspur_ros _param_file:=/home/ubuntu/params/rsj-seminar20??.param該当するものに置き換えること _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+$ rosrun ypspur_ros ypspur_ros \
+_param_file:=/home/????/params/rsj-seminar20??.param該当するものに置き換えること \
+_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
 ```
 
 3つ目の端末でurg_nodeを起動
 
 ```shell
-$ rosrun urg_node urg_node _serial_port:=/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00
+$ rosrun urg_node urg_node \
+_serial_port:=/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00
 ```
 
 4つ目の端末で作成したプログラムを実行
