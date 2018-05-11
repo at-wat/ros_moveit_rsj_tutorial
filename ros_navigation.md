@@ -1,3 +1,11 @@
+---
+title: ROS navigationパッケージを使ってみよう
+date: 2018-05-11
+---
+
+- Table of contents
+{:toc}
+
 # ROS navigationパッケージを使ってみよう
 地図作成と、簡易的に調整済みの navigation パッケージを利用して、自律ナビゲーションを体験します。
 
