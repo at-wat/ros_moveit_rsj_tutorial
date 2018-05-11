@@ -95,7 +95,7 @@ $ sudo adduser [ YOUR_USER_NAME ] dialout
 
 ## 制御ソフトのインストールと動作テスト
 
-1.  画面左のランチャーから「端末」を起動し、下記コマンドを実行して制御ソフトをインストール
+1.  画面左のランチャーから「端末」を起動し、下記コマンドを実行して制御ソフトをインストール（日本語環境の場合は`Downloads`を`ダウンロード`に読み替えてください）
 ```shell
 $ cd ~/Downloads/
 $ git clone https://github.com/openspur/yp-spur.git
