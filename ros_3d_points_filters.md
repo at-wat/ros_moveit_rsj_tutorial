@@ -342,7 +342,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
 
 ![XtionClusters](images/xtion_view_clusters.png)
 
-## 特定の条件に合致するクラスタだけを送信する
+## 特定の条件に合致するクラスタを検出する
 
 検出したクラスタのうち、一定の大きさをもつものだけを抽出するようにしましょう。
 最終的にはゴミ箱や人間の足など、特定の大きさなど何らかの条件を満たすクラスタに向かって走行するように制御します。
@@ -354,6 +354,11 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
     try
     {
         略
+      pub_voxel.publish(cloud_voxel);
+      std::vector<pcl::PointIndices> cluster_indices;
+      tree->setInputCloud(cloud_voxel);
+      ec.setInputCloud(cloud_voxel);
+      ec.extract(cluster_indices);
       visualization_msgs::MarkerArray marker_array;
       int marker_id = 0;
       size_t ok = 0;
@@ -375,15 +380,17 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
         {
           is_ok = false;
         }
+        visualization_msgs::Marker marker = make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f);
         if (is_ok)
         {
-          marker_array.markers.push_back(make_marker(frame_id, "ok_cluster", marker_id, min_pt, max_pt, 1.0f, 0.0f, 0.0f, 0.5f));
+          marker.ns = "ok_cluster";
+          marker.color.r = 1.0f;
+          marker.color.g = 0.0f;
+          marker.color.b = 0.0f;
+          marker.color.a = 0.5f;
           ok++;
         }
-        else
-        {
-          marker_array.markers.push_back(make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
-        }
+        marker_array.markers.push_back(marker);
       }
       if (marker_array.markers.empty() == false)
       {
@@ -407,3 +414,76 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
 クラスタリングのときと同様に RViz で可視化してください。ある一定の大きさのクラスタだけを赤く表示しているのが分かります。
 
 ![XtionClusters](images/xtion_view_specific_clusters.png)
+
+## 最も近いクラスタを検出する
+
+前項で抽出したクラスタのうち、センサに最も近いクラスタを選択するようにしましょう。
+
+`cb_points`関数を次のように変更します。
+```c++
+  void cb_points(const PointCloud::ConstPtr &msg)
+  {
+    try
+    {
+        略
+      pub_voxel.publish(cloud_voxel);
+      std::vector<pcl::PointIndices> cluster_indices;
+      tree->setInputCloud(cloud_voxel);
+      ec.setInputCloud(cloud_voxel);
+      ec.extract(cluster_indices);
+      visualization_msgs::MarkerArray marker_array;
+      int target_index = -1; // 追加
+      int marker_id = 0;
+      size_t ok = 0;
+      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+      {
+          略
+        if (is_ok)
+        {
+          marker.ns = "ok_cluster";
+          marker.color.r = 1.0f;
+          marker.color.g = 0.0f;
+          marker.color.b = 0.0f;
+          marker.color.a = 0.5f;
+          ok++;
+          if(target_index < 0){
+            target_index = marker_array.markers.size();
+          }else{
+            float d1 = ::hypot(marker_array.markers[target_index].pose.position.x, marker_array.markers[target_index].pose.position.y);
+            float d2 = ::hypot(marker.pose.position.x, marker.pose.position.y);
+            if(d2 < d1){
+              target_index = marker_array.markers.size();
+            }
+          }
+        }
+        marker_array.markers.push_back(marker);
+      }
+      if (marker_array.markers.empty() == false)
+      {
+        if(target_index >= 0){
+          marker_array.markers[target_index].ns = "target_cluster";
+          marker_array.markers[target_index].color.r = 1.0f;
+          marker_array.markers[target_index].color.g = 0.0f;
+          marker_array.markers[target_index].color.b = 1.0f;
+          marker_array.markers[target_index].color.a = 0.5f;
+        }
+        pub_clusters.publish(marker_array);
+      }
+      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    }
+    catch (std::exception &e)
+    {
+      ROS_ERROR("%s", e.what());
+    }
+  }
+```
+
+## ビルド＆実行
+
+前項と同様にビルドして実行してください。
+
+## フィルタ実行結果の可視化
+
+前項と同様に RViz で可視化してください。ある一定の大きさのクラスタだけを赤く表示し、その中でセンサに最も近いクラスタを紫で表示しているのが分かります。
+
+![XtionClusters](images/xtion_view_target_cluster.png)
