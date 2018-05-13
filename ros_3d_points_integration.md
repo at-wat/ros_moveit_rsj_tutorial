@@ -145,7 +145,6 @@ $ rosrun  rsj_robot_test rsj_robot_test_node
 ```
 
 `rsj_robot_test_node`側で「[ INFO] [1523957583.091959056]: clusters: 7」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
-また RViz 上では`navigation`用のマップ上に重畳して`PointCloud`のクラスタと、クラスタを囲む直方体が表示されています。
+また RViz 上では`navigation`用のマップ上に重畳して`PointCloud`のクラスタと、クラスタを囲む直方体が表示されています。センサに最も近いクラスタは紫で表示されています。
 
 ![XtionViewNavigation](images/xtion_view_navigation.png)
-
