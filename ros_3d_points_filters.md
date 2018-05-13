@@ -76,7 +76,7 @@ private:
   }
 ```
 
-## ビルド＆実行
+### ビルド＆実行
 
 まず、`catkin_ws`で`catkin_make`を実行して、追加したコードをビルドします。
 
@@ -87,7 +87,7 @@ $ catkin_make
 
 次にお手持ちの３次元センサごとに次のようにノードを起動します。
 
-### Xtion PRO Live の場合
+#### Xtion PRO Live の場合
 
 ターミナルでセンサを起動します。
 
@@ -108,7 +108,7 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 [ INFO] [1524040064.148595331]: points (src: 307200, paththrough: 34350)
 ```
 
-### YVT-35LX の場合
+#### YVT-35LX の場合
 
 ターミナルでセンサを起動します。
 
@@ -124,11 +124,11 @@ $ source devel/setup.bash
 $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
 ```
 
-このように`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
+実行した際に`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
 `src`、`paththrough`に続けて表示されている値はセンサから得られた、もとの`PointCloud`における点の個数と`PassThrough`フィルタ実行後の点の個数を示しています。
 フィルタ実行後の点の個数がゼロの場合は`pass.setFilterLimits(0.5, 1.0);`の引数を調節してみてください。
 
-## フィルタ実行結果の可視化
+### フィルタ実行結果の可視化
 
 RViz でフィルタ実行後の点群の様子を可視化します。rsj_pointcloud_test_node を起動したまま、新しいターミナルを開き、 RViz を起動します。
 
@@ -145,7 +145,7 @@ RViz の左にある PointCloud2 の上の方のチェックを外すとフィ�
 
 ![XtionPointsPassThrough](images/xtion_view_passthrough.png)
 
-# VoxelGrid フィルタ
+## VoxelGrid フィルタ
 
 ３次元点群の処理には時間がかかることが多いため、低スペックの PC の場合はある程度点を間引いておいた方が都合が良いことがあります。
 `VoxelGrid`フィルタは等間隔に点群をダウンサンプリングします。
@@ -204,11 +204,11 @@ private:
   }
 ```
 
-## ビルド＆実行
+### ビルド＆実行
 
 `PassThrough`フィルタのときと同様にビルドして実行してください。
 
-## フィルタ実行結果の可視化
+### フィルタ実行結果の可視化
 
 RViz でフィルタ実行後の点群の様子を可視化します。
 `rsj_pointcloud_test_node`を起動したまま、新しいターミナルを開き、 RViz を起動します。
@@ -322,11 +322,11 @@ private:
   }
 ```
 
-## ビルド＆実行
+### ビルド＆実行
 
 `VoxelGrid`フィルタのときと同様にビルドして実行してください。
 
-## フィルタ実行結果の可視化
+### フィルタ実行結果の可視化
 
 RViz でフィルタ実行後の点群の様子を可視化します。
 `rsj_pointcloud_test_node`を起動したまま新しいターミナルを開き、 RViz を起動します。
@@ -405,11 +405,11 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
   }
 ```
 
-## ビルド＆実行
+### ビルド＆実行
 
 クラスタリングのときと同様にビルドして実行してください。
 
-## フィルタ実行結果の可視化
+### フィルタ実行結果の可視化
 
 クラスタリングのときと同様に RViz で可視化してください。ある一定の大きさのクラスタだけを赤く表示しているのが分かります。
 
@@ -478,11 +478,11 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
   }
 ```
 
-## ビルド＆実行
+### ビルド＆実行
 
 前項と同様にビルドして実行してください。
 
-## フィルタ実行結果の可視化
+### フィルタ実行結果の可視化
 
 前項と同様に RViz で可視化してください。ある一定の大きさのクラスタだけを赤く表示し、その中でセンサに最も近いクラスタを紫で表示しているのが分かります。
 
