@@ -22,7 +22,7 @@ title: RSJロボット工学セミナー第113回 ～移動ロボットの制御
 - 六角レンチセット
 - モバイルルーターなどのインターネット接続機器 (会場でもWiMAX回線を用意しますが、速度が遅くなる可能性があるため、可能であれば持参をお願いします。)
 
-- 教材として用いるロボットは[i-Cart edu](http://t-frog.com/products/icart_edu/)です。PC が載るスペースとしては幅約 32cm 奥行き約 20cm 程度となります。もちろんこの大きさ以上の PC でも構いませんが選定の目安としてください。[Lets' note CF-SX4](https://panasonic.biz/cns/pc/prod/asia/sx/) と Xtion PRO Live を搭載した様子は以下のようになります。
+教材として用いるロボットは[i-Cart edu](http://t-frog.com/products/icart_edu/)です。PC が載るスペースとしては幅約 32cm 奥行き約 20cm 程度となります。もちろんこの大きさ以上の PC でも構いませんが選定の目安としてください。[Lets' note CF-SX4](https://panasonic.biz/cns/pc/prod/asia/sx/) と Xtion PRO Live を搭載した様子は以下のようになります。
 
 ![XtionTFrog](images/xtion_t-frog.png)
 

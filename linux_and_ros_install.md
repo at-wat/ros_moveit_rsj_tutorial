@@ -13,7 +13,7 @@ LinuxとROSのインストール方法を示します。
 ## 用意するもの
 
 - ノート型パソコン
--- *本手順によりパソコンの既存のOS（Windows等）及び保存されているデータやソフトウェアは完全にが削除される。予めにバックアップを行ってください。*{: style="color: red"}
+-- *本手順によりパソコンの既存のOS（Windows等）及び保存されているデータやソフトウェアは完全にが削除されます。予めバックアップを行ってください。*{: style="color: red"}
 - 容量４GB以上の空のUSBメモリ
 - インターネット接続
 
@@ -21,7 +21,7 @@ LinuxとROSのインストール方法を示します。
 
 ### Ubuntu Linuxのダウンロード
 
-1. 下記URLからUbuntu Linux 16.04(64bit)のインストールイメージをダウンロードする
+1. 下記URLからUbuntu Linux 16.04(64bit)のインストールイメージをダウンロードします。
 
    [Ubuntu ダウンロード](http://releases.ubuntu.com/xenial/)
 
@@ -43,7 +43,7 @@ LinuxとROSのインストール方法を示します。
      $ sudo apt-get install unetbootin
      ```
 
-1. 事故防止のため、使用しないUSBメモリや、メモリーカードを取り外し、使用するUSBメモリのみを接続します。使用するUSBメモリは、ファイルが入っていない、空の状態にして下さい。
+1. 事故防止のため、使用しないUSBメモリやメモリーカードを取り外し、使用するUSBメモリのみを接続します。使用するUSBメモリは、ファイルが入っていない、空の状態にして下さい。
 
 1. Live USBを作成するPCとUbuntuをインストールするPCが別でも構いません。
 
@@ -57,7 +57,7 @@ LinuxとROSのインストール方法を示します。
 
    ![Windows UAC](/images/windows_uac.png)
 
-1. UNetbootinの画面で、「ディスクイメージ」を選択し、「…」ボタンをクリックして先ほどダウンロードした、`ubuntu-16.04.2-desktop-amd64.iso` ファイルを選択します。また、「スペースは、リブートしてもファイルを維持するために使用」欄に「4096」と入力し、「ドライブ」欄で、使用するUSBメモリのドライブ名を選択します。内容を確認後、「OK」をクリックしてください。
+1. UNetbootinの画面で「ディスクイメージ」を選択し、「…」ボタンをクリックして先ほどダウンロードした、`ubuntu-16.04.2-desktop-amd64.iso` ファイルを選択します。また、「スペースは、リブートしてもファイルを維持するために使用」欄に「4096」と入力し、「ドライブ」欄で、使用するUSBメモリのドライブ名を選択します。内容を確認後、「OK」をクリックしてください。
 
    ![UNetbootin process 1](/images/unetbootin_setting.png)
 
@@ -94,7 +94,7 @@ LinuxとROSのインストール方法を示します。
 
    ![Ubuntu install 1](/images/ubuntu_install_1.png)
 
-1. 「Ubuntuをインストール」を選択しインストール手順を開始します。画面に出る説明に従ってインストール手順を続いてください。
+1. 「Ubuntuをインストール」を選択しインストール手順を開始します。画面に出る説明に従ってインストール手順を続けてください。
 
    ![Ubuntu install 2](/images/ubuntu_install_2.png)
 
@@ -115,7 +115,7 @@ LinuxとROSのインストール方法を示します。
 
    [ROS KineticのUbuntuへのインストール](http://wiki.ros.org/ja/kinetic/Installation/Ubuntu)
 
-   以下はインストールコマンドの概要だけです。上記のページにご参照してください。
+   以下はインストールコマンドの概要だけです。上記のページをご参照ください。
 
    ```shell
    $ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -129,7 +129,7 @@ LinuxとROSのインストール方法を示します。
    $ sudo apt-get install python-rosinstall
    ```
 
-1. 確認のため、新しい端末を起動して、下記を実行してください。
+1. 確認のため、新しい端末を起動して下記を実行してください。
 
    ```shell
    $ printenv | grep ROS
@@ -148,7 +148,7 @@ LinuxとROSのインストール方法を示します。
 
 ### 必要なパッケージのインストール
 
-最後に、本セミナーに必要なパッケージをインストールします。以下のコマンドの実行によってインストールを行ってください。
+最後に、本セミナーに必要なパッケージをインストールします。以下のコマンドを実行しインストールしてください。
 
 ```shell
 $ sudo apt install ros-kinetic-slam-gmapping ros-kinetic-mouse-teleop
