@@ -1,6 +1,6 @@
 ---
 title: 点群処理とロボットナビゲーションの統合
-date: 2018-04-23
+date: 2018-05-15
 ---
 
 - Table of contents
@@ -144,7 +144,50 @@ $ rosrun  rsj_robot_test rsj_robot_test_node
 [ INFO] [1523957583.192001041]: front-range: 3.178
 ```
 
-`rsj_robot_test_node`側で「[ INFO] [1523957583.091959056]: clusters: 7」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
+`rsj_robot_test_node`側で「`[ INFO] [1523957583.091959056]: clusters: 7`」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
 また RViz 上では`navigation`用のマップ上に重畳して`PointCloud`のクラスタと、クラスタを囲む直方体が表示されています。センサに最も近いクラスタは紫で表示されています。
 
 ![XtionViewNavigation](images/xtion_view_navigation.png)
+
+## センサに最も近いクラスタの位置情報を取得する
+
+RViz 上で紫で表示されている、センサに最も近いクラスタの位置を取得しましょう。
+
+テキストエディタで`rsj_robot_test.cpp`を開いてください。
+
+```shell
+$ cd ~/catkin_ws/src/rsj_robot_test/src
+任意のテキストエディタで rsj_robot_test.cpp を開く
+```
+
+`cb_cluster`関数を編集します。
+
+```c++
+    void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
+    {
+        const visualization_msgs::Marker *target = NULL;
+        for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
+             it != it_end; ++it)
+        {
+            const visualization_msgs::Marker &marker = *it;
+            if (marker.ns == "target_cluster")
+            {
+                target = &marker;
+            }
+        }
+        ROS_INFO("clusters: %zu", msg->markers.size());
+        if (target != NULL)
+        {
+            float dx = target->pose.position.x;
+            float dy = target->pose.position.y;
+            ROS_INFO("target: %f, %f", dx, dy);
+        }
+    }
+```
+
+編集が終了したらエディタを閉じてください。
+
+## ビルド＆実行
+
+前項と同じようにビルドして実行してください。
+`rsj_robot_test_node`側で「`[ INFO] [1526342853.141823400]: target: 2.579500, 0.063012`」のように PCL で処理した最も近いクラスタの座標がを表示できていることが分かります。なおここで表示されている座標はロボットの中心を原点とし、正面をX軸プラス方向とするローカル座標系です。
