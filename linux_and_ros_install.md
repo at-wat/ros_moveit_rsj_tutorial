@@ -21,19 +21,12 @@ LinuxとROSのインストール方法を示します。
 
 ### Ubuntu Linuxのダウンロード
 
-1. 下記URLからUbuntu Linux 16.04のインストールイメージをダウンロードする
+1. 下記URLからUbuntu Linux 16.04(64bit)のインストールイメージをダウンロードする
 
-   [Ubuntu ダウンロード](https://www.ubuntu.com/download/desktop)
+   [Ubuntu ダウンロード](http://releases.ubuntu.com/xenial/)
 
-   ![Ubuntu ダウンロード](/images/ubuntu_download_1.png)
+   ![Ubuntu ダウンロード](/images/ubuntu_download.png)
 
-1. 寄付することは可能だが、必須ではない。
-
-   ![Ubuntu ダウンロード](/images/ubuntu_download_2.png)
-
-1. 以下の画面になったら、ダウンロードが自動的に始まる。
-
-   ![Ubuntu ダウンロード](/images/ubuntu_download_3.png)
 
 ### Live USBの作成
 
