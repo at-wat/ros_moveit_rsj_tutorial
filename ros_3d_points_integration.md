@@ -6,11 +6,9 @@ date: 2018-05-15
 - Table of contents
 {:toc}
 
-# 点群処理とロボットナビゲーションの統合
-
 PCL のクラスタリング結果を`rsj_robot_test_node`で利用してみましょう。
 
-## rsj_robot_test.cpp の編集
+# rsj_robot_test.cpp の編集
 
 テキストエディタで`rsj_robot_test.cpp`を開いてください。
 
@@ -46,7 +44,7 @@ $ cd ~/catkin_ws
 $ catkin_make
 ```
 
-## クラスタリング結果の受信
+# クラスタリング結果の受信
 
 `rsj_robot_test_node`で、`sub_odom`や`sub_scan`を定義しているところに、`visualization_msgs::MarkerArray`用のサブスクライバクラスを追加します。
 
@@ -76,7 +74,7 @@ $ catkin_make
 
 編集が終了したらエディタを閉じてください。
 
-## ビルド＆実行
+# ビルド＆実行
 
 ターミナルで次のコマンドを実行してください。
 
@@ -92,7 +90,7 @@ $ catkin_make
 まずナビゲーションシステムを起動します。
 地図を作成した際の初期位置・姿勢と同じようにロボットを置いて、下記のコマンドを実行します。
 
-### URG-04LX-UG01 の場合
+## URG-04LX-UG01 の場合
 
 ```shell
 $ cd ~/catkin_ws/
@@ -100,7 +98,7 @@ $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
-### Xtion PRO Live の場合
+## Xtion PRO Live の場合
 
 ```shell
 $ cd ~/catkin_ws/
@@ -108,14 +106,14 @@ $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
-### YVT-35LX の場合
+## YVT-35LX の場合
 ？？？
 
-## rsj_pointcloud_test_node と rsj_robot_test_node の起動
+# rsj_pointcloud_test_node と rsj_robot_test_node の起動
 
 3次元センサをお持ちの場合は新しいターミナルを開き`rsj_pointcloud_test_node`を起動します。
 
-### Xtion PRO Live の場合
+## Xtion PRO Live の場合
 
 ```shell
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
@@ -125,7 +123,7 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 [ INFO] [1524040064.148595331]: points (src: 307200, paththrough: 34350)
 ```
 
-### YVT-35LX の場合
+## YVT-35LX の場合
 
 ```shell
 $ cd ~/catkin_ws/
@@ -149,7 +147,7 @@ $ rosrun  rsj_robot_test rsj_robot_test_node
 
 ![XtionViewNavigation](images/xtion_view_navigation.png)
 
-## センサに最も近いクラスタの位置情報を取得する
+# センサに最も近いクラスタの位置情報を取得する
 
 RViz 上で紫で表示されている、センサに最も近いクラスタの位置を取得しましょう。
 
@@ -187,7 +185,7 @@ $ cd ~/catkin_ws/src/rsj_robot_test/src
 
 編集が終了したらエディタを閉じてください。
 
-## ビルド＆実行
+# ビルド＆実行
 
 前項と同じようにビルドして実行してください。
 `rsj_robot_test_node`側で「`[ INFO] [1526342853.141823400]: target: 2.579500, 0.063012`」のように PCL で処理した最も近いクラスタの座標がを表示できていることが分かります。なおここで表示されている座標はロボットの中心を原点とし、正面をX軸プラス方向とするローカル座標系です。

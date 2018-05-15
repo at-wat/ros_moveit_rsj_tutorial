@@ -1,20 +1,18 @@
 ---
 title: 3次元点群の処理
-date: 2018-04-23
+date: 2018-05-15
 ---
 
 - Table of contents
 {:toc}
 
-# 3次元点群の処理
-
 Xtion PRO Live や YVT-35LX から得られる３次元点群`PointCloud`に対する基本的な処理を実習します。
 
-## Point Cloud の表示
+# Point Cloud の表示
 
 各センサから得られる点群を RViz によって可視化します。センサごとに実行するコマンドが異なりますので、お手持ちのセンサに応じて次のコマンドを実行してください。
 
-### Xtion PRO Live の場合
+## Xtion PRO Live の場合
 
 ```shell
 $ cd ~/catkin_ws/
@@ -36,11 +34,11 @@ $ rosrun rviz rviz -d view_points.rviz
 
 起動した２つのターミナルを __Ctrl+c__{: style="border: 1px solid black" } で終了してください。
 
-### YVT-35LX の場合
+## YVT-35LX の場合
 
 ？？？？
 
-## PCL（Point Cloud Library）による３次元点群処理
+# PCL（Point Cloud Library）による３次元点群処理
 
 ロボットでオドメトリのデータを利用したときと同じように３次元センサが出力した`PointCloud`のデータを受け取るプログラムを作成しましょう。
 `PointCloud`の処理を独自に書こうとすると大変な労力が必要です。
@@ -81,7 +79,7 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 
 ファイルを保存してエディタを閉じます。
 
-## ビルド＆実行
+# ビルド＆実行
 
 まず、`catkin_ws`で`catkin_make`を実行して、追加したコードをビルドします。
 
@@ -92,7 +90,7 @@ $ catkin_make
 
 次にお手持ちの３次元センサごとに次のようにノードを起動します。
 
-### Xtion PRO Live の場合
+## Xtion PRO Live の場合
 
 ターミナルでセンサを起動します。
 
@@ -113,7 +111,7 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 [ INFO] [1524039161.311438819]: width: 640, height: 480
 ```
 
-### YVT-35LX の場合
+## YVT-35LX の場合
 
 ターミナルでセンサを起動します。
 
@@ -132,7 +130,7 @@ $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_nam
 このように`width: xxx, height: xxx`というメッセージが表示されれば`PointCloud`は受信できています。
 width, height とは３次元点群の縦・横の点の数を示しています（２次元画像の解像度に対応しています）。
 
-## 補足 rsj_pointcloud_test_node.cpp について
+# 補足 rsj_pointcloud_test_node.cpp について
 
 プログラムの先頭には ROS 内で PCL を扱うためのヘッダファイルに関する`include`文と実習で使う`PointCloud`の型宣言が記述されています。
 
