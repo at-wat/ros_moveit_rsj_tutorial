@@ -6,7 +6,7 @@ date: 2018-05-23
 - Table of contents
 {:toc}
 
-Xtion PRO Live からデータを取得し、2次元点群に変換する方法を説明ます。
+Xtion PRO Live からデータを取得し、2次元点群に変換する方法を説明します。
 
 # パッケージのインストール
 
