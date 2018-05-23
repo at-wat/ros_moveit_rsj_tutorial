@@ -8,6 +8,12 @@ date: 2018-05-23
 
 Xtion PRO Live からデータを取得し、2次元点群に変換する方法を説明します。
 
+[Xtion PRO Live](https://www.asus.com/jp/3D-Sensor/Xtion_PRO_LIVE/) は深度（物体までの距離）および RGB カラー画像を取得できます。
+USB バスパワーで駆動可能なデプスセンサで、非常に扱いやすいのですが現在は廃番となっており入手することはできません。
+
+ROS で利用可能な類似のセンサとして[Orbbec Astra](https://orbbec3d.com/product-astra/)があります。
+また Xtion PRO Live の後継機として[Xtion2](https://www.asus.com/jp/3D-Sensor/Xtion-2/)がありますが、こちらはまだ ROS 対応はしていません（2018/5/23時点）。
+
 # パッケージのインストール
 
 Xtion PRO Live を利用するためのパッケージと３次元点群から２次元データに変換するためのパッケージをインストールします。
