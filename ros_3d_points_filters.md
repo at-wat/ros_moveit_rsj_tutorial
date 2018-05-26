@@ -67,6 +67,7 @@ private:
       pass.setInputCloud(cloud_src);
       pass.filter(*cloud_passthrough);
       pub_passthrough.publish(cloud_passthrough);
+      //  ROS_INFO("width: %zu, height: %zu", cloud_src->width, cloud_src->height); // 削除。
       ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size());
     }catch (std::exception &e){
       ROS_ERROR("%s", e.what());
@@ -430,7 +431,9 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
       ec.setInputCloud(cloud_voxel);
       ec.extract(cluster_indices);
       visualization_msgs::MarkerArray marker_array;
+      /*  */
       int target_index = -1; // 追加
+      /*  */
       int marker_id = 0;
       size_t ok = 0;
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
