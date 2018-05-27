@@ -8,7 +8,7 @@ date: 2018-05-25
 
 ROSには多くの便利な機能が用意されています。ここでは、そのうちのよく利用するコマンドなどの一部を紹介します。
 
-## roslaunch
+# roslaunch
 
 [ROSを用いた点群取得](ros_points.html)では、
 端末を4つ起動して、それぞれroscoreとrosrunコマンドでノードを起動していました。
@@ -21,29 +21,29 @@ roslaunchコマンドで一括起動する方法が用意されています。
 1. rsj_robot_testパッケージに、launchディレクトリを作成
 
 ```shell
-  $ mkdir ~/catkin_ws/src/rsj_robot_test/launch
+   $ mkdir ~/catkin_ws/src/rsj_robot_test/launch
 ```
 
 1. robot_test.launchファイルを作成して開く
 
 ```shell
-  $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
+   $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
 ```
 
 1. 下記内容を記入
 
 ```xml
-  <launch>
-  	<node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
-  		<param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
-  		<param name="param_file" value="/home/$(env USER)/params/rsj-seminar20??.param該当するものに置き換えること" />
-  	</node>
-  	<node pkg="urg_node" type="urg_node" name="urg_node">
-  		<param name="serial_port" value="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
-  	</node>
-  	<node pkg="rsj_robot_test" type="rsj_robot_test_node" name="robot_test" output="screen">
-  	</node>
-  </launch>
+   <launch>
+   	<node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
+   		<param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
+   		<param name="param_file" value="/home/$(env USER)/params/rsj-seminar20??.param該当するものに置き換えること" />
+   	</node>
+   	<node pkg="urg_node" type="urg_node" name="urg_node">
+   		<param name="serial_port" value="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
+   	</node>
+   	<node pkg="rsj_robot_test" type="rsj_robot_test_node" name="robot_test" output="screen">
+   	</node>
+   </launch>
 ```
 
 作成したlaunchファイルは下記のコマンドで実行できます。
@@ -55,9 +55,9 @@ $ roslaunch rsj_robot_test robot_test.launch
 これは、rsj_robot_testパッケージ中の、robot_test.launchを実行する、という指示を表しています。
 下記に代表的なタグの説明を示します。
 
-### `node`タグ
+## `node`タグ
 
-起動するノードを指定します。nodeタグの各属性の意味は下記の通りです。
+動するノードを指定します。nodeタグの各属性の意味は下記の通りです。
 
 `name`
 : ノードインスタンスの名
@@ -72,7 +72,7 @@ $ roslaunch rsj_robot_test robot_test.launch
 : ノードの`stdout`の先：定義しないと`stdout`（`ROS_INFO`や`std::cout`への出力等）は端末で表示されず、
 `~/.ros/log/`に保存されるログファイルだけに出力される。端末で表示したい場合は`screen`にします。
 
-### `param`タグ
+## `param`タグ
 
 パラメータサーバーにパラメータを設定します。起動されるノードはこのパラメータが利用できます。
 
@@ -90,7 +90,7 @@ $ roslaunch rsj_robot_test robot_test.launch
 `type`
 : double, int, string, bool など (一意に決まるときは省略可能)
 
-### `remap`タグ
+## `remap`タグ
 
 ノードとトピックをつなぎ変えます。
 
@@ -111,7 +111,7 @@ remapを用いることで、各ノードのソースコードを変更するこ
 
 ![After remapping](images/remap_after.png)
 
-## rqt_graph
+# rqt_graph
 
 トピックとノードの接続状態を可視化することができます。
 ロボットとURGをPCに接続して、roslaunchの項で説明したようにrobot_test.launchを実行し、その状態で下記コマンドを実行してみましょう。
@@ -124,7 +124,7 @@ $ rqt_graph
 
 ![rqt_graph showing CRANE+ system](images/rqt_graph.png)
 
-## rostopic
+# rostopic
 
 デバッグなどのため、ROSのトピックに流れているメッセージを確認したいときや、
 試しにメッセージを送信したいときに、コマンドラインのツールでこれらの処理を行うことができます。
@@ -159,7 +159,7 @@ angular:
 
 `-1`を利用すると一回のみ送信します。`-1`を削除すると`rostopic`は __Ctrl+c__{: style="border: 1px solid black" } を入力するまでに送信し続きます。
 
-## rosbag
+# rosbag
 
 ROSで提供されている`rosbag`ツールを用いると、ROS上で送信、受信されているデータ(メッセージ)を記録・再生することができます。
 
@@ -177,7 +177,7 @@ $ rosbag record /scan /odom
 $ rosbag play ファイル名.bag
 ```
 
-## RViz
+# RViz
 
 ROSでは、rvizという、データ可視化ツール(ビューワ)が提供されています。
 今回のセミナーの環境にも、インストールされており、URGのデータやオドメトリを表示することができます。
@@ -193,3 +193,11 @@ rviz画面中の、「add」ボタンをクリックし、開いた選択ウイ�
 
 センサデータが取得できていれば、図のように、距離データがプロットされます。
 ![](images/rviz-data.png)
+
+# 小課題
+
+配布された3次元距離センサのデータについて、
+roslounchを利用して2次元データに変換し、RVizで結果を確認してみましょう。
+
+- [YVT-35LXの場合](ros_3durg.html)
+- [Xtion Pro Liveの場合](ros_xtion.html)
