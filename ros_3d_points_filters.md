@@ -46,35 +46,35 @@ private:
 `rsj_pointcloud_test_node`クラスのコンストラクタで`PassThrough`フィルタの設定、`cloud_passthrough`および`pub_passthrough`を初期化します。
 
 ```c++
-  rsj_pointcloud_test_node()
-  {
-    略
-    cloud_tranform.reset(new PointCloud());
-    // 以下を追記
-    pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
-    pass.setFilterLimits(0.1, 1.0); // 0.1 〜 1.0 m の間にある点群を抽出
-    cloud_passthrough.reset(new PointCloud());
-    pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
-  }
+rsj_pointcloud_test_node()
+{
+  略
+  cloud_tranform.reset(new PointCloud());
+  // 以下を追記
+  pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
+  pass.setFilterLimits(0.1, 1.0); // 0.1 〜 1.0 m の間にある点群を抽出
+  cloud_passthrough.reset(new PointCloud());
+  pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
+}
 ```
 
 `cb_points`関数を次のように変更します。
 
 ```c++
-  void cb_points(const PointCloud::ConstPtr &msg)
-  {
-    try{
-      略
-      // ここに cloud_src に対するフィルタ処理を書く
-      pass.setInputCloud(cloud_src);
-      pass.filter(*cloud_passthrough);
-      pub_passthrough.publish(cloud_passthrough);
-      //  ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height); // 削除
-      ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size()); // 追記
-    }catch (std::exception &e){
-      ROS_ERROR("%s", e.what());
-    }
+void cb_points(const PointCloud::ConstPtr &msg)
+{
+  try{
+    略
+    // ここに cloud_src に対するフィルタ処理を書く
+    pass.setInputCloud(cloud_src);
+    pass.filter(*cloud_passthrough);
+    pub_passthrough.publish(cloud_passthrough);
+    //  ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height); // 削除
+    ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size()); // 追記
+  }catch (std::exception &e){
+    ROS_ERROR("%s", e.what());
   }
+}
 ```
 
 ## ビルド＆実行
@@ -178,35 +178,35 @@ private:
 `rsj_pointcloud_test_node`クラスのコンストラクタで`VoxelGrid`フィルタの設定、`cloud_voxel`および`pub_voxel`を初期化します。
 
 ```c++
-  rsj_pointcloud_test_node()
-  {
+rsj_pointcloud_test_node()
+{
 略
-    pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
-    // 以下を追記
-    voxel.setLeafSize (0.025f, 0.025f, 0.025f); // 0.025 m 間隔でダウンサンプリング
-    cloud_voxel.reset(new PointCloud());
-    pub_voxel = nh.advertise<PointCloud>("voxel", 1);
-  }
+  pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
+  // 以下を追記
+  voxel.setLeafSize (0.025f, 0.025f, 0.025f); // 0.025 m 間隔でダウンサンプリング
+  cloud_voxel.reset(new PointCloud());
+  pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+}
 ```
 
 `cb_points`関数を次のように変更します。
 
 ```c++
-  void cb_points(const PointCloud::ConstPtr &msg)
-  {
-    try{
+void cb_points(const PointCloud::ConstPtr &msg)
+{
+  try{
 略
-      pub_passthrough.publish(cloud_passthrough);
-      // 以下のように追記・修正
-      voxel.setInputCloud(cloud_passthrough);
-      voxel.filter(*cloud_voxel);
-      pub_voxel.publish(cloud_voxel);
-      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size());
-      // 追記・修正箇所ここまで
-    }catch (std::exception &e){
-      ROS_ERROR("%s", e.what());
-    }
+    pub_passthrough.publish(cloud_passthrough);
+    // 以下のように追記・修正
+    voxel.setInputCloud(cloud_passthrough);
+    voxel.filter(*cloud_voxel);
+    pub_voxel.publish(cloud_voxel);
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size());
+    // 追記・修正箇所ここまで
+  }catch (std::exception &e){
+    ROS_ERROR("%s", e.what());
   }
+}
 ```
 
 ## ビルド＆実行
@@ -231,10 +231,10 @@ RViz の左にある`PointCloud2`の一番下のチェックだけをONにする
 もし違いがわかりにくい場合は`setLeafSize`関数の引数を
 
 ```c++
-  rsj_pointcloud_test_node()
-  {
+rsj_pointcloud_test_node()
+{
 略
-    voxel.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
+  voxel.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
 ```
 
 のように大きくしてみてください（確認後は元の値に戻しておいてください）。
@@ -270,18 +270,18 @@ private:
 `rsj_pointcloud_test_node`クラスのコンストラクタで`pcl::EuclideanClusterExtraction`の設定、`tree`、`pub_clusters`の初期化をします。
 
 ```c++
-  rsj_pointcloud_test_node()
-  {
+rsj_pointcloud_test_node()
+{
 略
-    pub_voxel = nh.advertise<PointCloud>("voxel", 1);
-    // 以下を追記
-    tree.reset(new pcl::search::KdTree<PointT>());
-    ec.setClusterTolerance(0.15);
-    ec.setMinClusterSize(100);
-    ec.setMaxClusterSize(5000);
-    ec.setSearchMethod(tree);
-    pub_clusters = nh.advertise<visualization_msgs::MarkerArray>("clusters", 1);
-  }
+  pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+  // 以下を追記
+  tree.reset(new pcl::search::KdTree<PointT>());
+  ec.setClusterTolerance(0.15);
+  ec.setMinClusterSize(100);
+  ec.setMaxClusterSize(5000);
+  ec.setSearchMethod(tree);
+  pub_clusters = nh.advertise<visualization_msgs::MarkerArray>("clusters", 1);
+}
 ```
 
 `pcl::EuclideanClusterExtraction`の設定部分のプログラムは次のとおりです。
@@ -298,41 +298,41 @@ private:
 `cb_points`関数を次のように変更します。
 
 ```c++
-  void cb_points(const PointCloud::ConstPtr &msg)
+void cb_points(const PointCloud::ConstPtr &msg)
+{
+  try
   {
-    try
+      略
+    pub_voxel.publish(cloud_voxel);
+    // 以下のように追記・修正
+    std::vector<pcl::PointIndices> cluster_indices;
+    tree->setInputCloud(cloud_voxel);
+    ec.setInputCloud(cloud_voxel);
+    ec.extract(cluster_indices);
+    visualization_msgs::MarkerArray marker_array;
+    int marker_id = 0;
+    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
     {
-        略
-      pub_voxel.publish(cloud_voxel);
-      // 以下のように追記・修正
-      std::vector<pcl::PointIndices> cluster_indices;
-      tree->setInputCloud(cloud_voxel);
-      ec.setInputCloud(cloud_voxel);
-      ec.extract(cluster_indices);
-      visualization_msgs::MarkerArray marker_array;
-      int marker_id = 0;
-      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+      Eigen::Vector4f min_pt, max_pt;
+      pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
+      Eigen::Vector4f cluster_size = max_pt - min_pt;
+      if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
       {
-        Eigen::Vector4f min_pt, max_pt;
-        pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
-        Eigen::Vector4f cluster_size = max_pt - min_pt;
-        if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
-        {
-          marker_array.markers.push_back(make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
-        }
+        marker_array.markers.push_back(make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
       }
-      if (marker_array.markers.empty() == false)
-      {
-        pub_clusters.publish(marker_array);
-      }
-      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size());
-      // 追記・修正箇所ここまで
     }
-    catch (std::exception &e)
+    if (marker_array.markers.empty() == false)
     {
-      ROS_ERROR("%s", e.what());
+      pub_clusters.publish(marker_array);
     }
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size());
+    // 追記・修正箇所ここまで
   }
+  catch (std::exception &e)
+  {
+    ROS_ERROR("%s", e.what());
+  }
+}
 ```
 
 ## ビルド＆実行
@@ -362,69 +362,69 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
 
 `cb_points`関数を次のように変更します。
 ```c++
-  void cb_points(const PointCloud::ConstPtr &msg)
+void cb_points(const PointCloud::ConstPtr &msg)
+{
+  try
   {
-    try
+      略
+    pub_voxel.publish(cloud_voxel);
+    std::vector<pcl::PointIndices> cluster_indices;
+    tree->setInputCloud(cloud_voxel);
+    ec.setInputCloud(cloud_voxel);
+    ec.extract(cluster_indices);
+    visualization_msgs::MarkerArray marker_array;
+    int marker_id = 0;
+    /*  */
+    size_t ok = 0; // 追記
+    /*  */
+    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
     {
-        略
-      pub_voxel.publish(cloud_voxel);
-      std::vector<pcl::PointIndices> cluster_indices;
-      tree->setInputCloud(cloud_voxel);
-      ec.setInputCloud(cloud_voxel);
-      ec.extract(cluster_indices);
-      visualization_msgs::MarkerArray marker_array;
-      int marker_id = 0;
-      /*  */
-      size_t ok = 0; // 追記
-      /*  */
-      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+      Eigen::Vector4f min_pt, max_pt;
+      pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
+      Eigen::Vector4f cluster_size = max_pt - min_pt;
+      if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
       {
-        Eigen::Vector4f min_pt, max_pt;
-        pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
-        Eigen::Vector4f cluster_size = max_pt - min_pt;
-        if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
+        // 以下を追記
+        bool is_ok = true;
+        if (cluster_size.x() < 0.05 || cluster_size.x() > 0.4)
         {
-          // 以下を追記
-          bool is_ok = true;
-          if (cluster_size.x() < 0.05 || cluster_size.x() > 0.4)
-          {
-            is_ok = false;
-          }
-          else if (cluster_size.y() < 0.05 || cluster_size.y() > 0.6)
-          {
-            is_ok = false;
-          }
-          else if (cluster_size.z() < 0.05 || cluster_size.z() > 0.5)
-          {
-            is_ok = false;
-          }
-          visualization_msgs::Marker marker = make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f);
-          if (is_ok)
-          {
-            marker.ns = "ok_cluster";
-            marker.color.r = 1.0f;
-            marker.color.g = 0.0f;
-            marker.color.b = 0.0f;
-            marker.color.a = 0.5f;
-            ok++;
-          }
-          // 追記箇所ここまで
-          marker_array.markers.push_back(marker);
+          is_ok = false;
         }
+        else if (cluster_size.y() < 0.05 || cluster_size.y() > 0.6)
+        {
+          is_ok = false;
+        }
+        else if (cluster_size.z() < 0.05 || cluster_size.z() > 0.5)
+        {
+          is_ok = false;
+        }
+        visualization_msgs::Marker marker = make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f);
+        if (is_ok)
+        {
+          marker.ns = "ok_cluster";
+          marker.color.r = 1.0f;
+          marker.color.g = 0.0f;
+          marker.color.b = 0.0f;
+          marker.color.a = 0.5f;
+          ok++;
+        }
+        // 追記箇所ここまで
+        marker_array.markers.push_back(marker);
       }
-      if (marker_array.markers.empty() == false)
-      {
-        pub_clusters.publish(marker_array);
-      }
-      /*** 修正 ***/
-      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
-      /*** 修正 ***/
     }
-    catch (std::exception &e)
+    if (marker_array.markers.empty() == false)
     {
-      ROS_ERROR("%s", e.what());
+      pub_clusters.publish(marker_array);
     }
+    /*** 修正 ***/
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    /*** 修正 ***/
   }
+  catch (std::exception &e)
+  {
+    ROS_ERROR("%s", e.what());
+  }
+}
 ```
 
 ## ビルド＆実行
@@ -443,68 +443,68 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
 
 `cb_points`関数を次のように変更します。
 ```c++
-  void cb_points(const PointCloud::ConstPtr &msg)
+void cb_points(const PointCloud::ConstPtr &msg)
+{
+  try
   {
-    try
+      略
+    pub_voxel.publish(cloud_voxel);
+    std::vector<pcl::PointIndices> cluster_indices;
+    tree->setInputCloud(cloud_voxel);
+    ec.setInputCloud(cloud_voxel);
+    ec.extract(cluster_indices);
+    visualization_msgs::MarkerArray marker_array;
+    /*  */
+    int target_index = -1; // 追記
+    /*  */
+    int marker_id = 0;
+    size_t ok = 0;
+    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
     {
-        略
-      pub_voxel.publish(cloud_voxel);
-      std::vector<pcl::PointIndices> cluster_indices;
-      tree->setInputCloud(cloud_voxel);
-      ec.setInputCloud(cloud_voxel);
-      ec.extract(cluster_indices);
-      visualization_msgs::MarkerArray marker_array;
-      /*  */
-      int target_index = -1; // 追記
-      /*  */
-      int marker_id = 0;
-      size_t ok = 0;
-      for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
-      {
-            略
-          if (is_ok)
-          {
-            marker.ns = "ok_cluster";
-            marker.color.r = 1.0f;
-            marker.color.g = 0.0f;
-            marker.color.b = 0.0f;
-            marker.color.a = 0.5f;
-            ok++;
-            // 以下のように追記
-            if(target_index < 0){
+          略
+        if (is_ok)
+        {
+          marker.ns = "ok_cluster";
+          marker.color.r = 1.0f;
+          marker.color.g = 0.0f;
+          marker.color.b = 0.0f;
+          marker.color.a = 0.5f;
+          ok++;
+          // 以下のように追記
+          if(target_index < 0){
+            target_index = marker_array.markers.size();
+          }else{
+            float d1 = ::hypot(marker_array.markers[target_index].pose.position.x, marker_array.markers[target_index].pose.position.y);
+            float d2 = ::hypot(marker.pose.position.x, marker.pose.position.y);
+            if(d2 < d1){
               target_index = marker_array.markers.size();
-            }else{
-              float d1 = ::hypot(marker_array.markers[target_index].pose.position.x, marker_array.markers[target_index].pose.position.y);
-              float d2 = ::hypot(marker.pose.position.x, marker.pose.position.y);
-              if(d2 < d1){
-                target_index = marker_array.markers.size();
-              }
             }
-            // 追記箇所ここまで
           }
-          marker_array.markers.push_back(marker);
+          // 追記箇所ここまで
         }
+        marker_array.markers.push_back(marker);
       }
-      if (marker_array.markers.empty() == false)
-      {
-        // 以下のように追記
-        if(target_index >= 0){
-          marker_array.markers[target_index].ns = "target_cluster";
-          marker_array.markers[target_index].color.r = 1.0f;
-          marker_array.markers[target_index].color.g = 0.0f;
-          marker_array.markers[target_index].color.b = 1.0f;
-          marker_array.markers[target_index].color.a = 0.5f;
-        }
-        // 追記箇所ここまで
-        pub_clusters.publish(marker_array);
-      }
-      ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
     }
-    catch (std::exception &e)
+    if (marker_array.markers.empty() == false)
     {
-      ROS_ERROR("%s", e.what());
+      // 以下のように追記
+      if(target_index >= 0){
+        marker_array.markers[target_index].ns = "target_cluster";
+        marker_array.markers[target_index].color.r = 1.0f;
+        marker_array.markers[target_index].color.g = 0.0f;
+        marker_array.markers[target_index].color.b = 1.0f;
+        marker_array.markers[target_index].color.a = 0.5f;
+      }
+      // 追記箇所ここまで
+      pub_clusters.publish(marker_array);
     }
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
   }
+  catch (std::exception &e)
+  {
+    ROS_ERROR("%s", e.what());
+  }
+}
 ```
 
 ## ビルド＆実行
