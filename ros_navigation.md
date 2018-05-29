@@ -51,7 +51,7 @@ PC にロボットと URG の USB ケーブルを接続し、地図を生成し�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 ## YVT-35LX の場合
 ？？？
@@ -60,10 +60,10 @@ $ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユー�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation xtion_mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation xtion_mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
-RViz が起動し、下記のように複数の URG もしくは Xtion のスキャンデータをつなげて、大きな占有格子地図を生成し始めます。
+RViz が起動し、下記のように URG もしくは Xtion の複数のスキャンデータをつなげて、大きな占有格子地図を生成し始めます。
 
 ![Mapping start](images/mapping_start.png)
 
@@ -72,7 +72,7 @@ RViz が起動し、下記のように複数の URG もしくは Xtion のスキ
 
 この地図生成は、 URG や Xtion のスキャンデータを逐次つなげていく仕組みのため、ロボットの位置姿勢を大きく変化させた場合やセンサに見えているものが少ない場合には、地図が破綻する場合があります。
 
-その際は、`roslaunch`を実行した端末で、 __Ctrl+c__{: style="border: 1px solid black" } を押して終了し、もう一度実行し直します。
+その際は、`roslaunch`を実行した端末で、 __Ctrl+c__{: style="border: 1px solid black" } を押して終了し、もう一度実行しなおします。
 
 ロボットを走行させていくと、図のように走行させた範囲の地図が表示されます。
 
