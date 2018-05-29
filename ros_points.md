@@ -14,7 +14,7 @@ date: 2018-05-11
 
 ```shell
 $ sudo apt-get update
-$ sudo apt-get install ros-indigo-urg-node
+$ sudo apt-get install ros-kinetic-urg-node
 ```
 
 ## rsj_robot_test_nodeでURGのデータ取得
@@ -47,8 +47,8 @@ rsj_robot_test_node()
 {
 	ros::NodeHandle nh("~");
 	pub_twist = nh.advertise<geometry_msgs::Twist>(
-			"/ypspur_ros/cmd_vel", 5);
-	sub_odom = nh.subscribe("/ypspur_ros/odom", 5,
+			"/cmd_vel", 5);
+	sub_odom = nh.subscribe("/odom", 5,
 			&rsj_robot_test_node::cb_odom, this);
 	sub_scan = nh.subscribe("/scan", 5,
 			&rsj_robot_test_node::cb_scan, this);// <- URG用のサブスクライバ初期化コードを追加
@@ -100,9 +100,9 @@ $ roscore
 2つ目の端末でypspur_rosを起動
 
 ```shell
-$ rosrun ypspur_ros ypspur_ros \
-_param_file:=/home/????/params/rsj-seminar20??.param該当するものに置き換えること \
-_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param \
+_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
+_compatible:=1
 ```
 
 3つ目の端末でurg_nodeを起動

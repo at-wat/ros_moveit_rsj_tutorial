@@ -34,6 +34,7 @@ roslaunchコマンドで一括起動する方法が用意されています。
    	<node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
    		<param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
    		<param name="param_file" value="/home/$(env USER)/params/rsj-seminar20??.param該当するものに置き換えること" />
+   		<param name="compatible" value="1" />
    	</node>
    	<node pkg="urg_node" type="urg_node" name="urg_node">
    		<param name="serial_port" value="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
@@ -130,13 +131,33 @@ $ rqt_graph
 
 ```shell
 $ rostopic list
-＊＊＊！！！実行時のトピックを追加！！！＊＊＊
+/ad/ad0
+/ad/ad1
+/ad/ad2
+/ad/ad3
+/ad/ad4
+/ad/ad5
+/ad/ad6
+/ad/ad7
+/cmd_vel
+/control_mode
+/diagnostics
+/laser_status
+/odom
+/rosout
+/rosout_agg
+/scan
+/tf
+/tf_static
+/urg_node/parameter_descriptions
+/urg_node/parameter_updates
+/wrench
 ```
 
 - １つのトピックに流れているメッセージを確認する
 
 ```shell
-$ rostopic echo /ypspur_ros/odom
+$ rostopic echo /odom
 ```
 
 - １つのトピックにメッセージを送信する
@@ -144,7 +165,7 @@ $ rostopic echo /ypspur_ros/odom
 __Tab__{: style="border: 1px solid black" } でトピック名、データ型及びメッセージのテンプレートが出せます。
 
 ```shell
-$ rostopic pub -1 /ypspur_ros/cmd_vel geometry_msgs/Twist [Tab補完で表示]"linear
+$ rostopic pub -1 /cmd_vel geometry_msgs/Twist [Tab補完で表示]"linear
   x: 0.0
   y: 0.0
   z: 0.0

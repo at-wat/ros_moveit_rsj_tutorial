@@ -84,13 +84,13 @@ URL が分かれば上の手順だけで簡単に ROS のパッケージを自�
 ダウンロードしているパッケージがバージョンアップされている場合などには、下記の実行例とファイル名が異なったり、ファイルが追加・削除されているが場合があります。
 
 ```shell
-$ cd ypspur_ros/
+$ cd ~/catkin_ws/src/ypspur_ros/
 $ ls
 CMakeLists.txt  msg  package.xml  src
 $ ls msg/
-ControlMode.msg  DigitalOutput.msg  JointPositionControl.msg
+ControlMode.msg  DigitalInput.msg  DigitalOutput.msg  JointPositionControl.msg
 $ ls src/
-getID.sh  joint_tf_publisher.cpp  ypspur_ros.cpp
+getID.sh  joint_position_to_joint_trajectory.cpp  joint_tf_publisher.cpp  ypspur_ros.cpp
 ```
 
 `CMakeLists.txt`と`package.xml`には、使っているライブラリの一覧や、生成する実行ファイルとC++のソースコードの対応など、このパッケージをビルドするために必要な情報が書かれています。
@@ -248,8 +248,8 @@ rsj_robot_test_node():
 {
 	ros::NodeHandle nh("~");
 	pub_twist = nh.advertise<geometry_msgs::Twist>(
-			"/ypspur_ros/cmd_vel", 5);
-	sub_odom = nh.subscribe("/ypspur_ros/odom", 5,
+			"/cmd_vel", 5);
+	sub_odom = nh.subscribe("/odom", 5,
 			&rsj_robot_test_node::cb_odom, this);
 }
 ```
@@ -258,12 +258,12 @@ rsj_robot_test_node():
 この中で、
 
 ```c++
-nh.advertise<geometry_msgs::Twist>("/ypspur_ros/cmd_vel", 5);
+nh.advertise<geometry_msgs::Twist>("/cmd_vel", 5);
 ```
 
 の部分で、このノードが、<u>これからメッセージを出力する</u>ことを宣言しています。`advertise`関数に与えている引数は以下のような意味を持ちます。
 
-`"/ypspur_ros/cmd_vel"`
+`"/cmd_vel"`
 : 出力するメッセージを置く場所(トピックと呼ぶ)を指定
 
 `5`
@@ -319,7 +319,9 @@ $ roscore
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】 _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param \
+_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
+_compatible:=1
 ```
 
 続いて、別の端末でrsj_robot_test_nodeノードを実行します。
@@ -350,8 +352,8 @@ rsj_robot_test_node():
 {
 	ros::NodeHandle nh("~");
 	pub_twist = nh.advertise<geometry_msgs::Twist>(
-			"/ypspur_ros/cmd_vel", 5);
-	sub_odom = nh.subscribe("/ypspur_ros/odom", 5,
+			"/cmd_vel", 5);
+	sub_odom = nh.subscribe("/odom", 5,
 			&rsj_robot_test_node::cb_odom, this);
 }
 ```
@@ -359,13 +361,13 @@ rsj_robot_test_node():
 この中で
 
 ```c++
-nh.subscribe("/ypspur_ros/odom", 5, &rsj_robot_test_node::cb_odom, this);
+nh.subscribe("/odom", 5, &rsj_robot_test_node::cb_odom, this);
 ```
 
 の部分で、このノードがこれからメッセージを受け取ることを宣言しています。
 `subscribe`関数に与えている引数は以下のような意味を持ちます。
 
-`"/ypspur_ros/odom"`
+`"/odom"`
 : 受け取るメッセージが置かれている場所(トピック)を指定
 
 `5`
@@ -461,7 +463,9 @@ $ roscore
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】 _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00
+$ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param \
+_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
+_compatible:=1
 ```
 
 続いて、`rsj_robot_test_node`ノードを実行します。
@@ -548,7 +552,7 @@ rsj_robot_test_node():
 }
 ```
 
-メインループを以下のように変更してみましょう。
+`mainloop()`を以下のように変更してみましょう。
 
 ```c++
 void mainloop()
