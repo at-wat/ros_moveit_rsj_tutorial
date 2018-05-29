@@ -21,7 +21,7 @@ $ cd ~/catkin_ws/src/rsj_robot_test/src
 
 ```c++
 #include <tf/transform_datatypes.h>
-#include <visualization_msgs/MarkerArray.h>
+#include <visualization_msgs/MarkerArray.h> // 追記
 ```
 
 `CMakeLists.txt`を編集します。
@@ -35,6 +35,7 @@ $ cd ~/catkin_ws/src/rsj_robot_test
 
 ```c++
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs nav_msgs geometry_msgs sensor_msgs tf visualization_msgs)
+末尾に visualization_msgs を追記している
 ```
 
 一旦ビルドし、コンパイルエラーがないことを確認してください。
@@ -49,27 +50,27 @@ $ catkin_make
 `rsj_robot_test_node`で、`sub_odom`や`sub_scan`を定義しているところに、`visualization_msgs::MarkerArray`用のサブスクライバクラスを追加します。
 
 ```c++
-    ros::Subscriber sub_scan;
-    ros::Subscriber sub_clusters;
+ros::Subscriber sub_scan;
+ros::Subscriber sub_clusters; // 追記
 ```
 
 `rsj_robot_test_node`のコンストラクタに、`visualization_msgs::MarkerArray`用のサブスクライバ初期化コードを追加します。
 
 ```c++
-    rsj_robot_test_node()
-    {
+rsj_robot_test_node()
+{
 略
-        sub_scan = nh.subscribe("/scan", 5, &rsj_robot_test_node::cb_scan, this);
-        sub_clusters = nh.subscribe("/rsj_pointcloud_test_node/clusters", 5, &rsj_robot_test_node::cb_cluster, this);
+    sub_scan = nh.subscribe("/scan", 5, &rsj_robot_test_node::cb_scan, this);
+    sub_clusters = nh.subscribe("/rsj_pointcloud_test_node/clusters", 5,rsj_robot_test_node::cb_cluster, this); // 追記
 ```
 
 更に、`rsj_robot_test_node`クラスに、`visualization_msgs::MarkerArray`用のコールバック関数を追加します。(`cb_scan`の後の位置など)
 
 ```c++
-    void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
-    {
-        ROS_INFO("clusters: %zu", msg->markers.size());
-    }
+void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
+{
+    ROS_INFO("clusters: %zu", msg->markers.size());
+}
 ```
 
 編集が終了したらエディタを閉じてください。
@@ -95,7 +96,7 @@ $ catkin_make
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 ## Xtion PRO Live の場合
@@ -103,7 +104,7 @@ $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユ�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 ## YVT-35LX の場合
@@ -161,26 +162,26 @@ $ cd ~/catkin_ws/src/rsj_robot_test/src
 `cb_cluster`関数を編集します。
 
 ```c++
-    void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
+void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
+{
+    const visualization_msgs::Marker *target = NULL;
+    for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
+         it != it_end; ++it)
     {
-        const visualization_msgs::Marker *target = NULL;
-        for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
-             it != it_end; ++it)
+        const visualization_msgs::Marker &marker = *it;
+        if (marker.ns == "target_cluster")
         {
-            const visualization_msgs::Marker &marker = *it;
-            if (marker.ns == "target_cluster")
-            {
-                target = &marker;
-            }
-        }
-        ROS_INFO("clusters: %zu", msg->markers.size());
-        if (target != NULL)
-        {
-            float dx = target->pose.position.x;
-            float dy = target->pose.position.y;
-            ROS_INFO("target: %f, %f", dx, dy);
+            target = &marker;
         }
     }
+    ROS_INFO("clusters: %zu", msg->markers.size());
+    if (target != NULL)
+    {
+        float dx = target->pose.position.x;
+        float dy = target->pose.position.y;
+        ROS_INFO("target: %f, %f", dx, dy);
+    }
+}
 ```
 
 編集が終了したらエディタを閉じてください。
