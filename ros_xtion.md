@@ -52,7 +52,7 @@ $ roslaunch rsj_pointcloud_to_laserscan.launch
 
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/config/rviz
-$ rosrun rviz rviz -d view_scan.rviz
+$ rviz -d view_scan.rviz
 ```
 
 下図のように2次元の点群が表示されれば成功です。
