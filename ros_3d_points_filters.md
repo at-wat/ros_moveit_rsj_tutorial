@@ -22,7 +22,7 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 
 ```c++
 #include <pcl/point_types.h>
-#include <pcl/filters/passthrough.h>
+#include <pcl/filters/passthrough.h> //追記
 #include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 typedef pcl::PointCloud<PointT> PointCloud;
@@ -37,6 +37,7 @@ class rsj_pointcloud_test_node
 private:
 略
   PointCloud::Ptr cloud_tranform;
+  // 以下を追記
   pcl::PassThrough<PointT> pass;
   PointCloud::Ptr cloud_passthrough;
   ros::Publisher pub_passthrough;
@@ -49,6 +50,7 @@ private:
   {
     略
     cloud_tranform.reset(new PointCloud());
+    // 以下を追記
     pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
     pass.setFilterLimits(0.1, 1.0); // 0.1 〜 1.0 m の間にある点群を抽出
     cloud_passthrough.reset(new PointCloud());
@@ -67,8 +69,8 @@ private:
       pass.setInputCloud(cloud_src);
       pass.filter(*cloud_passthrough);
       pub_passthrough.publish(cloud_passthrough);
-      //  ROS_INFO("width: %zu, height: %zu", cloud_src->width, cloud_src->height); // 削除。
-      ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size());
+      //  ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height); // 削除
+      ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size()); // 追記
     }catch (std::exception &e){
       ROS_ERROR("%s", e.what());
     }
@@ -153,7 +155,7 @@ RViz の左にある PointCloud2 の上の方のチェックを外すとフィ�
 
 ```c++
 #include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h>
+#include <pcl/filters/voxel_grid.h> // 追記
 #include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
@@ -167,6 +169,7 @@ class rsj_pointcloud_test_node
 private:
 略
   ros::Publisher pub_passthrough;
+  // 以下を追記
   pcl::VoxelGrid<PointT> voxel;
   PointCloud::Ptr cloud_voxel;
   ros::Publisher pub_voxel;
@@ -179,6 +182,7 @@ private:
   {
 略
     pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
+    // 以下を追記
     voxel.setLeafSize (0.025f, 0.025f, 0.025f); // 0.025 m 間隔でダウンサンプリング
     cloud_voxel.reset(new PointCloud());
     pub_voxel = nh.advertise<PointCloud>("voxel", 1);
@@ -193,10 +197,12 @@ private:
     try{
 略
       pub_passthrough.publish(cloud_passthrough);
+      // 以下のように追記・修正
       voxel.setInputCloud(cloud_passthrough);
       voxel.filter(*cloud_voxel);
       pub_voxel.publish(cloud_voxel);
       ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size());
+      // 追記・修正箇所ここまで
     }catch (std::exception &e){
       ROS_ERROR("%s", e.what());
     }
@@ -240,9 +246,9 @@ RViz の左にある`PointCloud2`の一番下のチェックだけをONにする
 
 ```c++
 #include <pcl/filters/voxel_grid.h>
-#include <pcl/common/common.h>
-#include <pcl/kdtree/kdtree.h>
-#include <pcl/segmentation/extract_clusters.h>
+#include <pcl/common/common.h> // 追記
+#include <pcl/kdtree/kdtree.h> // 追記
+#include <pcl/segmentation/extract_clusters.h> // 追記
 #include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
@@ -255,6 +261,7 @@ class rsj_pointcloud_test_node
 private:
 略
   ros::Publisher pub_voxel;
+  // 以下を追記
   pcl::search::KdTree<PointT>::Ptr tree;
   pcl::EuclideanClusterExtraction<PointT> ec;
   ros::Publisher pub_clusters;
@@ -267,6 +274,7 @@ private:
   {
 略
     pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+    // 以下を追記
     tree.reset(new pcl::search::KdTree<PointT>());
     ec.setClusterTolerance(0.15);
     ec.setMinClusterSize(100);
@@ -296,6 +304,7 @@ private:
     {
         略
       pub_voxel.publish(cloud_voxel);
+      // 以下のように追記・修正
       std::vector<pcl::PointIndices> cluster_indices;
       tree->setInputCloud(cloud_voxel);
       ec.setInputCloud(cloud_voxel);
@@ -317,6 +326,7 @@ private:
         pub_clusters.publish(marker_array);
       }
       ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size());
+      // 追記・修正箇所ここまで
     }
     catch (std::exception &e)
     {
@@ -364,7 +374,9 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
       ec.extract(cluster_indices);
       visualization_msgs::MarkerArray marker_array;
       int marker_id = 0;
-      size_t ok = 0;
+      /*  */
+      size_t ok = 0; // 追記
+      /*  */
       for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
       {
         Eigen::Vector4f min_pt, max_pt;
@@ -372,6 +384,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
         Eigen::Vector4f cluster_size = max_pt - min_pt;
         if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
         {
+          // 以下を追記
           bool is_ok = true;
           if (cluster_size.x() < 0.05 || cluster_size.x() > 0.4)
           {
@@ -395,6 +408,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
             marker.color.a = 0.5f;
             ok++;
           }
+          // 追記箇所ここまで
           marker_array.markers.push_back(marker);
         }
       }
@@ -402,7 +416,9 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
       {
         pub_clusters.publish(marker_array);
       }
+      /*** 修正 ***/
       ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+      /*** 修正 ***/
     }
     catch (std::exception &e)
     {
@@ -439,7 +455,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
       ec.extract(cluster_indices);
       visualization_msgs::MarkerArray marker_array;
       /*  */
-      int target_index = -1; // 追加
+      int target_index = -1; // 追記
       /*  */
       int marker_id = 0;
       size_t ok = 0;
@@ -454,6 +470,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
             marker.color.b = 0.0f;
             marker.color.a = 0.5f;
             ok++;
+            // 以下のように追記
             if(target_index < 0){
               target_index = marker_array.markers.size();
             }else{
@@ -463,12 +480,14 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
                 target_index = marker_array.markers.size();
               }
             }
+            // 追記箇所ここまで
           }
           marker_array.markers.push_back(marker);
         }
       }
       if (marker_array.markers.empty() == false)
       {
+        // 以下のように追記
         if(target_index >= 0){
           marker_array.markers[target_index].ns = "target_cluster";
           marker_array.markers[target_index].color.r = 1.0f;
@@ -476,6 +495,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
           marker_array.markers[target_index].color.b = 1.0f;
           marker_array.markers[target_index].color.a = 0.5f;
         }
+        // 追記箇所ここまで
         pub_clusters.publish(marker_array);
       }
       ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
