@@ -68,7 +68,7 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
     {
       略
       // ここに cloud_src に対するフィルタ処理を書く
-      ROS_INFO("width: %zu, height: %zu", cloud_src->width, cloud_src->height);
+      ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);
     }
     catch (std::exception &e)
     {
