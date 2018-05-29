@@ -62,19 +62,19 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 `rsj_pointcloud_test_node`クラスにある、`PointCloud`用のコールバック関数`cb_points`を編集します。
 
 ```c++
-  void cb_points(const PointCloud::ConstPtr &msg)
+void cb_points(const PointCloud::ConstPtr &msg)
+{
+  try
   {
-    try
-    {
-      略
-      // ここに cloud_src に対するフィルタ処理を書く
-      ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);
-    }
-    catch (std::exception &e)
-    {
-      ROS_ERROR("%s", e.what());
-    }
+    略
+    // ここに cloud_src に対するフィルタ処理を書く
+    ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);
   }
+  catch (std::exception &e)
+  {
+    ROS_ERROR("%s", e.what());
+  }
+}
 ```
 
 ファイルを保存してエディタを閉じます。
