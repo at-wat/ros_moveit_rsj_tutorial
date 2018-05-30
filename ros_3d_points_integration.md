@@ -61,7 +61,7 @@ rsj_robot_test_node()
 {
 略
     sub_scan = nh.subscribe("/scan", 5, &rsj_robot_test_node::cb_scan, this);
-    sub_clusters = nh.subscribe("/rsj_pointcloud_test_node/clusters", 5,rsj_robot_test_node::cb_cluster, this); // 追記
+    sub_clusters = nh.subscribe("/rsj_pointcloud_test_node/clusters", 5, &rsj_robot_test_node::cb_cluster, this); // 追記
 ```
 
 更に、`rsj_robot_test_node`クラスに、`visualization_msgs::MarkerArray`用のコールバック関数を追加します。(`cb_scan`の後の位置など)
@@ -96,7 +96,8 @@ $ catkin_make
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+$ roslaunch rsj_seminar_navigation navigation.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 ## Xtion PRO Live の場合
@@ -104,7 +105,8 @@ $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユ�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+$ roslaunch rsj_seminar_navigation xtion_integration.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 ## YVT-35LX の場合
@@ -117,7 +119,8 @@ $ roslaunch rsj_seminar_navigation xtion_integration.launch robot_param:=/home/�
 ## Xtion PRO Live の場合
 
 ```shell
-$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
+_target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524040063.315596383]: target_frame='camera_link'
 [ INFO] [1524040063.315656650]: topic_name='/camera/depth_registered/points'
 [ INFO] [1524040063.320448185]: Hello Point Cloud!
@@ -129,7 +132,8 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
+_target_frame:= _topic_name:=/????????
 ```
 
 さらに別のターミナルで`rsj_robot_test_node`を起動します。
