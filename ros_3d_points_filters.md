@@ -102,7 +102,8 @@ $ roslaunch rsj_pointcloud_to_laserscan.launch
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
 
 ```shell
-$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
+_target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524040063.315596383]: target_frame='camera_link'
 [ INFO] [1524040063.315656650]: topic_name='/camera/depth_registered/points'
 [ INFO] [1524040063.320448185]: Hello Point Cloud!
@@ -122,7 +123,8 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
+_target_frame:= _topic_name:=/????????
 ```
 
 実行した際に`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
@@ -137,12 +139,14 @@ RViz でフィルタ実行後の点群の様子を可視化します。rsj_point
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
 ```
+なお、 RViz は`roscore`が起動していれば、上記のように`rviz`とタイプするだけでも実行可能です。
 
-最初は図のようにフィルタ実行前と実行後の点群が重なって表示されています。
+図のように Rviz の左方にある`PointCloud2`のチェックボックスのうち、上2つだけにチェックを入れてください。
+フィルタ実行前と実行後の点群が重なって表示されています。
 
 ![XtionPointsOrigin](images/xtion_view_filter_origin.png)
 
-RViz の左にある PointCloud2 の上の方のチェックを外すとフィルタ実行後の点群だけが表示されます。
+`PointCloud2`のチェックボックスのうち上から2番めのチェックだけをチェックするとフィルタ実行後の点群だけが表示されます。
 
 ![XtionPointsPassThrough](images/xtion_view_passthrough.png)
 
@@ -384,7 +388,7 @@ void cb_points(const PointCloud::ConstPtr &msg)
       Eigen::Vector4f cluster_size = max_pt - min_pt;
       if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
       {
-        // 以下を追記
+        // 以下を追記・修正
         bool is_ok = true;
         if (cluster_size.x() < 0.05 || cluster_size.x() > 0.4)
         {
@@ -408,8 +412,8 @@ void cb_points(const PointCloud::ConstPtr &msg)
           marker.color.a = 0.5f;
           ok++;
         }
-        // 追記箇所ここまで
         marker_array.markers.push_back(marker);
+        // 追記・修正箇所ここまで
       }
     }
     if (marker_array.markers.empty() == false)
