@@ -66,7 +66,7 @@ build  devel  src
 
 ```shell
 $ cd ~/catkin_ws/src
-$ git clone https://github.com/BND-tc/rsj_robot_test.git
+$ git clone https://github.com/openspur/ypspur_ros.git
 $ ls
 CMakeLists.txt  ypspur_ros
 ```
@@ -111,7 +111,7 @@ $ catkin_make
 
 ```shell
 $ cd ~/catkin_ws/src/
-$ git clone https://github.com/at-wat/rsj_robot_test.git
+$ git clone https://github.com/BND-tc/rsj_robot_test.git
 ```
 
 ソースファイルの編集にはお好みのテキストエディターが利用可能です。
