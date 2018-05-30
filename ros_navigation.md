@@ -31,7 +31,7 @@ $ sudo apt-get install ros-kinetic-slam-gmapping ros-kinetic-mouse-teleop
 
 ```shell
 $ cd ~/catkin_ws/src/
-$ git clone https://github.com/at-wat/rsj_seminar_navigation
+$ git clone https://github.com/BND-tc/rsj_seminar_navigation.git
 ```
 
 ダウンロードした`rsj_seminar_navigation`パッケージを`catkin_make`でビルドします。
@@ -51,7 +51,8 @@ PC にロボットと URG の USB ケーブルを接続し、地図を生成し�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+$ roslaunch rsj_seminar_navigation mapping.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 ## YVT-35LX の場合
 ？？？
@@ -60,7 +61,8 @@ $ roslaunch rsj_seminar_navigation mapping.launch robot_param:=/home/【ユー�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation xtion_mapping.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+$ roslaunch rsj_seminar_navigation xtion_mapping.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 RViz が起動し、下記のように URG もしくは Xtion の複数のスキャンデータをつなげて、大きな占有格子地図を生成し始めます。
@@ -108,7 +110,8 @@ PC にロボットと URG や Xtion の USB ケーブルを接続し、地図を
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation navigation.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 ## YVT-35LX の場合
 ？？？
@@ -117,7 +120,8 @@ $ roslaunch rsj_seminar_navigation navigation.launch robot_param:=/home/【ユ�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation xtion_navigation.launch robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+$ roslaunch rsj_seminar_navigation xtion_navigation.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 RViz が起動し、下記のように先ほど作成した地図が表示されます。
@@ -203,5 +207,4 @@ URG を使っていた場合は次のような図が表示されます。
 `stp_laser`
 : ロボットの座標原点とURGの座標原点の座標変換の定義
 
-# 小課題
 `rsj_seminar_navigation`パッケージの`launch`ファイルの中身を開き、どのようなノードが実行されているのか講義の内容と照らし合わせて確認してみましょう。
