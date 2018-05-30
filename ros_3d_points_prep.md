@@ -104,7 +104,8 @@ $ roslaunch rsj_pointcloud_to_laserscan.launch
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
 
 ```shell
-$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+$ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
+_target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524039160.481736901]: target_frame='camera_link'
 [ INFO] [1524039160.481783905]: topic_name='/camera/depth_registered/points'
 [ INFO] [1524039160.485222004]: Hello Point Cloud!
@@ -124,7 +125,8 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:=camera_lin
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node _target_frame:= _topic_name:=/????????
+$ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
+_target_frame:= _topic_name:=/????????
 ```
 
 このように`width: xxx, height: xxx`というメッセージが表示されれば`PointCloud`は受信できています。
