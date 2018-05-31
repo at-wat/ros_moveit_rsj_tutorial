@@ -28,7 +28,7 @@ $ git clone https://github.com/KMiyawaki/rsj_pointcloud_to_laserscan.git
 # 動作確認
 ## ネットワークの設定
 
-1. PC の LAN ポートに YVT-35LX を接続し、バッテリーのスイッチを入れてる。
+1. PC の LAN ポートに YVT-35LX を接続し、バッテリーのスイッチを入れる。
 
 1. 画面右上のネットワークアイコンをクリック  
   ![](images/ethernet_setting_0.png)
@@ -45,6 +45,8 @@ $ git clone https://github.com/KMiyawaki/rsj_pointcloud_to_laserscan.git
 画面に「有線接続完了」の文字が表示されれば完了です。
 
 _注意：無線LANで既に192.168.0.系のネットワークに接続している場合、通信が不通となります。その場合はセンサを接続する前に既存のネットワークから切断してから上記の作業を行ってください。_{:style="color: red"}
+
+## launchファイルの実行
 
 次のコマンドを実行します。
 
