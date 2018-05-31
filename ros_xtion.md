@@ -14,7 +14,9 @@ USB バスパワーで駆動可能なデプスセンサで、非常に扱いや�
 ROS で利用可能な類似のセンサとして[Orbbec Astra](https://orbbec3d.com/product-astra/)があります。
 また Xtion PRO Live の後継機として[Xtion2](https://www.asus.com/jp/3D-Sensor/Xtion-2/)がありますが、こちらはまだ ROS 対応はしていません（2018/5/23時点）。
 
-# パッケージのインストール
+# 準備
+
+## パッケージのインストール
 
 Xtion PRO Live を利用するためのパッケージと３次元点群から２次元データに変換するためのパッケージをインストールします。
 [準備のページ](linux_and_ros_install.html)に同様の手順を書いていますので、すでにインストールされている方はこの手順は不要です。
@@ -25,7 +27,9 @@ $ sudo apt install ros-kinetic-openni2-launch
 $ sudo apt install ros-kinetic-pointcloud-to-laserscan 
 ```
 
-# 点群を3次元から2次元データに変換するパッケージの launch ファイル等をダウンロード
+## launchファイルの入手
+
+点群を3次元から2次元データに変換するパッケージの launch ファイル等をダウンロード
 
 ```shell
 $ cd ~/catkin_ws/src
@@ -34,6 +38,7 @@ $ git clone https://github.com/KMiyawaki/rsj_pointcloud_to_laserscan.git
 
 # 動作確認
 
+## launchファイルの実行
 PC の USB ポートに Xtion PRO Live を接続し、次のコマンドを実行します。
 
 ```shell
