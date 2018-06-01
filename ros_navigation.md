@@ -25,6 +25,8 @@ navigation パッケージはサイズが非常に大きいため、ダウンロ
 
 ```shell
 $ sudo apt-get install ros-kinetic-slam-gmapping ros-kinetic-mouse-teleop
+$ sudo apt-get install ros-kinetic-map-server ros-kinetic-move-base
+$ sudo apt-get install ros-kinetic-amcl ros-kinetic-dwa-local-planner
 ```
 
 また、セミナー教材用にパラメータを調整してある地図生成や自律ナビゲーションの`launch`ファイルが入ったパッケージをダウンロードします。
@@ -55,7 +57,12 @@ $ roslaunch rsj_seminar_navigation mapping.launch \
 robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 ## YVT-35LX の場合
-？？？
+```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ roslaunch rsj_seminar_navigation 3durg_mapping.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+```
 
 ## Xtion PRO Live の場合
 ```shell
@@ -113,8 +120,14 @@ $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation navigation.launch \
 robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
+
 ## YVT-35LX の場合
-？？？
+```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ roslaunch rsj_seminar_navigation 3durg_navigation.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+```
 
 ## Xtion PRO Live の場合
 ```shell
@@ -171,11 +184,11 @@ Xtion を使っていた場合は次のような図が表示されます。
 
 URG を使っていた場合は次のような図が表示されます。
 
-？？？？？
+![Navigation nodes](images/navigation_nodes_urg.png)
 
 3DURG を使っていた場合は次のような図が表示されます。
 
-？？？？？
+![Navigation nodes](images/navigation_nodes_3durg.png)
 
 四角枠で書かれた名前はトピック、もしくは複数のノードをグループ化したもの（`nodelet`）を表しています。
 丸枠で書かれた名前はノードを表しており、下記の仕事をしています。
