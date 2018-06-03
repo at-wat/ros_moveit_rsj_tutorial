@@ -110,7 +110,12 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当す�
 ```
 
 ## YVT-35LX の場合
-？？？
+```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ roslaunch rsj_seminar_navigation 3durg_mapping.launch \
+robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+```
 
 # rsj_pointcloud_test_node と rsj_robot_test_node の起動
 
@@ -133,7 +138,8 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:= _topic_name:=/????????
+_target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
+[ INFO] [1528008816.751100536]: points (src: 2674, paththrough: 1019)
 ```
 
 さらに別のターミナルで`rsj_robot_test_node`を起動します。
