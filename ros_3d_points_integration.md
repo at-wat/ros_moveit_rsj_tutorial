@@ -91,15 +91,6 @@ $ catkin_make
 まずナビゲーションシステムを起動します。
 地図を作成した際の初期位置・姿勢と同じようにロボットを置いて、下記のコマンドを実行します。
 
-## URG-04LX-UG01 の場合
-
-```shell
-$ cd ~/catkin_ws/
-$ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation navigation.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
-```
-
 ## Xtion PRO Live の場合
 
 ```shell
@@ -113,7 +104,7 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当す�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ roslaunch rsj_seminar_navigation 3durg_mapping.launch \
+$ roslaunch rsj_seminar_navigation 3durg_integration.launch \
 robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
