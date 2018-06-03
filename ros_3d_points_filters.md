@@ -52,7 +52,7 @@ rsj_pointcloud_test_node()
   cloud_tranform.reset(new PointCloud());
   // 以下を追記
   pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
-  pass.setFilterLimits(0.1, 1.0); // 0.1 〜 1.0 m の間にある点群を抽出
+  pass.setFilterLimits(0.1, 1.0); // 0.1 ～ 1.0 m の間にある点群を抽出
   cloud_passthrough.reset(new PointCloud());
   pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
 }
@@ -115,7 +115,10 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 ターミナルでセンサを起動します。
 
 ```shell
-？？？？
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ cd src/rsj_pointcloud_to_laserscan/launch
+$ roslaunch rsj_pointcloud_to_laserscan_3durg.launch
 ```
 
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
@@ -124,7 +127,8 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:= _topic_name:=/????????
+_target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
+[ INFO] [1528008816.751100536]: points (src: 2674, paththrough: 1019)
 ```
 
 実行した際に`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
@@ -135,10 +139,20 @@ _target_frame:= _topic_name:=/????????
 
 RViz でフィルタ実行後の点群の様子を可視化します。rsj_pointcloud_test_node を起動したまま、新しいターミナルを開き、 RViz を起動します。
 
+### Xtion PRO Live の場合
+
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
 ```
+
+### YVT-35LX の場合 の場合
+
+```shell
+$ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
+$ rviz -d view_filters_3durg.rviz
+```
+
 なお、 RViz は`roscore`が起動していれば、上記のように`rviz`とタイプするだけでも実行可能です。
 
 図のように Rviz の左方にある`PointCloud2`のチェックボックスのうち、上2つだけにチェックを入れてください。
@@ -222,9 +236,18 @@ void cb_points(const PointCloud::ConstPtr &msg)
 RViz でフィルタ実行後の点群の様子を可視化します。
 `rsj_pointcloud_test_node`を起動したまま、新しいターミナルを開き、 RViz を起動します。
 
+### Xtion PRO Live の場合
+
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
+```
+
+### YVT-35LX の場合 の場合
+
+```shell
+$ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
+$ rviz -d view_filters_3durg.rviz
 ```
 
 RViz の左にある`PointCloud2`の一番下のチェックだけをONにすると`VoxelGrid`フィルタ実行後の点群だけが表示されます。
@@ -273,6 +296,8 @@ private:
 
 `rsj_pointcloud_test_node`クラスのコンストラクタで`pcl::EuclideanClusterExtraction`の設定、`tree`、`pub_clusters`の初期化をします。
 
+### Xtion PRO Live の場合
+
 ```c++
 rsj_pointcloud_test_node()
 {
@@ -282,6 +307,23 @@ rsj_pointcloud_test_node()
   tree.reset(new pcl::search::KdTree<PointT>());
   ec.setClusterTolerance(0.15);
   ec.setMinClusterSize(100);
+  ec.setMaxClusterSize(5000);
+  ec.setSearchMethod(tree);
+  pub_clusters = nh.advertise<visualization_msgs::MarkerArray>("clusters", 1);
+}
+```
+
+### YVT-35LX の場合
+
+```c++
+rsj_pointcloud_test_node()
+{
+略
+  pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+  // 以下を追記
+  tree.reset(new pcl::search::KdTree<PointT>());
+  ec.setClusterTolerance(0.15);
+  ec.setMinClusterSize(5);
   ec.setMaxClusterSize(5000);
   ec.setSearchMethod(tree);
   pub_clusters = nh.advertise<visualization_msgs::MarkerArray>("clusters", 1);
@@ -348,9 +390,18 @@ void cb_points(const PointCloud::ConstPtr &msg)
 RViz でフィルタ実行後の点群の様子を可視化します。
 `rsj_pointcloud_test_node`を起動したまま新しいターミナルを開き、 RViz を起動します。
 
+### Xtion PRO Live の場合
+
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
+```
+
+### YVT-35LX の場合 の場合
+
+```shell
+$ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
+$ rviz -d view_filters_3durg.rviz
 ```
 
 RViz の左にある`PointCloud2`の一番下のチェックだけを ON にすると`VoxelGrid`フィルタ実行後の点群だけが表示されます。

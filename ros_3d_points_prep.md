@@ -36,7 +36,26 @@ $ rosrun rviz rviz -d view_points.rviz
 
 ## YVT-35LX の場合
 
-？？？？
+
+```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ cd src/rsj_pointcloud_to_laserscan/launch
+$ roslaunch rsj_pointcloud_to_laserscan_3durg.launch
+```
+
+別のターミナルを開き
+
+```shell
+$ cd ~/catkin_ws/src/rsj_pointcloud_to_laserscan/config/rviz
+$ rosrun rviz rviz -d view_points_3durg.rviz
+```
+
+図のように`PointCloud`が表示されれば成功です。
+
+![3durgPoints](images/3durg_view_points.png)
+
+起動した２つのターミナルを __Ctrl+c__{: style="border: 1px solid black" } で終了してください。
 
 # PCL（Point Cloud Library）による３次元点群処理
 
@@ -117,7 +136,10 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 ターミナルでセンサを起動します。
 
 ```shell
-？？？？
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
+$ cd src/rsj_pointcloud_to_laserscan/launch
+$ roslaunch rsj_pointcloud_to_laserscan_3durg.launch
 ```
 
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
@@ -126,11 +148,16 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:= _topic_name:=/????????
+_target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
+[ INFO] [1528006896.162315502]: target_frame=''
+[ INFO] [1528006896.162660037]: topic_name='/hokuyo3d/hokuyo_cloud2'
+[ INFO] [1528006896.178381795]: Hello Point Cloud!
+[ INFO] [1528006896.378943557]: width: 2228, height: 1
+[ INFO] [1528006896.412205921]: width: 2670, height: 1
+[ INFO] [1528006896.478866703]: width: 2674, height: 1
 ```
 
 このように`width: xxx, height: xxx`というメッセージが表示されれば`PointCloud`は受信できています。
-width, height とは３次元点群の縦・横の点の数を示しています（２次元画像の解像度に対応しています）。
 
 # 補足 rsj_pointcloud_test_node.cpp について
 
