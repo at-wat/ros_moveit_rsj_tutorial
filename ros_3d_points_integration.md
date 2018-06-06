@@ -47,29 +47,29 @@ $ catkin_make
 
 # クラスタリング結果の受信
 
-`rsj_robot_test_node`で、`sub_odom`や`sub_scan`を定義しているところに、`visualization_msgs::MarkerArray`用のサブスクライバクラスを追加します。
+`RsjRobotTestNode`クラスで、`sub_odom_`や`sub_scan_`を定義しているところに、`visualization_msgs::MarkerArray`用のサブスクライバクラスを追加します。
 
 ```c++
-ros::Subscriber sub_scan;
-ros::Subscriber sub_clusters; // 追記
+ros::Subscriber sub_scan_;
+ros::Subscriber sub_clusters_; // 追記
 ```
 
-`rsj_robot_test_node`のコンストラクタに、`visualization_msgs::MarkerArray`用のサブスクライバ初期化コードを追加します。
+`RsjRobotTestNode`のコンストラクタに、`visualization_msgs::MarkerArray`用のサブスクライバ初期化コードを追加します。
 
 ```c++
-rsj_robot_test_node()
+RsjRobotTestNode()
 {
 略
-    sub_scan = nh.subscribe("/scan", 5, &rsj_robot_test_node::cb_scan, this);
-    sub_clusters = nh.subscribe("/rsj_pointcloud_test_node/clusters", 5, &rsj_robot_test_node::cb_cluster, this); // 追記
+  sub_scan_ = nh_.subscribe("scan", 5, &RsjRobotTestNode::cbScan, this);
+  sub_clusters_ = nh_.subscribe("rsj_pointcloud_test_node/clusters", 5, &RsjRobotTestNode::cbCluster, this); // 追記
 ```
 
-更に、`rsj_robot_test_node`クラスに、`visualization_msgs::MarkerArray`用のコールバック関数を追加します。(`cb_scan`の後の位置など)
+更に、`RsjRobotTestNode`クラスに、`visualization_msgs::MarkerArray`用のコールバック関数を追加します。(`cbScan`の後の位置など)
 
 ```c++
-void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
+void cbCluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
 {
-    ROS_INFO("clusters: %zu", msg->markers.size());
+  ROS_INFO("clusters: %zu", msg->markers.size());
 }
 ```
 
@@ -160,28 +160,28 @@ $ cd ~/catkin_ws/src/rsj_robot_test/src
 任意のテキストエディタで rsj_robot_test.cpp を開く
 ```
 
-`cb_cluster`関数を編集します。
+`cbCluster`関数を編集します。
 
 ```c++
-void cb_cluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
+void cbCluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
 {
-    const visualization_msgs::Marker *target = NULL;
-    for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
-         it != it_end; ++it)
+  const visualization_msgs::Marker *target = NULL;
+  for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
+       it != it_end; ++it)
+  {
+    const visualization_msgs::Marker &marker = *it;
+    if (marker.ns == "target_cluster")
     {
-        const visualization_msgs::Marker &marker = *it;
-        if (marker.ns == "target_cluster")
-        {
-            target = &marker;
-        }
+      target = &marker;
     }
-    ROS_INFO("clusters: %zu", msg->markers.size());
-    if (target != NULL)
-    {
-        float dx = target->pose.position.x;
-        float dy = target->pose.position.y;
-        ROS_INFO("target: %f, %f", dx, dy);
-    }
+  }
+  ROS_INFO("clusters: %zu", msg->markers.size());
+  if (target != NULL)
+  {
+    float dx = target->pose.position.x;
+    float dy = target->pose.position.y;
+    ROS_INFO("target: %f, %f", dx, dy);
+  }
 }
 ```
 
