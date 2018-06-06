@@ -22,55 +22,55 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 
 ```c++
 #include <pcl/point_types.h>
-#include <pcl/filters/passthrough.h> //追記
+#include <pcl/filters/passthrough.h>  // 追記
 #include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 typedef pcl::PointCloud<PointT> PointCloud;
 ```
 
-`rsj_pointcloud_test_node`クラスの冒頭に、`pcl::PassThrough`フィルタのインスタンスを追加します。
-また、フィルタの結果を格納するための`PointCloud`型変数`cloud_passthrough`、および処理結果を`publish`するためのパブリッシャ`pub_passthrough`を追加します。
+`RsjPointcloudTestNode`クラスの冒頭に、`pcl::PassThrough`フィルタのインスタンスを追加します。
+また、フィルタの結果を格納するための`PointCloud`型変数`cloud_passthrough_`、および処理結果を`publish`するためのパブリッシャ`pub_passthrough_`を追加します。
 
 ```c++
-class rsj_pointcloud_test_node
+class RsjPointcloudTestNode
 {
 private:
 略
-  PointCloud::Ptr cloud_tranform;
+  PointCloud::Ptr cloud_tranform_;
   // 以下を追記
-  pcl::PassThrough<PointT> pass;
-  PointCloud::Ptr cloud_passthrough;
-  ros::Publisher pub_passthrough;
+  pcl::PassThrough<PointT> pass_;
+  PointCloud::Ptr cloud_passthrough_;
+  ros::Publisher pub_passthrough_;
 ```
 
-`rsj_pointcloud_test_node`クラスのコンストラクタで`PassThrough`フィルタの設定、`cloud_passthrough`および`pub_passthrough`を初期化します。
+`RsjPointcloudTestNode`クラスのコンストラクタで`PassThrough`フィルタの設定、`cloud_passthrough_`および`pub_passthrough_`を初期化します。
 
 ```c++
-rsj_pointcloud_test_node()
+RsjPointcloudTestNode()
 {
   略
-  cloud_tranform.reset(new PointCloud());
+  cloud_tranform_.reset(new PointCloud());
   // 以下を追記
-  pass.setFilterFieldName("z"); // Z軸（高さ）の値でフィルタをかける
-  pass.setFilterLimits(0.1, 1.0); // 0.1 ～ 1.0 m の間にある点群を抽出
-  cloud_passthrough.reset(new PointCloud());
-  pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
+  pass_.setFilterFieldName("z");  // Z軸（高さ）の値でフィルタをかける
+  pass_.setFilterLimits(0.1, 1.0);  // 0.1 ～ 1.0 m の間にある点群を抽出
+  cloud_passthrough_.reset(new PointCloud());
+  pub_passthrough_ = pnh_.advertise<PointCloud>("passthrough", 1);
 }
 ```
 
-`cb_points`関数を次のように変更します。
+`cbPoints`関数を次のように変更します。
 
 ```c++
-void cb_points(const PointCloud::ConstPtr &msg)
+void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try{
     略
     // ここに cloud_src に対するフィルタ処理を書く
-    pass.setInputCloud(cloud_src);
-    pass.filter(*cloud_passthrough);
-    pub_passthrough.publish(cloud_passthrough);
-    //  ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height); // 削除
-    ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough->size()); // 追記
+    pass_.setInputCloud(cloud_src);
+    pass_.filter(*cloud_passthrough_);
+    pub_passthrough_.publish(cloud_passthrough_);
+    //  ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);  // 削除
+    ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough_->size());  // 追記
   }catch (std::exception &e){
     ROS_ERROR("%s", e.what());
   }
@@ -133,7 +133,7 @@ _target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
 
 実行した際に`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
 `src`、`paththrough`に続けて表示されている値はセンサから得られた、もとの`PointCloud`における点の個数と`PassThrough`フィルタ実行後の点の個数を示しています。
-フィルタ実行後の点の個数がゼロの場合は`pass.setFilterLimits(0.5, 1.0);`の引数を調節してみてください。
+フィルタ実行後の点の個数がゼロの場合は`pass_.setFilterLimits(0.5, 1.0);`の引数を調節してみてください。
 
 ## フィルタ実行結果の可視化
 
@@ -173,53 +173,53 @@ $ rviz -d view_filters_3durg.rviz
 
 ```c++
 #include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h> // 追記
+#include <pcl/filters/voxel_grid.h>  // 追記
 #include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
 
-`rsj_pointcloud_test_node`クラスの冒頭に、`pcl::VoxelGrid`フィルタのインスタンスを追加します。
-また、フィルタの結果を格納するための`PointCloud`型変数`cloud_passthrough`、および処理結果を`publish`するためのパブリッシャ`pub_voxel`を追加します。
+`RsjPointcloudTestNode`クラスの冒頭に、`pcl::VoxelGrid`フィルタのインスタンスを追加します。
+また、フィルタの結果を格納するための`PointCloud`型変数`cloud_passthrough_`、および処理結果を`publish`するためのパブリッシャ`pub_voxel_`を追加します。
 
 ```c++
-class rsj_pointcloud_test_node
+class RsjPointcloudTestNode
 {
 private:
 略
-  ros::Publisher pub_passthrough;
+  ros::Publisher pub_passthrough_;
   // 以下を追記
-  pcl::VoxelGrid<PointT> voxel;
+  pcl::VoxelGrid<PointT> voxel_;
   PointCloud::Ptr cloud_voxel;
-  ros::Publisher pub_voxel;
+  ros::Publisher pub_voxel_;
 ```
 
-`rsj_pointcloud_test_node`クラスのコンストラクタで`VoxelGrid`フィルタの設定、`cloud_voxel`および`pub_voxel`を初期化します。
+`RsjPointcloudTestNode`クラスのコンストラクタで`VoxelGrid`フィルタの設定、`cloud_voxel`および`pub_voxel_`を初期化します。
 
 ```c++
-rsj_pointcloud_test_node()
+RsjPointcloudTestNode()
 {
 略
-  pub_passthrough = nh.advertise<PointCloud>("passthrough", 1);
+  pub_passthrough_ = pnh_.advertise<PointCloud>("passthrough", 1);
   // 以下を追記
-  voxel.setLeafSize (0.025f, 0.025f, 0.025f); // 0.025 m 間隔でダウンサンプリング
+  voxel_.setLeafSize (0.025f, 0.025f, 0.025f);  // 0.025 m 間隔でダウンサンプリング
   cloud_voxel.reset(new PointCloud());
-  pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+  pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
 }
 ```
 
-`cb_points`関数を次のように変更します。
+`cbPoints`関数を次のように変更します。
 
 ```c++
-void cb_points(const PointCloud::ConstPtr &msg)
+void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try{
 略
-    pub_passthrough.publish(cloud_passthrough);
+    pub_passthrough_.publish(cloud_passthrough_);
     // 以下のように追記・修正
-    voxel.setInputCloud(cloud_passthrough);
-    voxel.filter(*cloud_voxel);
-    pub_voxel.publish(cloud_voxel);
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size());
+    voxel_.setInputCloud(cloud_passthrough_);
+    voxel_.filter(*cloud_voxel);
+    pub_voxel_.publish(cloud_voxel);
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size());
     // 追記・修正箇所ここまで
   }catch (std::exception &e){
     ROS_ERROR("%s", e.what());
@@ -258,10 +258,10 @@ RViz の左にある`PointCloud2`の一番下のチェックだけをONにする
 もし違いがわかりにくい場合は`setLeafSize`関数の引数を
 
 ```c++
-rsj_pointcloud_test_node()
+RsjPointcloudTestNode()
 {
 略
-  voxel.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
+  voxel_.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
 ```
 
 のように大きくしてみてください（確認後は元の値に戻しておいてください）。
@@ -273,88 +273,88 @@ rsj_pointcloud_test_node()
 
 ```c++
 #include <pcl/filters/voxel_grid.h>
-#include <pcl/common/common.h> // 追記
-#include <pcl/kdtree/kdtree.h> // 追記
-#include <pcl/segmentation/extract_clusters.h> // 追記
+#include <pcl/common/common.h>  // 追記
+#include <pcl/kdtree/kdtree.h>  // 追記
+#include <pcl/segmentation/extract_clusters.h>  // 追記
 #include <visualization_msgs/MarkerArray.h>
 typedef pcl::PointXYZ PointT;
 ```
 
-`rsj_pointcloud_test_node`クラスの冒頭に、`pcl::search::KdTree`クラスのポインタ、`pcl::EuclideanClusterExtraction`クラスのインスタンス、検出されたクラスタの可視化情報をパブリッシュする `pub_cluster`を追加します。
+`RsjPointcloudTestNode`クラスの冒頭に、`pcl::search::KdTree`クラスのポインタ、`pcl::EuclideanClusterExtraction`クラスのインスタンス、検出されたクラスタの可視化情報をパブリッシュする `pub_cluster`を追加します。
 
 ```c++
-class rsj_pointcloud_test_node
+class RsjPointcloudTestNode
 {
 private:
 略
-  ros::Publisher pub_voxel;
+  ros::Publisher pub_voxel_;
   // 以下を追記
-  pcl::search::KdTree<PointT>::Ptr tree;
-  pcl::EuclideanClusterExtraction<PointT> ec;
-  ros::Publisher pub_clusters;
+  pcl::search::KdTree<PointT>::Ptr tree_;
+  pcl::EuclideanClusterExtraction<PointT> ec_;
+  ros::Publisher pub_clusters_;
 ```
 
-`rsj_pointcloud_test_node`クラスのコンストラクタで`pcl::EuclideanClusterExtraction`の設定、`tree`、`pub_clusters`の初期化をします。
+`RsjPointcloudTestNode`クラスのコンストラクタで`pcl::EuclideanClusterExtraction`の設定、`tree_`、`pub_clusters_`の初期化をします。
 
 ### Xtion PRO Live の場合
 
 ```c++
-rsj_pointcloud_test_node()
+RsjPointcloudTestNode()
 {
 略
-  pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+  pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
   // 以下を追記
-  tree.reset(new pcl::search::KdTree<PointT>());
-  ec.setClusterTolerance(0.15);
-  ec.setMinClusterSize(100);
-  ec.setMaxClusterSize(5000);
-  ec.setSearchMethod(tree);
-  pub_clusters = nh.advertise<visualization_msgs::MarkerArray>("clusters", 1);
+  tree_.reset(new pcl::search::KdTree<PointT>());
+  ec_.setClusterTolerance(0.15);
+  ec_.setMinClusterSize(100);
+  ec_.setMaxClusterSize(5000);
+  ec_.setSearchMethod(tree_);
+  pub_clusters_ = pnh_.advertise<visualization_msgs::MarkerArray>("clusters", 1);
 }
 ```
 
 ### YVT-35LX の場合
 
 ```c++
-rsj_pointcloud_test_node()
+RsjPointcloudTestNode()
 {
 略
-  pub_voxel = nh.advertise<PointCloud>("voxel", 1);
+  pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
   // 以下を追記
-  tree.reset(new pcl::search::KdTree<PointT>());
-  ec.setClusterTolerance(0.15);
-  ec.setMinClusterSize(5);
-  ec.setMaxClusterSize(5000);
-  ec.setSearchMethod(tree);
-  pub_clusters = nh.advertise<visualization_msgs::MarkerArray>("clusters", 1);
+  tree_.reset(new pcl::search::KdTree<PointT>());
+  ec_.setClusterTolerance(0.15);
+  ec_.setMinClusterSize(5);
+  ec_.setMaxClusterSize(5000);
+  ec_.setSearchMethod(tree_);
+  pub_clusters_ = pnh_.advertise<visualization_msgs::MarkerArray>("clusters", 1);
 }
 ```
 
 `pcl::EuclideanClusterExtraction`の設定部分のプログラムは次のとおりです。
 
-`ec.setClusterTolerance(0.15);`
+`ec_.setClusterTolerance(0.15);`
 : 15cm以上離れていれば別のクラスタだとみなす
 
-`ec.setMinClusterSize(100); ec.setMaxClusterSize(5000);`
+`ec_.setMinClusterSize(100); ec_.setMaxClusterSize(5000);`
 : クラスタを構成する点の数は最低でも100個、最高で5000個
 
-`ec.setSearchMethod(tree);`
+`ec_.setSearchMethod(tree_);`
 : ある点とクラスタを形成可能な点の探索方法としてKD木を使用する。
 
-`cb_points`関数を次のように変更します。
+`cbPoints`関数を次のように変更します。
 
 ```c++
-void cb_points(const PointCloud::ConstPtr &msg)
+void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
       略
-    pub_voxel.publish(cloud_voxel);
+    pub_voxel_.publish(cloud_voxel);
     // 以下のように追記・修正
     std::vector<pcl::PointIndices> cluster_indices;
-    tree->setInputCloud(cloud_voxel);
-    ec.setInputCloud(cloud_voxel);
-    ec.extract(cluster_indices);
+    tree_->setInputCloud(cloud_voxel);
+    ec_.setInputCloud(cloud_voxel);
+    ec_.extract(cluster_indices);
     visualization_msgs::MarkerArray marker_array;
     int marker_id = 0;
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
@@ -369,9 +369,9 @@ void cb_points(const PointCloud::ConstPtr &msg)
     }
     if (marker_array.markers.empty() == false)
     {
-      pub_clusters.publish(marker_array);
+      pub_clusters_.publish(marker_array);
     }
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size());
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size(), cluster_indices.size());
     // 追記・修正箇所ここまで
   }
   catch (std::exception &e)
@@ -415,22 +415,22 @@ RViz の左にある`PointCloud2`の一番下のチェックだけを ON にす�
 検出したクラスタのうち、一定の大きさをもつものだけを抽出するようにしましょう。
 最終的にはゴミ箱や人間の足など、特定の大きさなど何らかの条件を満たすクラスタに向かって走行するように制御します。
 
-`cb_points`関数を次のように変更します。
+`cbPoints`関数を次のように変更します。
 ```c++
-void cb_points(const PointCloud::ConstPtr &msg)
+void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
       略
-    pub_voxel.publish(cloud_voxel);
+    pub_voxel_.publish(cloud_voxel);
     std::vector<pcl::PointIndices> cluster_indices;
-    tree->setInputCloud(cloud_voxel);
-    ec.setInputCloud(cloud_voxel);
-    ec.extract(cluster_indices);
+    tree_->setInputCloud(cloud_voxel);
+    ec_.setInputCloud(cloud_voxel);
+    ec_.extract(cluster_indices);
     visualization_msgs::MarkerArray marker_array;
     int marker_id = 0;
     /*  */
-    size_t ok = 0; // 追記
+    size_t ok = 0;  // 追記
     /*  */
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
     {
@@ -469,10 +469,10 @@ void cb_points(const PointCloud::ConstPtr &msg)
     }
     if (marker_array.markers.empty() == false)
     {
-      pub_clusters.publish(marker_array);
+      pub_clusters_.publish(marker_array);
     }
     /*** 修正 ***/
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size(), cluster_indices.size(), ok);
     /*** 修正 ***/
   }
   catch (std::exception &e)
@@ -496,21 +496,21 @@ void cb_points(const PointCloud::ConstPtr &msg)
 
 前項で抽出したクラスタのうち、センサに最も近いクラスタを選択するようにしましょう。
 
-`cb_points`関数を次のように変更します。
+`cbPoints`関数を次のように変更します。
 ```c++
-void cb_points(const PointCloud::ConstPtr &msg)
+void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
       略
-    pub_voxel.publish(cloud_voxel);
+    pub_voxel_.publish(cloud_voxel);
     std::vector<pcl::PointIndices> cluster_indices;
-    tree->setInputCloud(cloud_voxel);
-    ec.setInputCloud(cloud_voxel);
-    ec.extract(cluster_indices);
+    tree_->setInputCloud(cloud_voxel);
+    ec_.setInputCloud(cloud_voxel);
+    ec_.extract(cluster_indices);
     visualization_msgs::MarkerArray marker_array;
     /*  */
-    int target_index = -1; // 追記
+    int target_index = -1;  // 追記
     /*  */
     int marker_id = 0;
     size_t ok = 0;
@@ -551,9 +551,9 @@ void cb_points(const PointCloud::ConstPtr &msg)
         marker_array.markers[target_index].color.a = 0.5f;
       }
       // 追記箇所ここまで
-      pub_clusters.publish(marker_array);
+      pub_clusters_.publish(marker_array);
     }
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size(), cluster_indices.size(), ok);
   }
   catch (std::exception &e)
   {
