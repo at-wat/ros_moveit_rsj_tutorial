@@ -78,10 +78,10 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 任意のテキストエディタで rsj_pointcloud_test_node.cpp を開く
 ```
 
-`rsj_pointcloud_test_node`クラスにある、`PointCloud`用のコールバック関数`cb_points`を編集します。
+`rsj_pointcloud_test_node`クラスにある、`PointCloud`用のコールバック関数`cbPoints`を編集します。
 
 ```c++
-void cb_points(const PointCloud::ConstPtr &msg)
+void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
@@ -190,21 +190,21 @@ private:
 `rsj_pointcloud_test_node`のコンストラクタには、このノードが必要としているパラメータの取得や`PointCloud`用のサブスクライバ初期化コードが記述されています。
 
 ```c++
-rsj_pointcloud_test_node()
-{ 
-  ros::NodeHandle nh("~");
-  target_frame = "";
-  std::string topic_name = "/camera/depth_registered/points";
-  nh.getParam("target_frame", target_frame);
-  nh.getParam("topic_name", topic_name);
-  ROS_INFO("target_frame='%s'", target_frame.c_str());
+RsjPointcloudTestNode()
+  : nh_()
+  , pnh_("~")
+{
+  std::string topic_name;
+  pnh_.param("target_frame", target_frame_, std::string(""));
+  pnh_.param("topic_name", topic_name, std::string("/camera/depth_registered/points"));
+  ROS_INFO("target_frame='%s'", target_frame_.c_str());
   ROS_INFO("topic_name='%s'", topic_name.c_str());
-  sub_points = nh.subscribe(topic_name, 5, &rsj_pointcloud_test_node::cb_points, this);
+  sub_points_ = nh_.subscribe(topic_name, 5, &RsjPointcloudTestNode::cbPoints, this);
 ```
 
-`topic_name`はセンサが出力する`PointCloud`のトピック名を、`target_frame`は得られた点群を処理しやすい座標系に変換する際の座標系の名前を示しています。
-特に Xtion PRO Live の場合、点群の座標系はロボットのローカル座標系と異なっているため、`cb_points`関数の冒頭で座標変換をしています。
-`target_frame`が空白の場合は座標変換を行いません（YVT-35LX の場合）。
+`topic_name`はセンサが出力する`PointCloud`のトピック名を、`target_frame_`は得られた点群を処理しやすい座標系に変換する際の座標系の名前を示しています。
+特に Xtion PRO Live の場合、点群の座標系はロボットのローカル座標系と異なっているため、`cbPoints`関数の冒頭で座標変換をしています。
+`target_frame_`が空白の場合は座標変換を行いません（YVT-35LX の場合）。
 
 `CMakeLists.txt`では PCL を ROS で扱えるようにしています。
 
