@@ -34,9 +34,9 @@ URG用のサブスクライバクラスを追加します。
 class RsjRobotTestNode
 {
 private:
-	(略)
-	ros::Subscriber sub_odom_;
-	ros::Subscriber sub_scan_;  // <- URG用のサブスクライバクラスを追加
+  (略)
+  ros::Subscriber sub_odom_;
+  ros::Subscriber sub_scan_;  // <- URG用のサブスクライバクラスを追加
 ```
 
 RsjRobotTestNodeのコンストラクタに、
@@ -50,7 +50,7 @@ RsjRobotTestNode()
       "cmd_vel", 5);
   sub_odom_ = nh_.subscribe(
       "odom", 5, &RsjRobotTestNode::cbOdom, this);
-	sub_scan_ = nh_.subscribe(
+  sub_scan_ = nh_.subscribe(
       "scan", 5, &rsj_robot_test_node::cbScan, this);  // <- URG用のサブスクライバ初期化コードを追加
 ```
 
@@ -60,18 +60,18 @@ URG用のコールバック関数を追加します。(cbOdomの後の位置な�
 ```c++
 void cbScan(const sensor_msgs::LaserScan::ConstPtr &msg)
 {
-	int i = msg->ranges.size() / 2;
-	if(msg->ranges[i] < msg->range_min ||  // エラー値の場合
-		msg->ranges[i] > msg->range_max ||  // 測定範囲外の場合
-		std::isnan(msg->ranges[i]))  // 無限遠の場合
-	{
-		ROS_INFO("front-range: measurement error");
-	}
-	else
-	{
-		ROS_INFO("front-range: %0.3f",
-			msg->ranges[msg->ranges.size() / 2]);
-	}
+  int i = msg->ranges.size() / 2;
+  if (msg->ranges[i] < msg->range_min ||  // エラー値の場合
+      msg->ranges[i] > msg->range_max ||  // 測定範囲外の場合
+      std::isnan(msg->ranges[i]))  // 無限遠の場合
+  {
+    ROS_INFO("front-range: measurement error");
+  }
+  else
+  {
+    ROS_INFO("front-range: %0.3f",
+             msg->ranges[msg->ranges.size() / 2]);
+  }
 }
 ```
 

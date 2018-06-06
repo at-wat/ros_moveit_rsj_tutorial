@@ -78,7 +78,7 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 任意のテキストエディタで rsj_pointcloud_test_node.cpp を開く
 ```
 
-`rsj_pointcloud_test_node`クラスにある、`PointCloud`用のコールバック関数`cbPoints`を編集します。
+`RsjPointcloudTestNode`クラスにある、`PointCloud`用のコールバック関数`cbPoints`を編集します。
 
 ```c++
 void cbPoints(const PointCloud::ConstPtr &msg)
@@ -178,16 +178,16 @@ PCL では`pcl::PointCloud<T>`という C++ のテンプレートで点群を扱
 
 なお、`#include <visualization_msgs/MarkerArray.h>`は点群処理結果を可視化するために必要となる ROS に含まれるヘッダファイルです。
 
-`rsj_pointcloud_test_node`クラスの冒頭には、`sub_odom`と同じように`PointCloud`用のサブスクライバクラスを宣言しています。
+`RsjPointcloudTestNode`クラスの冒頭には、`sub_odom_`と同じように`PointCloud`用のサブスクライバクラスを宣言しています。
 
 ```c++
-class rsj_pointcloud_test_node 
+class RsjPointcloudTestNode 
 {
 private:
-  ros::Subscriber sub_points;
+  ros::Subscriber sub_points_;
 ```
 
-`rsj_pointcloud_test_node`のコンストラクタには、このノードが必要としているパラメータの取得や`PointCloud`用のサブスクライバ初期化コードが記述されています。
+`RsjPointcloudTestNode`のコンストラクタには、このノードが必要としているパラメータの取得や`PointCloud`用のサブスクライバ初期化コードが記述されています。
 
 ```c++
 RsjPointcloudTestNode()

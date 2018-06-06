@@ -138,22 +138,22 @@ ROS プログラミングの際には、基本的にノードの持つ機能を�
 ```c++
 class RsjRobotTestNode
 {
- (略)
+  (略)
 public:
- (略)
-	void mainloop()
-	{
-		ROS_INFO("Hello ROS World!");
+  (略)
+  void mainloop()
+  {
+    ROS_INFO("Hello ROS World!");
 
-		ros::Rate rate(10.0);
-		while(ros::ok())
-		{
-			ros::spinOnce();
-			// ここに速度指令の出力コード
-			rate.sleep();
-		}
-		// ここに終了処理のコード
-	}
+    ros::Rate rate(10.0);
+    while(ros::ok())
+    {
+      ros::spinOnce();
+      // ここに速度指令の出力コード
+      rate.sleep();
+    }
+    // ここに終了処理のコード
+  }
 };
 ```
 
@@ -178,11 +178,11 @@ public:
 
 ```c++
 int main(int argc, char **argv) {
-	ros::init(argc, argv, "rsj_robot_test_node");
-	
-	RsjRobotTestNode robot_test;
-	
-	robot_test.mainloop();
+  ros::init(argc, argv, "rsj_robot_test_node");
+
+  RsjRobotTestNode robot_test;
+
+  robot_test.mainloop();
 }
 ```
 
@@ -283,21 +283,21 @@ nh_.advertise<geometry_msgs::Twist>("cmd_vel", 5);
 ```c++
 void mainloop()
 {
-	ROS_INFO("Hello ROS World!");
+  ROS_INFO("Hello ROS World!");
 
-	ros::Rate rate(10.0);
-	while(ros::ok())
-	{
-		ros::spinOnce();
-		// ここに速度指令の出力コード
-		geometry_msgs::Twist cmd_vel;
-		cmd_vel.linear.x = 0.05;
-		cmd_vel.angular.z = 0.0;
-		pub_twist.publish(cmd_vel);
+  ros::Rate rate(10.0);
+  while(ros::ok())
+  {
+    ros::spinOnce();
+    // ここに速度指令の出力コード
+    geometry_msgs::Twist cmd_vel;
+    cmd_vel.linear.x = 0.05;
+    cmd_vel.angular.z = 0.0;
+    pub_twist.publish(cmd_vel);
 
-		rate.sleep();
-	}
-	// ここに終了処理のコード
+    rate.sleep();
+  }
+  // ここに終了処理のコード
 }
 ```
 
@@ -404,7 +404,7 @@ void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 ```c++
 void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 {
-	ROS_INFO("vel %f", msg->twist.twist.linear.x);
+  ROS_INFO("vel %f", msg->twist.twist.linear.x);
 }
 ```
 
@@ -419,33 +419,33 @@ void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 全て展開すると、以下の構成になります。
 
 - `std_msgs/Header header`
-	- `uint32 seq`
-	- `time stamp`
-	- `string frame_id`
+  - `uint32 seq`
+  - `time stamp`
+  - `string frame_id`
 - `string child_frame_id`
 - `geometry_msgs/PoseWithCovariance pose`
-	- `geometry_msgs/Pose pose`
-		- `geometry_msgs/Point position`
-			- `float64 x`
-			- `float64 y`
-			- `float64 z`
-		- `geometry_msgs/Quaternion orientation`
-			- `float64 x`
-			- `float64 y`
-			- `float64 z`
-			- `float64 w`
-	- `float64[36] covariance`
+  - `geometry_msgs/Pose pose`
+    - `geometry_msgs/Point position`
+      - `float64 x`
+      - `float64 y`
+      - `float64 z`
+    - `geometry_msgs/Quaternion orientation`
+      - `float64 x`
+      - `float64 y`
+      - `float64 z`
+      - `float64 w`
+  - `float64[36] covariance`
 - `geometry_msgs/TwistWithCovariance twist`
-	- `geometry_msgs/Twist twist`
-		- `geometry_msgs/Vector3 linear`
-			- `float64 x` ロボット並進速度
-			- `float64 y`
-			- `float64 z`
-		- `geometry_msgs/Vector3 angular`
-			- `float64 x`
-			- `float64 y`
-			- `float64 z` ロボット角速度
-	- `float64[36] covariance`
+  - `geometry_msgs/Twist twist`
+    - `geometry_msgs/Vector3 linear`
+      - `float64 x` ロボット並進速度
+      - `float64 y`
+      - `float64 z`
+    - `geometry_msgs/Vector3 angular`
+      - `float64 x`
+      - `float64 y`
+      - `float64 z` ロボット角速度
+  - `float64[36] covariance`
 
 読みたいデータであるロボット並進速度を取り出すためには、これを順にたどっていけば良く、`msg->twist.twist.linear.x`となります。
 `msg`はクラスへのポインタなので「`->`」を用い、以降はクラスのメンバ変数へのアクセスなので「`.`」を用いてアクセスしています。
@@ -499,25 +499,25 @@ vel: 0.0500
 ```c++
 void mainloop()
 {
-	ROS_INFO("Hello ROS World!");
+  ROS_INFO("Hello ROS World!");
 
-	ros::Rate rate(10.0);
-	ros::Time start = ros::Time::now();
-	while(ros::ok())
-	{
-		ros::spinOnce();
-		ros::Time now = ros::Time::now();
+  ros::Rate rate(10.0);
+  ros::Time start = ros::Time::now();
+  while(ros::ok())
+  {
+    ros::spinOnce();
+    ros::Time now = ros::Time::now();
 
-		geometry_msgs::Twist cmd_vel;
-		if(now - start > ros::Duration(3.0))
-		{
-			cmd_vel.linear.x = 0.05;
-			cmd_vel.angular.z = 0.0;
-		}
-		pub_twist_.publish(cmd_vel);
+    geometry_msgs::Twist cmd_vel;
+    if(now - start > ros::Duration(3.0))
+    {
+      cmd_vel.linear.x = 0.05;
+      cmd_vel.angular.z = 0.0;
+    }
+    pub_twist_.publish(cmd_vel);
 
-		rate.sleep();
-	}
+    rate.sleep();
+  }
 }
 ```
 
@@ -534,8 +534,8 @@ void mainloop()
 ```c++
 void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 {
-	ROS_INFO("vel %f", msg->twist.twist.linear.x);
-	odom_ = *msg; //追記
+  ROS_INFO("vel %f", msg->twist.twist.linear.x);
+  odom_ = *msg; //追記
 }
 ```
 
@@ -545,7 +545,7 @@ void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 class RsjRobotTestNode
 {
 private:
-	nav_msgs::Odometry odom_;
+  nav_msgs::Odometry odom_;
 ```
 
 また、`odom_`の中で方位を表すクオータニオンをコンストラクタ(`RsjRobotTestNode()`関数)の最後で初期化しておきます。
@@ -553,8 +553,8 @@ private:
 ```c++
 RsjRobotTestNode():
 {
-	(略)
-	odom_.pose.pose.orientation.w = 1.0;
+  (略)
+  odom_.pose.pose.orientation.w = 1.0;
 }
 ```
 
@@ -563,28 +563,28 @@ RsjRobotTestNode():
 ```c++
 void mainloop()
 {
-	ROS_INFO("Hello ROS World!");
+  ROS_INFO("Hello ROS World!");
 
-	ros::Rate rate(10.0);
-	while(ros::ok())
-	{
-		ros::spinOnce();
+  ros::Rate rate(10.0);
+  while(ros::ok())
+  {
+    ros::spinOnce();
 
-		geometry_msgs::Twist cmd_vel;
-		if(tf::getYaw(odom_.pose.pose.orientation) > 1.57)
-		{
-			cmd_vel.linear.x = 0.0;
-			cmd_vel.angular.z = 0.0;
-		}
-		else
-		{
-			cmd_vel.linear.x = 0.0;
-			cmd_vel.angular.z = 0.1;
-		}
-		pub_twist.publish(cmd_vel);
+    geometry_msgs::Twist cmd_vel;
+    if(tf::getYaw(odom_.pose.pose.orientation) > 1.57)
+    {
+      cmd_vel.linear.x = 0.0;
+      cmd_vel.angular.z = 0.0;
+    }
+    else
+    {
+      cmd_vel.linear.x = 0.0;
+      cmd_vel.angular.z = 0.1;
+    }
+    pub_twist.publish(cmd_vel);
 
-		rate.sleep();
-	}
+    rate.sleep();
+  }
 }
 ```
 

@@ -201,7 +201,7 @@ RsjPointcloudTestNode()
 略
   pub_passthrough_ = pnh_.advertise<PointCloud>("passthrough", 1);
   // 以下を追記
-  voxel_.setLeafSize (0.025f, 0.025f, 0.025f);  // 0.025 m 間隔でダウンサンプリング
+  voxel_.setLeafSize(0.025f, 0.025f, 0.025f);  // 0.025 m 間隔でダウンサンプリング
   cloud_voxel.reset(new PointCloud());
   pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
 }
@@ -261,7 +261,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけをONにする
 RsjPointcloudTestNode()
 {
 略
-  voxel_.setLeafSize (0.05f, 0.05f, 0.05f);// LeafSize 変更
+  voxel_.setLeafSize(0.05f, 0.05f, 0.05f);  // LeafSize 変更
 ```
 
 のように大きくしてみてください（確認後は元の値に戻しておいてください）。
