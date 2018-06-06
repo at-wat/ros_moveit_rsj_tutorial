@@ -131,12 +131,12 @@ $ git clone https://github.com/BND-tc/rsj_robot_test.git
 #include <ros/ros.h>
 ```
 
-続いて、`rsj_robot_test_node`クラスを定義しています。
+続いて、`RsjRobotTestNode`クラスを定義しています。
 ROS プログラミングの際には、基本的にノードの持つ機能をクラスとして定義し、これを呼び出す形式を取ることが標準的です。
 クラスを使用せずに書くことも可能ですが、気をつけなければならない点が多くなるため、本セミナーではクラスでの書き方のみを解説します。
 
 ```c++
-class rsj_robot_test_node
+class RsjRobotTestNode
 {
  (略)
 public:
@@ -157,7 +157,7 @@ public:
 };
 ```
 
-`rsj_robot_test_node`クラスのメンバ関数である`mainloop`関数の中では、 ROS で情報を画面などに出力する際に用いる`ROS_INFO`関数を呼び出して、`"Hello ROS World!"`と表示しています。
+`RsjRobotTestNode`クラスのメンバ関数である`mainloop`関数の中では、 ROS で情報を画面などに出力する際に用いる`ROS_INFO`関数を呼び出して、`"Hello ROS World!"`と表示しています。
 他にも、`ROS_DEBUG`、`ROS_WARN`、`ROS_ERROR`、`ROS_FATAL`関数が用意されています。
 
 `ros::Rate rate(10.0)`で、周期実行のためのクラスを初期化しています。
@@ -180,7 +180,7 @@ public:
 int main(int argc, char **argv) {
 	ros::init(argc, argv, "rsj_robot_test_node");
 	
-	rsj_robot_test_node robot_test;
+	RsjRobotTestNode robot_test;
 	
 	robot_test.mainloop();
 }
@@ -189,7 +189,7 @@ int main(int argc, char **argv) {
 はじめに`ros::init`関数を呼び出して、 ROS ノードの初期化を行います。
 1、2番目の引数には`main`関数の引数をそのまま渡し、3番目の引数にはこのノードの名前(この例では`"rsj_robot_test_node"`)を与えます。
 
-次に`rsj_robot_test_node`クラスの実体を作成します。
+次に`RsjRobotTestNode`クラスの実体を作成します。
 ここでは`robot_test`と名前をつけています。
 
 最後に実体化した`robot_test`のメンバ関数、`mainloop`を呼び出します。
@@ -244,30 +244,35 @@ $ rosrun rsj_robot_test rsj_robot_test_node
 ひな形には、既に速度指令値が入ったメッセージを出力するための初期化コードが含まれていますので、この部分の意味を確認します。
 
 ```c++
-rsj_robot_test_node():
+RsjRobotTestNode()
+  : nh_()
 {
-	ros::NodeHandle nh("~");
-	pub_twist = nh.advertise<geometry_msgs::Twist>(
-			"/cmd_vel", 5);
-	sub_odom = nh.subscribe("/odom", 5,
-			&rsj_robot_test_node::cb_odom, this);
+  pub_twist_ = nh_.advertise<geometry_msgs::Twist>(
+      "cmd_vel", 5);
+  sub_odom_ = nh_.subscribe(
+      "odom", 5, &RsjRobotTestNode::cbOdom, this);
 }
 ```
 
-ソースコード中の、`rsj_robot_test_node`クラスの`rsj_robot_test_node`関数は、クラスのコンストラクタと呼ばれるもので、クラスが初期化されるときに自動的に呼び出されます。
+ソースコード中の、`RsjRobotTestNode`クラスの`RsjRobotTestNode`関数は、クラスのコンストラクタと呼ばれるもので、クラスが初期化されるときに自動的に呼び出されます。
+2行目の`: nh_()`の部分では、クラスのメンバ変数である`nh_`を、引数なしで初期化しています。
 この中で、
 
 ```c++
-nh.advertise<geometry_msgs::Twist>("/cmd_vel", 5);
+nh_.advertise<geometry_msgs::Twist>("cmd_vel", 5);
 ```
 
-の部分で、このノードが、<u>これからメッセージを出力する</u>ことを宣言しています。`advertise`関数に与えている引数は以下のような意味を持ちます。
+の部分で、このノードが、<u>これからメッセージを出力する</u>ことを宣言しています。
+`advertise`関数に与えている引数は以下のような意味を持ちます。
 
-`"/cmd_vel"`
+`"cmd_vel"`
 : 出力するメッセージを置く場所(トピックと呼ぶ)を指定
 
 `5`
 : メッセージのバッファリング量を指定 (大きくすると、処理が一時的に重くなったときなどに受け取り側の読み飛ばしを減らせる)
+
+`nh_`は`ros::NodeHandle`型のメンバ変数で、ROSノードの基本的な機能を呼び出すために使います。
+`nh_()`のように引数無しで初期化することでグローバル名前空間(`/`)を使うようになるので、`/`下の`cmd_vel`という名前のトピック、つまり`/cmd_vel`というトピックにメッセージを出力することを意味します。
 
 `advertise`関数についている`<geometry_msgs::Twist>`の部分は、メッセージの型を指定しています。
 これは、幾何的・運動学的な値を扱うメッセージを定義している`geometry_msgs`パッケージの、並進・回転速度を表す`Twist`型です。
@@ -348,43 +353,44 @@ __Ctrl+c__{: style="border: 1px solid black" } で終了します。
 ひな形には、既に移動量や座標が入ったメッセージを受け取るコードが含まれていますので、この部分の意味を確認します。
 
 ```c++
-rsj_robot_test_node():
+RsjRobotTestNode()
+  : nh_()
 {
-	ros::NodeHandle nh("~");
-	pub_twist = nh.advertise<geometry_msgs::Twist>(
-			"/cmd_vel", 5);
-	sub_odom = nh.subscribe("/odom", 5,
-			&rsj_robot_test_node::cb_odom, this);
+  pub_twist_ = nh_.advertise<geometry_msgs::Twist>(
+      "cmd_vel", 5);
+  sub_odom_ = nh_.subscribe(
+      "odom", 5, &RsjRobotTestNode::cbOdom, this);
 }
 ```
 
 この中で
 
 ```c++
-nh.subscribe("/odom", 5, &rsj_robot_test_node::cb_odom, this);
+sub_odom_ = nh_.subscribe("odom", 5, &RsjRobotTestNode::cbOdom, this);
 ```
 
 の部分で、このノードがこれからメッセージを受け取ることを宣言しています。
 `subscribe`関数に与えている引数は以下のような意味を持ちます。
 
-`"/odom"`
+`"odom"`
 : 受け取るメッセージが置かれている場所(トピック)を指定
 
 `5`
 : メッセージのバッファリング量を指定 (大きくすると、処理が一時的に重くなったときなどに受け取り側の読み飛ばしを減らせる)
 
-`&rsj_robot_test_node::cb_odom`
-: メッセージを受け取ったときに呼び出す関数を指定 (rsj_robot_test_nodeクラスの中にある、cb_odom関数)
+`&RsjRobotTestNode::cbOdom`
+: メッセージを受け取ったときに呼び出す関数を指定 (RsjRobotTestNodeクラスの中にある、cbOdom関数)
 
 `this`
 : メッセージを受け取ったときに呼び出す関数がクラスの中にある場合にクラスの実体を指定 (とりあえず、おまじないと思って構いません。)
 
-これにより、`rsj_robot_test_node`ノードが`/odom`トピックからメッセージをうけとると、`cb_odom`関数が呼び出されるようになります。
+こちらもグローバル名前空間(`/`)を使う設定で初期化されている`nh_`を使っているので、`/`下の`odom`、つまり`/odom`という名前のトピックからメッセージを取得することを意味します。
+これにより、`rsj_robot_test_node`ノードが`/odom`トピックからメッセージをうけとると、`cbOdom`関数が呼び出されるようになります。
 
-続いて`cb_odom`関数の中身を確認しましょう。
+続いて`cbOdom`関数の中身を確認しましょう。
 
 ```c++
-void cb_odom(const nav_msgs::Odometry::ConstPtr &msg)
+void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 {
 }
 ```
@@ -392,11 +398,11 @@ void cb_odom(const nav_msgs::Odometry::ConstPtr &msg)
 `const nav_msgs::Odometry::ConstPtr`は、`const`な(内容を書き換えられない)`nav_msgs`パッケージに含まれる`Odometry`型のメッセージの、`const`型ポインタを表しています。
 `&msg`の`&`は、参照型(内容を書き換えられるように変数を渡すことができる)という意味ですが、(`const`型なので)ここでは特に気にする必要はありません。
 
-`cb_odom`関数に、以下のコードを追加してみましょう。
+`cbOdom`関数に、以下のコードを追加してみましょう。
 これにより、受け取ったメッセージの中から、ロボットの並進速度を取り出して表示できます。
 
 ```c++
-void cb_odom(const nav_msgs::Odometry::ConstPtr &msg)
+void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 {
 	ROS_INFO("vel %f", msg->twist.twist.linear.x);
 }
@@ -508,7 +514,7 @@ void mainloop()
 			cmd_vel.linear.x = 0.05;
 			cmd_vel.angular.z = 0.0;
 		}
-		pub_twist.publish(cmd_vel);
+		pub_twist_.publish(cmd_vel);
 
 		rate.sleep();
 	}
@@ -523,32 +529,32 @@ void mainloop()
 
 ## センシング結果で動作を変える
 
-`cb_odom`で取得したオドメトリのデータを保存しておくように、以下のように変更してみましょう。
+`cbOdom`で取得したオドメトリのデータを保存しておくように、以下のように変更してみましょう。
 
 ```c++
-void cb_odom(const nav_msgs::Odometry::ConstPtr &msg)
+void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 {
 	ROS_INFO("vel %f", msg->twist.twist.linear.x);
-	odom = *msg; //追記
+	odom_ = *msg; //追記
 }
 ```
 
-また、`class rsj_robot_test_node`の先頭に下記の変数定義を追加します。
+また、`class RsjRobotTestNode`の先頭に下記の変数定義を追加します。
 
 ```c++
-class rsj_robot_test_node
+class RsjRobotTestNode
 {
 private:
-	nav_msgs::Odometry odom;
+	nav_msgs::Odometry odom_;
 ```
 
-また、`odom`の中で方位を表すクオータニオンをコンストラクタ(`rsj_robot_test_node()`関数)の最後で初期化しておきます。
+また、`odom_`の中で方位を表すクオータニオンをコンストラクタ(`RsjRobotTestNode()`関数)の最後で初期化しておきます。
 
 ```c++
-rsj_robot_test_node():
+RsjRobotTestNode():
 {
 	(略)
-	odom.pose.pose.orientation.w = 1.0;
+	odom_.pose.pose.orientation.w = 1.0;
 }
 ```
 
@@ -565,7 +571,7 @@ void mainloop()
 		ros::spinOnce();
 
 		geometry_msgs::Twist cmd_vel;
-		if(tf::getYaw(odom.pose.pose.orientation) > 1.57)
+		if(tf::getYaw(odom_.pose.pose.orientation) > 1.57)
 		{
 			cmd_vel.linear.x = 0.0;
 			cmd_vel.angular.z = 0.0;
