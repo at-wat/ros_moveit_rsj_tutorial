@@ -31,11 +31,50 @@ $ cd ~/catkin_ws/src/rsj_robot_test
 任意のテキストエディタで CMakeLists.txt を開く
 ```
 
-`find_package`のところに`visualization_msgs`を追記します。
+`find_package`と`catkin_package`のところに`visualization_msgs`を追記します。
 
-```c++
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs nav_msgs geometry_msgs sensor_msgs tf visualization_msgs)
-末尾に visualization_msgs を追記している
+```cmake
+find_package(catkin REQUIRED COMPONENTS
+  geometry_msgs
+  nav_msgs
+  roscpp
+  sensor_msgs
+  std_msgs
+  tf
+  visualization_msgs  # 追記
+)
+find_package(Boost 1.53 REQUIRED system serialization)
+
+## Declare a catkin package
+catkin_package(DEPENDS
+  geometry_msgs
+  nav_msgs
+  roscpp
+  sensor_msgs
+  std_msgs
+  tf
+  visualization_msgs  # 追記
+)
+```
+
+また、package.xml の`<build_depend>` `<run_depend>` にも`visualization_msgs`を追記します。
+
+```xml
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>visualization_msgs</build_depend> <!--追記-->
+
+  <run_depend>geometry_msgs</run_depend>
+  <run_depend>nav_msgs</run_depend>
+  <run_depend>roscpp</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>visualization_msgs</run_depend> <!--追記-->
 ```
 
 一旦ビルドし、コンパイルエラーがないことを確認してください。
