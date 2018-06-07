@@ -64,7 +64,8 @@ RsjPointcloudTestNode()
 ```c++
 void cbPoints(const PointCloud::ConstPtr &msg)
 {
-  try{
+  try
+  {
     (略)
     // ここに cloud_src に対するフィルタ処理を書く
     pass_.setInputCloud(cloud_src);
@@ -73,7 +74,9 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     // ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);  // 削除
     ROS_INFO("points (src: %zu, paththrough: %zu)",
              cloud_src->size(), cloud_passthrough_->size());  // 追記
-  }catch (std::exception &e){
+  }
+  catch (std::exception &e)
+  {
     ROS_ERROR("%s", e.what());
   }
 }
@@ -213,7 +216,8 @@ RsjPointcloudTestNode()
 ```c++
 void cbPoints(const PointCloud::ConstPtr &msg)
 {
-  try{
+  try
+  {
     (略)
     pub_passthrough_.publish(cloud_passthrough_);
     // 以下のように追記・修正
@@ -223,7 +227,9 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)",
              msg->size(), cloud_passthrough_->size(), cloud_voxel->size());
     // 追記・修正箇所ここまで
-  }catch (std::exception &e){
+  }
+  catch (std::exception &e)
+  {
     ROS_ERROR("%s", e.what());
   }
 }
