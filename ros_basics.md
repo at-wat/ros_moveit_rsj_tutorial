@@ -115,7 +115,8 @@ $ git clone https://github.com/BND-tc/rsj_robot_test.git
 ```
 
 ソースファイルの編集にはお好みのテキストエディターが利用可能です。
-本セミナーの説明ではメジャーなテキストエディタである`emacs`を用います。Linuxがはじめての方には`gedit`もおすすめです。
+本セミナーの説明ではメジャーなテキストエディタである`emacs`の画面で例を示します。
+Linuxがはじめての方には`gedit`もおすすめです。
 
 お好みのテキストエディターで`~/catkin_ws/src/rsj_robot_test/src/rsj_robot_test.cpp`を開きます。
 
@@ -218,10 +219,10 @@ $ roscore
 ```
 
 ROS でワークスペースを利用するとき、端末でそのワークスペースをアクティベートすることが必要です。
-このためにワークスペースの最上のディレクトリで`source devel/setup.bash`を実行します。
+そのためにワークスペースの最上のディレクトリで`source devel/setup.bash`を実行します。
 このコマンドはワークスペースの情報を利用中の端末に読み込みます。
-しかし、 _仮のことだけ_ ので必ず新しい端末でワークスペースを利用し始めると _必ず_{: style="color: red"} まずは`source devel/setup.bash`を実行しなければなりません。
-一つの端末で一回だけ実行すれば十分です。その端末を閉じるまでに有効です。
+しかし、 _仮のことだけ_ ので新しい端末でワークスペースを利用し始めるときは _必ず_{: style="color: red"} まずは`source devel/setup.bash`を実行しなければなりません。
+一つの端末で一回だけ実行すれば十分です。その端末を閉じるまで有効です。
 
 2つ目の端末で下記を実行します。
 
@@ -339,8 +340,8 @@ $ rosrun rsj_robot_test rsj_robot_test_node
 Hello ROS World!
 ```
 
-ゆっくりとホイールが回れば、正しく動作しています。
-__Ctrl+c__{: style="border: 1px solid black" } で終了します。
+ゆっくりとホイールが回れば正しく動作しています。
+それぞれの端末で __Ctrl+c__{: style="border: 1px solid black" } を押し、終了します。
 
 ## 小課題(1)
 
