@@ -178,7 +178,7 @@ PCL では`pcl::PointCloud<T>`という C++ のテンプレートで点群を扱
 
 なお、`#include <visualization_msgs/MarkerArray.h>`は点群処理結果を可視化するために必要となる ROS に含まれるヘッダファイルです。
 
-`RsjPointcloudTestNode`クラスの冒頭には、`sub_odom_`と同じように`PointCloud`用のサブスクライバクラスを宣言しています。
+`RsjPointcloudTestNode`クラスの冒頭には、`sub_odom_`と同じように`PointCloud`用のサブスクライバを宣言しています。
 
 ```c++
 class RsjPointcloudTestNode 

@@ -47,7 +47,7 @@ $ catkin_make
 
 # クラスタリング結果の受信
 
-`RsjRobotTestNode`クラスで、`sub_odom_`や`sub_scan_`を定義しているところに、`visualization_msgs::MarkerArray`用のサブスクライバクラスを追加します。
+`RsjRobotTestNode`クラスで、`sub_odom_`や`sub_scan_`を定義しているところに、`visualization_msgs::MarkerArray`用のサブスクライバを追加します。
 
 ```c++
 ros::Subscriber sub_scan_;
