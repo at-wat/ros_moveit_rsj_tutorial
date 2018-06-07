@@ -83,7 +83,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
-    略
+    (略)
     // ここに cloud_src に対するフィルタ処理を書く
     ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);
   }
@@ -163,6 +163,7 @@ _target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
 #include <pcl_ros/point_cloud.h>
 #include <pcl/point_types.h>
 #include <visualization_msgs/MarkerArray.h>
+
 typedef pcl::PointXYZ PointT
 typedef pcl::PointCloud<PointT> PointCloud;
 ```
@@ -180,6 +181,7 @@ PCL では`pcl::PointCloud<T>`という C++ のテンプレートで点群を扱
 class RsjPointcloudTestNode 
 {
 private:
+  (略)
   ros::Subscriber sub_points_;
 ```
 
@@ -193,8 +195,8 @@ RsjPointcloudTestNode()
   std::string topic_name;
   pnh_.param("target_frame", target_frame_, std::string(""));
   pnh_.param("topic_name", topic_name, std::string("/camera/depth_registered/points"));
-  ROS_INFO("target_frame='%s'", target_frame_.c_str());
-  ROS_INFO("topic_name='%s'", topic_name.c_str());
+  ROS_INFO("target_frame = '%s'", target_frame_.c_str());
+  ROS_INFO("topic_name = '%s'", topic_name.c_str());
   sub_points_ = nh_.subscribe(topic_name, 5, &RsjPointcloudTestNode::cbPoints, this);
 ```
 
@@ -204,9 +206,15 @@ RsjPointcloudTestNode()
 
 `CMakeLists.txt`では PCL を ROS で扱えるようにしています。
 
-```c++
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs nav_msgs geometry_msgs sensor_msgs tf pcl_ros)
-(注：最後に pcl_ros を追加している)
+```cmake
+find_package(catkin REQUIRED COMPONENTS
+  pcl_ros  # 注: pcl_ros を追加している
+  roscpp
+  rospy
+  sensor_msgs
+  std_msgs
+  visualization_msgs
+)
 ```
 
 終了したら PCL を使った点群処理に関する実習に進んでください。
