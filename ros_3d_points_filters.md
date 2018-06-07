@@ -482,9 +482,9 @@ void cbPoints(const PointCloud::ConstPtr &msg)
         {
           is_ok = false;
         }
-        marker_array.markers.push_back(
-          makeMarker(
-            frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
+        visualization_msgs::Marker marker =
+            makeMarker(
+                frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f);
         if (is_ok)
         {
           marker.ns = "ok_cluster";
