@@ -82,7 +82,7 @@ ros::Subscriber sub_clusters_; // 追記
 ```c++
 RsjRobotTestNode()
 {
-略
+  (略)
   sub_scan_ = nh_.subscribe("scan", 5, &RsjRobotTestNode::cbScan, this);
   sub_clusters_ = nh_.subscribe("rsj_pointcloud_test_node/clusters", 5, &RsjRobotTestNode::cbCluster, this); // 追記
 ```
