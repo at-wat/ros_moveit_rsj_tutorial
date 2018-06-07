@@ -151,10 +151,16 @@ LinuxとROSのインストール方法を示します。
 最後に、本セミナーに必要なパッケージをインストールします。以下のコマンドを実行しインストールしてください。
 
 ```shell
+$ sudo apt update
 $ sudo apt install ros-kinetic-slam-gmapping ros-kinetic-mouse-teleop
 $ sudo apt install ros-kinetic-openni2-camera
 $ sudo apt install ros-kinetic-openni2-launch
-$ sudo apt install ros-kinetic-pointcloud-to-laserscan 
+$ sudo apt install ros-kinetic-urg-node
+$ sudo apt install ros-kinetic-hokuyo3d
+$ sudo apt install ros-kinetic-pointcloud-to-laserscan
+$ sudo apt install ros-kinetic-map-server ros-kinetic-move-base
+$ sudo apt install ros-kinetic-amcl ros-kinetic-dwa-local-planner
+$ sudo apt install ros-kinetic-navigation
 ```
 
 以上、開発環境の構築が完了しました。
