@@ -175,7 +175,8 @@ angular:
   z: 0.0"
 ```
 
-`-1`を利用すると一回のみ送信します。`-1`を削除すると`rostopic`は __Ctrl+c__{: style="border: 1px solid black" } を入力するまでに送信し続きます。
+`-1`を利用すると一回のみ送信します。
+`-1`を削除すると`rostopic`はこのメッセージを1度送信し、 __Ctrl+c__{: style="border: 1px solid black" } を入力するまで待機して、あとから起動したノードがメッセージを受け取れる状態を維持します。
 
 # rosbag
 
