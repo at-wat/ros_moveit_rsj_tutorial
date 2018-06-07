@@ -255,7 +255,7 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
 $ rviz -d view_filters.rviz
 ```
 
-### YVT-35LX の場合 の場合
+### YVT-35LX の場合
 
 ```shell
 $ cd ~/catkin_ws/src/rsj_pointcloud_test/config/rviz
@@ -275,10 +275,15 @@ RsjPointcloudTestNode()
     , pnh_("~")
 {
   (略)
+  /* Xtion の場合 */
   voxel_.setLeafSize(0.05f, 0.05f, 0.05f);  // LeafSize 変更
+  /* YVT-35LX の場合 */
+  voxel_.setLeafSize(0.3f, 0.3f, 0.3f);  // LeafSize 変更
 ```
 
 のように大きくしてみてください（確認後は元の値に戻しておいてください）。
+
+`VoxelGrid`フィルタはRGBDカメラ（Xtion）のような得られる点群の数が非常に多いセンサに特に有効です。
 
 # クラスタリング
 
