@@ -24,54 +24,54 @@ $ sudo apt-get install ros-kinetic-urg-node
 ```c++
 (略)
 #include <geometry_msgs/Twist.h>
-#include <sensor_msgs/LaserScan.h> // <- スキャンデータのメッセージ型をinclude
+#include <sensor_msgs/LaserScan.h>  // <- スキャンデータのメッセージ型をinclude
 ```
 
-rsj_robot_test_nodeで、sub_odom(サブスクライバクラス)を定義しているところに、
+RsjRobotTestNodeクラス内で、sub_odom_(サブスクライバクラス)を定義しているところに、
 URG用のサブスクライバクラスを追加します。
 
 ```c++
-class rsj_robot_test_node
+class RsjRobotTestNode
 {
 private:
-	(略)
-	ros::Subscriber sub_odom;
-	ros::Subscriber sub_scan;// <- URG用のサブスクライバクラスを追加
+  (略)
+  ros::Subscriber sub_odom_;
+  ros::Subscriber sub_scan_;  // <- URG用のサブスクライバクラスを追加
 ```
 
-rsj_robot_test_nodeのコンストラクタに、
+RsjRobotTestNodeのコンストラクタに、
 URG用のサブスクライバ初期化コードを追加します。
 
 ```c++
-rsj_robot_test_node()
+RsjRobotTestNode()
+  : nh_()
 {
-	ros::NodeHandle nh("~");
-	pub_twist = nh.advertise<geometry_msgs::Twist>(
-			"/cmd_vel", 5);
-	sub_odom = nh.subscribe("/odom", 5,
-			&rsj_robot_test_node::cb_odom, this);
-	sub_scan = nh.subscribe("/scan", 5,
-			&rsj_robot_test_node::cb_scan, this);// <- URG用のサブスクライバ初期化コードを追加
+  pub_twist_ = nh_.advertise<geometry_msgs::Twist>(
+      "cmd_vel", 5);
+  sub_odom_ = nh_.subscribe(
+      "odom", 5, &RsjRobotTestNode::cbOdom, this);
+  sub_scan_ = nh_.subscribe(
+      "scan", 5, &rsj_robot_test_node::cbScan, this);  // <- URG用のサブスクライバ初期化コードを追加
 ```
 
-更に、rsj_robot_test_nodeクラスに、
-URG用のコールバック関数を追加します。(cb_odomの後の位置など)
+更に、RsjRobotTestNodeクラスに、
+URG用のコールバック関数を追加します。(cbOdomの後の位置など)
 
 ```c++
-void cb_scan(const sensor_msgs::LaserScan::ConstPtr &msg)
+void cbScan(const sensor_msgs::LaserScan::ConstPtr &msg)
 {
-	int i = msg->ranges.size() / 2;
-	if(msg->ranges[i] < msg->range_min || // エラー値の場合
-		msg->ranges[i] > msg->range_max || // 測定範囲外の場合
-		std::isnan(msg->ranges[i])) // 無限遠の場合
-	{
-		ROS_INFO("front-range: measurement error");
-	}
-	else
-	{
-		ROS_INFO("front-range: %0.3f",
-			msg->ranges[msg->ranges.size() / 2]);
-	}
+  int i = msg->ranges.size() / 2;
+  if (msg->ranges[i] < msg->range_min ||  // エラー値の場合
+      msg->ranges[i] > msg->range_max ||  // 測定範囲外の場合
+      std::isnan(msg->ranges[i]))  // 無限遠の場合
+  {
+    ROS_INFO("front-range: measurement error");
+  }
+  else
+  {
+    ROS_INFO("front-range: %0.3f",
+             msg->ranges[msg->ranges.size() / 2]);
+  }
 }
 ```
 
