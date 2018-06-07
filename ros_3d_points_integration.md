@@ -191,7 +191,9 @@ $ cd ~/catkin_ws/src/rsj_robot_test/src
 void cbCluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
 {
   const visualization_msgs::Marker *target = NULL;
-  for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
+  for (visualization_msgs::MarkerArray::_markers_type::const_iterator
+           it = msg->markers.cbegin(),
+           it_end = msg->markers.cend();
        it != it_end; ++it)
   {
     const visualization_msgs::Marker &marker = *it;
