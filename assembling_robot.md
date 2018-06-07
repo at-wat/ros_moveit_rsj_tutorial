@@ -102,7 +102,7 @@ $ git clone https://github.com/openspur/yp-spur.git
 $ cd yp-spur
 $ mkdir build
 $ cd build
-$ ../configure
+$ cmake ..
 $ make
 $ sudo make install
 $ sudo ldconfig
