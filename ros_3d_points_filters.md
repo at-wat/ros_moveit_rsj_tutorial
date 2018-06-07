@@ -395,7 +395,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
       {
         marker_array.markers.push_back(
           makeMarker(
-            frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
+            frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.5f));
       }
     }
     if (marker_array.markers.empty() == false)
