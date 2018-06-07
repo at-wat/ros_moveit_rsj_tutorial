@@ -43,9 +43,9 @@ PC の USB ポートに Xtion PRO Live を接続し、次のコマンドを実�
 
 ```shell
 $ cd ~/catkin_ws/
+$ catkin_make
 $ source devel/setup.bash
-$ cd src/rsj_pointcloud_to_laserscan/launch
-$ roslaunch rsj_pointcloud_to_laserscan.launch
+$ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan.launch
 ```
 
 コンソールに赤字でエラーメッセージが出ていないかどうか確認してください。

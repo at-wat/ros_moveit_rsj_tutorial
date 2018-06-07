@@ -17,8 +17,7 @@ Xtion PRO Live や YVT-35LX から得られる３次元点群`PointCloud`に対�
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ cd src/rsj_pointcloud_to_laserscan/launch
-$ roslaunch rsj_pointcloud_to_laserscan.launch
+$ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan.launch
 ```
 
 別のターミナルを開き
@@ -40,8 +39,7 @@ $ rosrun rviz rviz -d view_points.rviz
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ cd src/rsj_pointcloud_to_laserscan/launch
-$ roslaunch rsj_pointcloud_to_laserscan_3durg.launch
+$ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan_3durg.launch
 ```
 
 別のターミナルを開き
@@ -116,8 +114,7 @@ $ catkin_make
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ cd src/rsj_pointcloud_to_laserscan/launch
-$ roslaunch rsj_pointcloud_to_laserscan.launch
+$ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan.launch
 ```
 
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
@@ -138,8 +135,7 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
-$ cd src/rsj_pointcloud_to_laserscan/launch
-$ roslaunch rsj_pointcloud_to_laserscan_3durg.launch
+$ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan_3durg.launch
 ```
 
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
