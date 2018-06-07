@@ -169,7 +169,7 @@ $ rosrun  rsj_robot_test rsj_robot_test_node
 [ INFO] [1523957583.192001041]: front-range: 3.178
 ```
 
-`rsj_robot_test_node`側で「`[ INFO] [1523957583.091959056]: clusters: 7`」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
+`rsj_robot_test_node`側の端末で「`[ INFO] [1523957583.091959056]: clusters: 7`」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
 また RViz 上では`navigation`用のマップ上に重畳して`PointCloud`のクラスタと、クラスタを囲む直方体が表示されています。センサに最も近いクラスタは紫で表示されています。
 
 ![XtionViewNavigation](images/xtion_view_navigation.png)
@@ -217,6 +217,6 @@ void cbCluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
 # ビルド＆実行
 
 前項と同じようにビルドして実行してください。
-`rsj_robot_test_node`側で「`[ INFO] [1526342853.141823400]: target: 2.579500, 0.063012`」のように PCL で処理した最も近いクラスタの座標がを表示できていることが分かります。なおここで表示されている座標はロボットの中心を原点とし、正面をX軸プラス方向とするローカル座標系です。
+`rsj_robot_test_node`側の端末で「`[ INFO] [1526342853.141823400]: target: 2.579500, 0.063012`」のように PCL で処理した最も近いクラスタの座標がを表示できていることが分かります。なおここで表示されている座標はロボットの中心を原点とし、正面をX軸プラス方向とするローカル座標系です。
 
 終了したら[課題](lesson.html)に進んでください。
