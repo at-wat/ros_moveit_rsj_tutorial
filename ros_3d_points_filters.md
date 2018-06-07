@@ -387,7 +387,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
       if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
       {
         marker_array.markers.push_back(
-          make_marker(
+          makeMarker(
             frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
       }
     }
@@ -483,7 +483,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
           is_ok = false;
         }
         marker_array.markers.push_back(
-          make_marker(
+          makeMarker(
             frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
         if (is_ok)
         {
