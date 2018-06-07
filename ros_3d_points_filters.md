@@ -36,7 +36,7 @@ typedef pcl::PointCloud<PointT> PointCloud;
 class RsjPointcloudTestNode
 {
 private:
-略
+  (略)
   PointCloud::Ptr cloud_tranformed_;
   // 以下を追記
   pcl::PassThrough<PointT> pass_;
@@ -49,7 +49,7 @@ private:
 ```c++
 RsjPointcloudTestNode()
 {
-  略
+  (略)
   cloud_tranformed_.reset(new PointCloud());
   // 以下を追記
   pass_.setFilterFieldName("z");  // Z軸（高さ）の値でフィルタをかける
@@ -65,7 +65,7 @@ RsjPointcloudTestNode()
 void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try{
-    略
+    (略)
     // ここに cloud_src に対するフィルタ処理を書く
     pass_.setInputCloud(cloud_src);
     pass_.filter(*cloud_passthrough_);
@@ -184,7 +184,7 @@ typedef pcl::PointXYZ PointT;
 class RsjPointcloudTestNode
 {
 private:
-略
+  (略)
   ros::Publisher pub_passthrough_;
   // 以下を追記
   pcl::VoxelGrid<PointT> voxel_;
@@ -197,7 +197,7 @@ private:
 ```c++
 RsjPointcloudTestNode()
 {
-略
+  (略)
   pub_passthrough_ = nh_.advertise<PointCloud>("passthrough", 1);
   // 以下を追記
   voxel_.setLeafSize(0.025f, 0.025f, 0.025f);  // 0.025 m 間隔でダウンサンプリング
@@ -212,7 +212,7 @@ RsjPointcloudTestNode()
 void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try{
-略
+    (略)
     pub_passthrough_.publish(cloud_passthrough_);
     // 以下のように追記・修正
     voxel_.setInputCloud(cloud_passthrough_);
@@ -259,7 +259,7 @@ RViz の左にある`PointCloud2`の一番下のチェックだけをONにする
 ```c++
 RsjPointcloudTestNode()
 {
-略
+  (略)
   voxel_.setLeafSize(0.05f, 0.05f, 0.05f);  // LeafSize 変更
 ```
 
@@ -285,7 +285,7 @@ typedef pcl::PointXYZ PointT;
 class RsjPointcloudTestNode
 {
 private:
-略
+  (略)
   ros::Publisher pub_voxel_;
   // 以下を追記
   pcl::search::KdTree<PointT>::Ptr tree_;
@@ -300,7 +300,7 @@ private:
 ```c++
 RsjPointcloudTestNode()
 {
-略
+  (略)
   pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
   // 以下を追記
   tree_.reset(new pcl::search::KdTree<PointT>());
@@ -317,7 +317,7 @@ RsjPointcloudTestNode()
 ```c++
 RsjPointcloudTestNode()
 {
-略
+  (略)
   pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
   // 以下を追記
   tree_.reset(new pcl::search::KdTree<PointT>());
@@ -347,7 +347,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
-      略
+    (略)
     pub_voxel_.publish(cloud_voxel);
     // 以下のように追記・修正
     std::vector<pcl::PointIndices> cluster_indices;
@@ -420,7 +420,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
-      略
+    (略)
     pub_voxel_.publish(cloud_voxel);
     std::vector<pcl::PointIndices> cluster_indices;
     tree_->setInputCloud(cloud_voxel);
@@ -501,7 +501,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
 {
   try
   {
-      略
+    (略)
     pub_voxel_.publish(cloud_voxel);
     std::vector<pcl::PointIndices> cluster_indices;
     tree_->setInputCloud(cloud_voxel);
@@ -515,7 +515,7 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     size_t ok = 0;
     for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
     {
-          略
+        (略)
         if (is_ok)
         {
           marker.ns = "ok_cluster";
