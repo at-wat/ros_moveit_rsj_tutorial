@@ -83,8 +83,10 @@ ros::Subscriber sub_clusters_; // 追記
 RsjRobotTestNode()
 {
   (略)
-  sub_scan_ = nh_.subscribe("scan", 5, &RsjRobotTestNode::cbScan, this);
-  sub_clusters_ = nh_.subscribe("rsj_pointcloud_test_node/clusters", 5, &RsjRobotTestNode::cbCluster, this); // 追記
+  sub_scan_ = nh_.subscribe(
+      "scan", 5, &RsjRobotTestNode::cbScan, this);
+  sub_clusters_ = nh_.subscribe(
+      "clusters", 5, &RsjRobotTestNode::cbCluster, this); // 追記
 ```
 
 更に、`RsjRobotTestNode`クラスに、`visualization_msgs::MarkerArray`用のコールバック関数を追加します。(`cbScan`の後の位置など)
