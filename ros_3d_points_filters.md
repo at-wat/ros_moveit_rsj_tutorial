@@ -70,8 +70,9 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     pass_.setInputCloud(cloud_src);
     pass_.filter(*cloud_passthrough_);
     pub_passthrough_.publish(cloud_passthrough_);
-    //  ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);  // 削除
-    ROS_INFO("points (src: %zu, paththrough: %zu)", cloud_src->size(), cloud_passthrough_->size());  // 追記
+    // ROS_INFO("width: %u, height: %u", cloud_src->width, cloud_src->height);  // 削除
+    ROS_INFO("points (src: %zu, paththrough: %zu)",
+             cloud_src->size(), cloud_passthrough_->size());  // 追記
   }catch (std::exception &e){
     ROS_ERROR("%s", e.what());
   }
@@ -174,6 +175,7 @@ $ rviz -d view_filters_3durg.rviz
 #include <pcl/filters/passthrough.h>
 #include <pcl/filters/voxel_grid.h>  // 追記
 #include <visualization_msgs/MarkerArray.h>
+
 typedef pcl::PointXYZ PointT;
 ```
 
@@ -218,7 +220,8 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     voxel_.setInputCloud(cloud_passthrough_);
     voxel_.filter(*cloud_voxel);
     pub_voxel_.publish(cloud_voxel);
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size());
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu)",
+             msg->size(), cloud_passthrough_->size(), cloud_voxel->size());
     // 追記・修正箇所ここまで
   }catch (std::exception &e){
     ROS_ERROR("%s", e.what());
@@ -276,6 +279,7 @@ RsjPointcloudTestNode()
 #include <pcl/kdtree/kdtree.h>  // 追記
 #include <pcl/segmentation/extract_clusters.h>  // 追記
 #include <visualization_msgs/MarkerArray.h>
+
 typedef pcl::PointXYZ PointT;
 ```
 
@@ -356,21 +360,28 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     ec_.extract(cluster_indices);
     visualization_msgs::MarkerArray marker_array;
     int marker_id = 0;
-    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+    for (std::vector<pcl::PointIndices>::const_iterator 
+             it = cluster_indices.begin(),
+             it_end = cluster_indices.end();            
+         it != it_end; ++it, ++marker_id)
     {
       Eigen::Vector4f min_pt, max_pt;
       pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
       Eigen::Vector4f cluster_size = max_pt - min_pt;
       if (cluster_size.x() > 0 && cluster_size.y() > 0 && cluster_size.z() > 0)
       {
-        marker_array.markers.push_back(make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
+        marker_array.markers.push_back(
+          make_marker(
+            frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
       }
     }
     if (marker_array.markers.empty() == false)
     {
       pub_clusters_.publish(marker_array);
     }
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size(), cluster_indices.size());
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu)",
+             msg->size(), cloud_passthrough_->size(), cloud_voxel->size(),
+             cluster_indices.size());
     // 追記・修正箇所ここまで
   }
   catch (std::exception &e)
@@ -431,7 +442,10 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     /*  */
     size_t ok = 0;  // 追記
     /*  */
-    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+    for (std::vector<pcl::PointIndices>::const_iterator 
+             it = cluster_indices.begin(),
+             it_end = cluster_indices.end();            
+         it != it_end; ++it, ++marker_id)
     {
       Eigen::Vector4f min_pt, max_pt;
       pcl::getMinMax3D(*cloud_voxel, *it, min_pt, max_pt);
@@ -452,7 +466,9 @@ void cbPoints(const PointCloud::ConstPtr &msg)
         {
           is_ok = false;
         }
-        visualization_msgs::Marker marker = make_marker(frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f);
+        marker_array.markers.push_back(
+          make_marker(
+            frame_id, "cluster", marker_id, min_pt, max_pt, 0.0f, 1.0f, 0.0f, 0.2f));
         if (is_ok)
         {
           marker.ns = "ok_cluster";
@@ -471,7 +487,10 @@ void cbPoints(const PointCloud::ConstPtr &msg)
       pub_clusters_.publish(marker_array);
     }
     /*** 修正 ***/
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu,"
+             " cluster: %zu, ok_cluster: %zu)",
+             msg->size(), cloud_passthrough_->size(), cloud_voxel->size(),
+             cluster_indices.size(), ok);
     /*** 修正 ***/
   }
   catch (std::exception &e)
@@ -513,7 +532,10 @@ void cbPoints(const PointCloud::ConstPtr &msg)
     /*  */
     int marker_id = 0;
     size_t ok = 0;
-    for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin(), it_end = cluster_indices.end(); it != it_end; ++it, ++marker_id)
+    for (std::vector<pcl::PointIndices>::const_iterator 
+             it = cluster_indices.begin(),
+             it_end = cluster_indices.end();            
+         it != it_end; ++it, ++marker_id)
     {
         (略)
         if (is_ok)
@@ -528,7 +550,8 @@ void cbPoints(const PointCloud::ConstPtr &msg)
           if(target_index < 0){
             target_index = marker_array.markers.size();
           }else{
-            float d1 = ::hypot(marker_array.markers[target_index].pose.position.x, marker_array.markers[target_index].pose.position.y);
+            float d1 = ::hypot(marker_array.markers[target_index].pose.position.x,
+                               marker_array.markers[target_index].pose.position.y);
             float d2 = ::hypot(marker.pose.position.x, marker.pose.position.y);
             if(d2 < d1){
               target_index = marker_array.markers.size();
@@ -552,7 +575,10 @@ void cbPoints(const PointCloud::ConstPtr &msg)
       // 追記箇所ここまで
       pub_clusters_.publish(marker_array);
     }
-    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu, cluster: %zu, ok_cluster: %zu)", msg->size(), cloud_passthrough_->size(), cloud_voxel->size(), cluster_indices.size(), ok);
+    ROS_INFO("points (src: %zu, paththrough: %zu, voxelgrid: %zu,"
+             " cluster: %zu, ok_cluster: %zu)",
+             msg->size(), cloud_passthrough_->size(), cloud_voxel->size(),
+             cluster_indices.size(), ok);
   }
   catch (std::exception &e)
   {
