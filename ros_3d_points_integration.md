@@ -122,7 +122,7 @@ $ catkin_make
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation xtion_integration.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 ## YVT-35LX の場合
@@ -130,7 +130,7 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当す�
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation 3durg_integration.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 # rsj_pointcloud_test_node と rsj_robot_test_node の起動
@@ -141,7 +141,7 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当す�
 
 ```shell
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+    _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524040063.315596383]: target_frame='camera_link'
 [ INFO] [1524040063.315656650]: topic_name='/camera/depth_registered/points'
 [ INFO] [1524040063.320448185]: Hello Point Cloud!
@@ -154,7 +154,7 @@ _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
+    _target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
 [ INFO] [1528008816.751100536]: points (src: 2674, paththrough: 1019)
 ```
 

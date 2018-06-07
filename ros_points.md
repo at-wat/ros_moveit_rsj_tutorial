@@ -101,15 +101,15 @@ $ roscore
 
 ```shell
 $ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param \
-_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
-_compatible:=1
+    _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
+    _compatible:=1
 ```
 
 3つ目の端末で`urg_node`を起動
 
 ```shell
 $ rosrun urg_node urg_node \
-_serial_port:=/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00
+    _serial_port:=/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00
 ```
 
 4つ目の端末で作成したプログラムを実行

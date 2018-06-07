@@ -326,8 +326,8 @@ $ roscore
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param \
-_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
-_compatible:=1
+    _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
+    _compatible:=1
 ```
 
 続いて、別の端末でrsj_robot_test_nodeノードを実行します。
@@ -471,8 +471,8 @@ $ roscore
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun ypspur_ros ypspur_ros _param_file:=/home/【ユーザ名】/params/rsj-seminar20??.param \
-_port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
-_compatible:=1
+    _port:=/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00 \
+    _compatible:=1
 ```
 
 続いて、`rsj_robot_test_node`ノードを実行します。

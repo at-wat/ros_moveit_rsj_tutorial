@@ -121,7 +121,7 @@ $ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan.launch
 
 ```shell
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:=camera_link _topic_name:=/camera/depth_registered/points
+    _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524039160.481736901]: target_frame='camera_link'
 [ INFO] [1524039160.481783905]: topic_name='/camera/depth_registered/points'
 [ INFO] [1524039160.485222004]: Hello Point Cloud!
@@ -144,7 +144,7 @@ $ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan_3durg.launch
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
-_target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
+    _target_frame:= _topic_name:=/hokuyo3d/hokuyo_cloud2
 [ INFO] [1528006896.162315502]: target_frame=''
 [ INFO] [1528006896.162660037]: topic_name='/hokuyo3d/hokuyo_cloud2'
 [ INFO] [1528006896.178381795]: Hello Point Cloud!

@@ -54,14 +54,14 @@ PC にロボットと URG の USB ケーブルを接続し、地図を生成し�
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation mapping.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 ## YVT-35LX の場合
 ```shell
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation 3durg_mapping.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 ## Xtion PRO Live の場合
@@ -69,7 +69,7 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当す�
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation xtion_mapping.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param 【該当するものに置き換えること】
 ```
 
 RViz が起動し、下記のように URG もしくは Xtion の複数のスキャンデータをつなげて、大きな占有格子地図を生成し始めます。
@@ -118,7 +118,7 @@ PC にロボットと URG や Xtion の USB ケーブルを接続し、地図を
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation navigation.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 ## YVT-35LX の場合
@@ -126,7 +126,7 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当する�
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation 3durg_navigation.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 ## Xtion PRO Live の場合
@@ -134,7 +134,7 @@ robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当する�
 $ cd ~/catkin_ws/
 $ source devel/setup.bash
 $ roslaunch rsj_seminar_navigation xtion_navigation.launch \
-robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
+    robot_param:=/home/【ユーザ名】/params/rsj-seminar20??.param該当するものに置き換えること
 ```
 
 RViz が起動し、下記のように先ほど作成した地図が表示されます。
