@@ -536,7 +536,7 @@ void mainloop()
 void cbOdom(const nav_msgs::Odometry::ConstPtr &msg)
 {
   ROS_INFO("vel %f", msg->twist.twist.linear.x);
-  odom_ = *msg; //追記
+  odom_ = *msg;  // 追記
 }
 ```
 

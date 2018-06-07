@@ -51,7 +51,7 @@ RsjRobotTestNode()
   sub_odom_ = nh_.subscribe(
       "odom", 5, &RsjRobotTestNode::cbOdom, this);
   sub_scan_ = nh_.subscribe(
-      "scan", 5, &rsj_robot_test_node::cbScan, this);  // <- URG用のサブスクライバ初期化コードを追加
+      "scan", 5, &RsjRobotTestNode::cbScan, this);  // <- URG用のサブスクライバ初期化コードを追加
 ```
 
 更に、`RsjRobotTestNode`クラスに、
