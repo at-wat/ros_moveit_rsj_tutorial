@@ -48,6 +48,8 @@ private:
 
 ```c++
 RsjPointcloudTestNode()
+    : nh_()
+    , pnh_("~")
 {
   (略)
   cloud_tranformed_.reset(new PointCloud());
@@ -201,6 +203,8 @@ private:
 
 ```c++
 RsjPointcloudTestNode()
+    : nh_()
+    , pnh_("~")
 {
   (略)
   pub_passthrough_ = nh_.advertise<PointCloud>("passthrough", 1);
@@ -267,6 +271,8 @@ RViz の左にある`PointCloud2`の一番下のチェックだけをONにする
 
 ```c++
 RsjPointcloudTestNode()
+    : nh_()
+    , pnh_("~")
 {
   (略)
   voxel_.setLeafSize(0.05f, 0.05f, 0.05f);  // LeafSize 変更
@@ -309,6 +315,8 @@ private:
 
 ```c++
 RsjPointcloudTestNode()
+    : nh_()
+    , pnh_("~")
 {
   (略)
   pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
@@ -326,6 +334,8 @@ RsjPointcloudTestNode()
 
 ```c++
 RsjPointcloudTestNode()
+    : nh_()
+    , pnh_("~")
 {
   (略)
   pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
