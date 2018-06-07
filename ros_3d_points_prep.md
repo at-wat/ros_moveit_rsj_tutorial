@@ -200,6 +200,11 @@ RsjPointcloudTestNode()
   sub_points_ = nh_.subscribe(topic_name, 5, &RsjPointcloudTestNode::cbPoints, this);
 ```
 
+`pnh_.param`関数は、実行時に与えられたパラメータを読み込みます。
+ここで`pnh_`は、`rsj_robot_test`のソースコードで解説した `nh_`と同様の`ros::NodeHandle`です。
+ただし`pnh_`は、`"~"`を引数に初期化することで、このノードのプライベートな名前空間を使う設定になっています。
+この1つ目の例では、`/rsj_pointcloud_test_node/target_frame` というパラメータを`target_frame_`変数に読み込み、もし指定されていなければ`std::string("")`をデフォルト値として用いることを意味します。
+
 `topic_name`はセンサが出力する`PointCloud`のトピック名を、`target_frame_`は得られた点群を処理しやすい座標系に変換する際の座標系の名前を示しています。
 特に Xtion PRO Live の場合、点群の座標系はロボットのローカル座標系と異なっているため、`cbPoints`関数の冒頭で座標変換をしています。
 `target_frame_`が空白の場合は座標変換を行いません（YVT-35LX の場合）。
