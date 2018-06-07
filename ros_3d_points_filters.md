@@ -24,6 +24,7 @@ $ cd ~/catkin_ws/src/rsj_pointcloud_test/src
 #include <pcl/point_types.h>
 #include <pcl/filters/passthrough.h>  // 追記
 #include <visualization_msgs/MarkerArray.h>
+
 typedef pcl::PointXYZ PointT;
 typedef pcl::PointCloud<PointT> PointCloud;
 ```
@@ -36,7 +37,7 @@ class RsjPointcloudTestNode
 {
 private:
 略
-  PointCloud::Ptr cloud_tranform_;
+  PointCloud::Ptr cloud_tranformed_;
   // 以下を追記
   pcl::PassThrough<PointT> pass_;
   PointCloud::Ptr cloud_passthrough_;
@@ -49,12 +50,12 @@ private:
 RsjPointcloudTestNode()
 {
   略
-  cloud_tranform_.reset(new PointCloud());
+  cloud_tranformed_.reset(new PointCloud());
   // 以下を追記
   pass_.setFilterFieldName("z");  // Z軸（高さ）の値でフィルタをかける
   pass_.setFilterLimits(0.1, 1.0);  // 0.1 ～ 1.0 m の間にある点群を抽出
   cloud_passthrough_.reset(new PointCloud());
-  pub_passthrough_ = pnh_.advertise<PointCloud>("passthrough", 1);
+  pub_passthrough_ = nh_.advertise<PointCloud>("passthrough", 1);
 }
 ```
 
@@ -197,11 +198,11 @@ private:
 RsjPointcloudTestNode()
 {
 略
-  pub_passthrough_ = pnh_.advertise<PointCloud>("passthrough", 1);
+  pub_passthrough_ = nh_.advertise<PointCloud>("passthrough", 1);
   // 以下を追記
   voxel_.setLeafSize(0.025f, 0.025f, 0.025f);  // 0.025 m 間隔でダウンサンプリング
   cloud_voxel.reset(new PointCloud());
-  pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
+  pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
 }
 ```
 
@@ -300,14 +301,14 @@ private:
 RsjPointcloudTestNode()
 {
 略
-  pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
+  pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
   // 以下を追記
   tree_.reset(new pcl::search::KdTree<PointT>());
   ec_.setClusterTolerance(0.15);
   ec_.setMinClusterSize(100);
   ec_.setMaxClusterSize(5000);
   ec_.setSearchMethod(tree_);
-  pub_clusters_ = pnh_.advertise<visualization_msgs::MarkerArray>("clusters", 1);
+  pub_clusters_ = nh_.advertise<visualization_msgs::MarkerArray>("clusters", 1);
 }
 ```
 
@@ -317,14 +318,14 @@ RsjPointcloudTestNode()
 RsjPointcloudTestNode()
 {
 略
-  pub_voxel_ = pnh_.advertise<PointCloud>("voxel", 1);
+  pub_voxel_ = nh_.advertise<PointCloud>("voxel", 1);
   // 以下を追記
   tree_.reset(new pcl::search::KdTree<PointT>());
   ec_.setClusterTolerance(0.15);
   ec_.setMinClusterSize(5);
   ec_.setMaxClusterSize(5000);
   ec_.setSearchMethod(tree_);
-  pub_clusters_ = pnh_.advertise<visualization_msgs::MarkerArray>("clusters", 1);
+  pub_clusters_ = nh_.advertise<visualization_msgs::MarkerArray>("clusters", 1);
 }
 ```
 
