@@ -31,11 +31,34 @@ $ cd ~/catkin_ws/src/rsj_robot_test
 任意のテキストエディタで CMakeLists.txt を開く
 ```
 
-`find_package`のところに`visualization_msgs`を追記します。
+`find_package`と`catkin_package`の最後に`visualization_msgs`を追記します。
 
-```c++
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs nav_msgs geometry_msgs sensor_msgs tf visualization_msgs)
-末尾に visualization_msgs を追記している
+```cmake
+find_package(catkin REQUIRED COMPONENTS
+  (略)
+  tf
+  visualization_msgs  # 追記
+)
+find_package(Boost 1.53 REQUIRED system serialization)
+
+## Declare a catkin package
+catkin_package(DEPENDS
+  (略)
+  tf
+  visualization_msgs  # 追記
+)
+```
+
+また、package.xml の`<build_depend>` `<run_depend>` にも`visualization_msgs`を追記します。
+
+```xml
+  (略)
+  <build_depend>tf</build_depend>
+  <build_depend>visualization_msgs</build_depend> <!--追記-->
+
+  (略)
+  <run_depend>tf</run_depend>
+  <run_depend>visualization_msgs</run_depend> <!--追記-->
 ```
 
 一旦ビルドし、コンパイルエラーがないことを確認してください。
@@ -59,9 +82,11 @@ ros::Subscriber sub_clusters_; // 追記
 ```c++
 RsjRobotTestNode()
 {
-略
-  sub_scan_ = nh_.subscribe("scan", 5, &RsjRobotTestNode::cbScan, this);
-  sub_clusters_ = nh_.subscribe("rsj_pointcloud_test_node/clusters", 5, &RsjRobotTestNode::cbCluster, this); // 追記
+  (略)
+  sub_scan_ = nh_.subscribe(
+      "scan", 5, &RsjRobotTestNode::cbScan, this);
+  sub_clusters_ = nh_.subscribe(
+      "clusters", 5, &RsjRobotTestNode::cbCluster, this); // 追記
 ```
 
 更に、`RsjRobotTestNode`クラスに、`visualization_msgs::MarkerArray`用のコールバック関数を追加します。(`cbScan`の後の位置など)
@@ -144,7 +169,7 @@ $ rosrun  rsj_robot_test rsj_robot_test_node
 [ INFO] [1523957583.192001041]: front-range: 3.178
 ```
 
-`rsj_robot_test_node`側で「`[ INFO] [1523957583.091959056]: clusters: 7`」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
+`rsj_robot_test_node`側の端末で「`[ INFO] [1523957583.091959056]: clusters: 7`」のように PCL で処理したクラスタを受信し、その個数を表示できていることが分かります。
 また RViz 上では`navigation`用のマップ上に重畳して`PointCloud`のクラスタと、クラスタを囲む直方体が表示されています。センサに最も近いクラスタは紫で表示されています。
 
 ![XtionViewNavigation](images/xtion_view_navigation.png)
@@ -166,7 +191,9 @@ $ cd ~/catkin_ws/src/rsj_robot_test/src
 void cbCluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
 {
   const visualization_msgs::Marker *target = NULL;
-  for (visualization_msgs::MarkerArray::_markers_type::const_iterator it = msg->markers.cbegin(), it_end = msg->markers.cend();
+  for (visualization_msgs::MarkerArray::_markers_type::const_iterator
+           it = msg->markers.cbegin(),
+           it_end = msg->markers.cend();
        it != it_end; ++it)
   {
     const visualization_msgs::Marker &marker = *it;
@@ -190,6 +217,6 @@ void cbCluster(const visualization_msgs::MarkerArray::ConstPtr &msg)
 # ビルド＆実行
 
 前項と同じようにビルドして実行してください。
-`rsj_robot_test_node`側で「`[ INFO] [1526342853.141823400]: target: 2.579500, 0.063012`」のように PCL で処理した最も近いクラスタの座標がを表示できていることが分かります。なおここで表示されている座標はロボットの中心を原点とし、正面をX軸プラス方向とするローカル座標系です。
+`rsj_robot_test_node`側の端末で「`[ INFO] [1526342853.141823400]: target: 2.579500, 0.063012`」のように PCL で処理した最も近いクラスタの座標がを表示できていることが分かります。なおここで表示されている座標はロボットの中心を原点とし、正面をX軸プラス方向とするローカル座標系です。
 
 終了したら[課題](lesson.html)に進んでください。
