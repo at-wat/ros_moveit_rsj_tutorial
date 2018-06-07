@@ -108,6 +108,8 @@ $ roslaunch rsj_pointcloud_to_laserscan rsj_pointcloud_to_laserscan.launch
 新しいターミナルを開き、`rsj_pointcloud_test_node`を起動します。
 
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
     _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524040063.315596383]: target_frame='camera_link'
