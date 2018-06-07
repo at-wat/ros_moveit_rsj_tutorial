@@ -140,6 +140,8 @@ $ roslaunch rsj_seminar_navigation 3durg_integration.launch \
 ## Xtion PRO Live の場合
 
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
     _target_frame:=camera_link _topic_name:=/camera/depth_registered/points
 [ INFO] [1524040063.315596383]: target_frame='camera_link'
@@ -161,6 +163,8 @@ $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
 さらに別のターミナルで`rsj_robot_test_node`を起動します。
 
 ```shell
+$ cd ~/catkin_ws/
+$ source devel/setup.bash
 $ rosrun  rsj_robot_test rsj_robot_test_node 
 [ INFO] [1523957582.691740639]: Hello ROS World!
 [ INFO] [1523957582.991946984]: clusters: 6
