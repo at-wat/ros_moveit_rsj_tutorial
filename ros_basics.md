@@ -293,7 +293,7 @@ void mainloop()
     geometry_msgs::Twist cmd_vel;
     cmd_vel.linear.x = 0.05;
     cmd_vel.angular.z = 0.0;
-    pub_twist.publish(cmd_vel);
+    pub_twist_.publish(cmd_vel);
 
     rate.sleep();
   }
@@ -581,7 +581,7 @@ void mainloop()
       cmd_vel.linear.x = 0.0;
       cmd_vel.angular.z = 0.1;
     }
-    pub_twist.publish(cmd_vel);
+    pub_twist_.publish(cmd_vel);
 
     rate.sleep();
   }
