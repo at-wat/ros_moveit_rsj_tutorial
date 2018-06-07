@@ -6,6 +6,8 @@ date: 2018-05-15
 - Table of contents
 {:toc}
 
+# 点群処理とロボットナビゲーションの統合
+
 PCL のクラスタリング結果を`rsj_robot_test_node`で利用してみましょう。
 
 # rsj_robot_test.cpp の編集

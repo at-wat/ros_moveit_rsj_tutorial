@@ -6,6 +6,8 @@ date: 2018-05-15
 - Table of contents
 {:toc}
 
+# 3次元点群の処理
+
 Xtion PRO Live や YVT-35LX から得られる３次元点群`PointCloud`に対する基本的な処理を実習します。
 
 # Point Cloud の表示

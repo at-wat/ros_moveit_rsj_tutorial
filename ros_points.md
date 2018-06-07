@@ -10,15 +10,15 @@ date: 2018-06-07
 
 ここではURG-04LX-UG01の場合を例に、点群を取得してロボットの動作に反映する方法を習得します。
 
-## urg_nodeをインストール
+# urg_nodeをインストール
 
 ```shell
 $ sudo apt-get update
 $ sudo apt-get install ros-kinetic-urg-node
 ```
 
-## rsj_robot_test_nodeでURGのデータ取得
-### ソースコードの変更
+# rsj_robot_test_nodeでURGのデータ取得
+## ソースコードの変更
 ソースコードの先頭部分で、スキャンデータのメッセージ型を`include`します。
 
 ```c++
@@ -83,7 +83,7 @@ void cbScan(const sensor_msgs::LaserScan::ConstPtr &msg)
 
 ![URG Step Number](images/urg_number.png)
 
-### ビルド＆実行
+## ビルド＆実行
 
 まず、`catkin_ws`で`catkin_make`を実行して、追加したコードをビルドします。
 `roscore`、`ypspur_ros`、`urg_node`、`rsj_robot_test_node`を実行したいので、端末を4つ用意して、下記それぞれを実行します。
@@ -125,7 +125,7 @@ front-range: 1.234
 
 URGの正面方向に手などをおいて、距離の値が変わるのを確認して下さい。
 
-## 小課題
+# 小課題
 
 URGの真横方向の距離を表示してみましょう。
 

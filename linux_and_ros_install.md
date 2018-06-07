@@ -6,20 +6,22 @@ date: 2018-05-11
 - Table of contents
 {:toc}
 
+# Ubuntu LinuxとROSのインストール
+
 セミナー中に開発環境としてUbuntu Linuxを利用します。そして、Ubuntu
 Linux上でROSを利用します。本ページではUbuntu
 LinuxとROSのインストール方法を示します。
 
-## 用意するもの
+# 用意するもの
 
 - ノート型パソコン
 -- *本手順によりパソコンの既存のOS（Windows等）及び保存されているデータやソフトウェアは完全にが削除されます。予めバックアップを行ってください。*{: style="color: red"}
 - 容量４GB以上の空のUSBメモリ
 - インターネット接続
 
-## 手順
+# 手順
 
-### Ubuntu Linuxのダウンロード
+## Ubuntu Linuxのダウンロード
 
 1. 下記URLからUbuntu Linux 16.04(64bit)のインストールイメージをダウンロードします。
 
@@ -28,7 +30,7 @@ LinuxとROSのインストール方法を示します。
    ![Ubuntu ダウンロード](/images/ubuntu_download.png)
 
 
-### Live USBの作成
+## Live USBの作成
 
 1. 下記URLから、Live USB作成ソフトをダウンロードします。
    - Windows、Mac OS Xの場合：<https://unetbootin.github.io/>
@@ -86,7 +88,7 @@ LinuxとROSのインストール方法を示します。
 
    ![BIOS 4](/images/acer_boot_save.png)
 
-### Ubuntu Linuxのインストール
+## Ubuntu Linuxのインストール
 
 1. Live USBをパソコンに接続し、パソコンの電源を入れます。
 
@@ -107,7 +109,7 @@ LinuxとROSのインストール方法を示します。
    ![Ubuntu install 4](/images/ubuntu_install_4.png)
 
 
-### ROSのインストール
+## ROSのインストール
 
 1. *ROS Kinetic Kame*{: style="color: blue"}をインストールします。
 
@@ -146,7 +148,7 @@ LinuxとROSのインストール方法を示します。
    ROS_ETC_DIR=/opt/ros/kinetic/etc/ros
    ```
 
-### 必要なパッケージのインストール
+## 必要なパッケージのインストール
 
 最後に、本セミナーに必要なパッケージをインストールします。以下のコマンドを実行しインストールしてください。
 

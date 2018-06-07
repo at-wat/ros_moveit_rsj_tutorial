@@ -6,6 +6,8 @@ date: 2018-05-23
 - Table of contents
 {:toc}
 
+# Xtion PRO Live からのデータ取得
+
 Xtion PRO Live からデータを取得し、2次元点群に変換する方法を説明します。
 
 [Xtion PRO Live](https://www.asus.com/jp/3D-Sensor/Xtion_PRO_LIVE/) は深度（物体までの距離）および RGB カラー画像を取得できます。

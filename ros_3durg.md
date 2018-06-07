@@ -6,9 +6,12 @@ date: 2018-05-27
 - Table of contents
 {:toc}
 
+# YVT-35LX からのデータ取得
+
 [YVT-35LX](https://www.hokuyo-aut.co.jp/search/single.php?serial=165) からデータを取得し、2次元点群に変換する方法を説明します。
 
 # 準備
+
 ## パッケージのインストール
 
 YVT-35LX を利用するためのパッケージと３次元点群から２次元データに変換するためのパッケージをインストールします。

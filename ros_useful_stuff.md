@@ -6,6 +6,8 @@ date: 2018-05-25
 - Table of contents
 {:toc}
 
+# ROSの便利機能
+
 ROSには多くの便利な機能が用意されています。ここでは、そのうちのよく利用するコマンドなどの一部を紹介します。
 
 # roslaunch
@@ -29,19 +31,19 @@ $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
 ```
 
 1. 下記内容を記入
-```xml
-  <launch>
-    <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
-      <param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
-      <param name="param_file" value="/home/$(env USER)/params/rsj-seminar20??.param該当するものに置き換えること" />
-      <param name="compatible" value="1" />
-    </node>
-    <node pkg="urg_node" type="urg_node" name="urg_node">
-      <param name="serial_port" value="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
-    </node>
-    <node pkg="rsj_robot_test" type="rsj_robot_test_node" name="robot_test" output="screen">
-    </node>
-  </launch>
+```shell
+<launch>
+  <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
+    <param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
+    <param name="param_file" value="/home/$(env USER)/params/rsj-seminar20??.param該当するものに置き換えること" />
+    <param name="compatible" value="1" />
+  </node>
+  <node pkg="urg_node" type="urg_node" name="urg_node">
+    <param name="serial_port" value="/dev/serial/by-id/usb-Hokuyo_Data_Flex_for_USB_URG-Series_USB_Driver-if00" />
+  </node>
+  <node pkg="rsj_robot_test" type="rsj_robot_test_node" name="robot_test" output="screen">
+  </node>
+</launch>
 ```
 
 作成したlaunchファイルは下記のコマンドで実行できます。
@@ -205,6 +207,7 @@ ROSでは、rvizという、データ可視化ツール(ビューワ)が提供�
 ```shell
 $ rosrun rviz rviz
 ```
+
 rviz画面中の、「add」ボタンをクリックし、開いた選択ウインドウ内で、
 「By topic」タブから、「/scan」中の「LaserScan」を選択します。
 また、「Global Option」の「Fixed Frame」欄に「laser」と入力します。
