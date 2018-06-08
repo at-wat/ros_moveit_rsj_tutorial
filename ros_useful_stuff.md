@@ -30,7 +30,8 @@ $ mkdir ~/catkin_ws/src/rsj_robot_test/launch
 $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
 ```
 
-1.  下記内容を記入  
+1.  下記内容を記入
+
 ```xml
 <launch>
   <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
@@ -44,7 +45,7 @@ $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
   <node pkg="rsj_robot_test" type="rsj_robot_test_node" name="robot_test" output="screen">
   </node>
 </launch>
-```
+```   
 
 
 作成したlaunchファイルは下記のコマンドで実行できます。
