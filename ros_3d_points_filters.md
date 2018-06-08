@@ -142,7 +142,7 @@ $ rosrun rsj_pointcloud_test rsj_pointcloud_test_node \
 
 実行した際に`points (src: xxxx, paththrough: xxx)`というメッセージが表示されれば成功です。
 `src`、`paththrough`に続けて表示されている値はセンサから得られた、もとの`PointCloud`における点の個数と`PassThrough`フィルタ実行後の点の個数を示しています。
-フィルタ実行後の点の個数がゼロの場合は`pass_.setFilterLimits(0.5, 1.0);`の引数を調節してみてください。
+フィルタ実行後の点の個数がゼロの場合は`pass_.setFilterLimits(0.1, 1.0);`の引数を調節してみてください。
 
 ## フィルタ実行結果の可視化
 
