@@ -20,18 +20,18 @@ ROSには多くの便利な機能が用意されています。ここでは、�
 roslaunchコマンドで一括起動する方法が用意されています。
 下記の操作を行い、launchファイルを追加してみましょう。
 
-1. rsj_robot_testパッケージに、launchディレクトリを作成
+1.  rsj_robot_testパッケージに、launchディレクトリを作成
 ```shell
 $ mkdir ~/catkin_ws/src/rsj_robot_test/launch
 ```
 
-1. robot_test.launchファイルを作成して開く
+1.  robot_test.launchファイルを作成して開く
 ```shell
 $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
 ```
 
-1. 下記内容を記入
-```shell
+1.  下記内容を記入  
+```xml
 <launch>
   <node pkg="ypspur_ros" type="ypspur_ros" name="ypspur_ros">
     <param name="port" value="/dev/serial/by-id/usb-T-frog_project_T-frog_Driver-if00" />
@@ -45,6 +45,7 @@ $ gedit ~/catkin_ws/src/rsj_robot_test/launch/robot_test.launch
   </node>
 </launch>
 ```
+
 
 作成したlaunchファイルは下記のコマンドで実行できます。
 
