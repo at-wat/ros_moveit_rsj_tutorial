@@ -19,8 +19,9 @@ RViz 上で紫で表示されている、センサに最も近いクラスタに
 RViz 上で紫で表示されている、センサに最も近いクラスタに対してロボットが近づくように制御してください。ただし、ROS navigationパッケージを利用します。これにより、経路上の障害物を回避しながら近づくようにします。
 
 ヒント：
-1. `/move_base_simple/goal`トピックに`geometry_msgs::PoseStamped`型のメッセージをパブリッシュし、目標地点の位置姿勢を与えることで、ナビゲーションの指示を与えられます。
-1. `geometry_msgs::PoseStamped`型のメッセージの作成方法の例は次のとおりです。
+- `/move_base_simple/goal`トピックに`geometry_msgs::PoseStamped`型のメッセージをパブリッシュし、目標地点の位置姿勢を与えることで、ナビゲーションの指示を与えられます。
+- `geometry_msgs::PoseStamped`型のメッセージの作成方法の例は次のとおりです。
+
 ```c++
 geometry_msgs::PoseStamped goal;
 goal.header.frame_id = "base_link"; // ロボットローカル座標におけるゴール位置を指定したい場合のコード。
@@ -32,4 +33,5 @@ goal.pose.position.y = 目標の y 座標;
 goal.pose.orientation = tf::createQuaternionMsgFromYaw(ロボットから見た目標の方向をラジアンで指定); 
 // 良くわからなければゼロ度でも構わない。
 ```
-1. `geometry_msgs::PoseStamped`のパブリッシュは目標発見時に1回行えば十分です。したがって、目標探索中か追跡中かといった状態を管理するのが簡単です。
+
+- `geometry_msgs::PoseStamped`のパブリッシュは目標発見時に1回行えば十分です。したがって、目標探索中か追跡中かといった状態を管理するのが簡単です。
