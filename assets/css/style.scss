@@ -7,9 +7,15 @@
   width: 100%;
   max-width: 1500px;
 }
-
-section {
-  width: calc(100% - 300px);
+@media screen and (min-width: 960px){
+  section {
+   width: calc(100% - 300px);
+  }
+}
+@media screen and (max-width: 960px){
+  section {
+   width: 100%;
+  }
 }
 
 .highlight .gutter {
