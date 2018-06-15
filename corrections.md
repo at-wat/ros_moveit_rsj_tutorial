@@ -3,6 +3,14 @@ title: 資料の修正
 date: 2018-06-09
 ---
 
+# スケジュール
+## 1日目（6/16）
+1. 実習1-4 に三次元センサの利用方法へのリンクを貼りました。
+
+    修正前: 実習1-4 [ROSの便利機能](ros_useful_stuff.html)
+
+    修正後: 実習1-4 [ROSの便利機能](ros_useful_stuff.html)、三次元センサの利用 [YVT-35LXの場合](ros_3durg.html)、[Xtion Pro Liveの場合](ros_xtion.html)
+
 # 点群処理とロボットナビゲーションの統合
 1. 新たな演習課題「ROS navigationパッケージの利用」を追加しました。
 
