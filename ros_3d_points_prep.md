@@ -111,7 +111,7 @@ $ catkin_make
 
 ## Xtion PRO Live の場合
 
-ターミナルでセンサを起動します。
+ターミナルでセンサドライバノードを起動します。
 
 ```shell
 $ cd ~/catkin_ws/
@@ -134,7 +134,7 @@ $ rosrun  rsj_pointcloud_test rsj_pointcloud_test_node \
 
 ## YVT-35LX の場合
 
-ターミナルでセンサを起動します。
+ターミナルでセンサドライバノードを起動します。
 
 ```shell
 $ cd ~/catkin_ws/
