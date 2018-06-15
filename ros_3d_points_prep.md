@@ -216,6 +216,10 @@ RsjPointcloudTestNode()
 
 `topic_name`はセンサが出力する`PointCloud`のトピック名を、`target_frame_`は得られた点群を処理しやすい座標系に変換する際の座標系の名前を示しています。
 特に Xtion PRO Live の場合、点群の座標系はロボットのローカル座標系と異なっているため、`cbPoints`関数の冒頭で座標変換をしています。
+
+この座標変換は ROS の[`tf`](http://wiki.ros.org/ja/tf)によるものです。
+`tf`によって座標系の情報がノード間で共有され、時刻と座標系の名前に基づいて様々なデータの座標変換を実現することができます。
+
 `target_frame_`が空白の場合は座標変換を行いません（YVT-35LX の場合）。
 
 `CMakeLists.txt`では PCL を ROS で扱えるようにしています。
