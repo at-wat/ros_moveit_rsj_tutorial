@@ -1,6 +1,6 @@
 ---
 title: 資料の修正
-date: 2018-06-09
+date: 2018-06-15
 ---
 
 # スケジュール
@@ -10,6 +10,13 @@ date: 2018-06-09
     修正前: 実習1-4 [ROSの便利機能](ros_useful_stuff.html)
 
     修正後: 実習1-4 [ROSの便利機能](ros_useful_stuff.html)、三次元センサの利用 [YVT-35LXの場合](ros_3durg.html)、[Xtion Pro Liveの場合](ros_xtion.html)
+
+# ROSの便利機能
+1. 最後の小課題を必須項目へと変更しました。
+
+    修正前: 小課題
+
+    修正後: 3Dセンサからのデータ取得に関する実習
 
 # Xtion PRO Live からのデータ取得
 1. `pointcloud_to_laserscan`に関する補足説明を追加しました。
