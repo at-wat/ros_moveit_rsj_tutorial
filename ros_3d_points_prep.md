@@ -96,6 +96,11 @@ void cbPoints(const PointCloud::ConstPtr &msg)
 }
 ```
 
+`cbPoints`関数はセンサから`PointCloud`を受け取るたびに呼び出される関数です。
+
+なお、今回の実習で利用している三次元センサのドライバノードから出力される点群データは、元々は ROS の`sensor_msgs/PointCloud2`という型ですが、後述する`pcl_ros`というライブラリが`PCL`の`PointCloud`型に`sensor_msgs/PointCloud2`型と互換性を持たせる実装を追加することで、特別にそのまま ROS Message 型と同様に使えるようにしています。
+サブスクライバの初期化コードで指定するコールバック関数が任意の型を受け取れるわけではないことに注意してください。
+
 ファイルを保存してエディタを閉じます。
 
 # ビルド＆実行
