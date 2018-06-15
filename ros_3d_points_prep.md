@@ -172,10 +172,10 @@ typedef pcl::PointXYZ PointT
 typedef pcl::PointCloud<PointT> PointCloud;
 ```
 
-最終行の`typedef`宣言では今回の実習で利用する点群の型を生成しています。
 PCL では`pcl::PointCloud<T>`という C++ のテンプレートで点群を扱うデータ型を表現しています。
 `T`の部分には座標と色情報を持つ`pcl::PointXYZRGB`など様々な点の型を与えることが可能です。
 今回は色情報のない、位置だけの点`pcl::PointXYZ`を使います。
+最終行の`typedef`宣言では`pcl::PointCloud<PointT>`に対し今回の実習で利用する点群の型`PointCloud`という別名をつけ、プログラムが書きやすくなるようにしています。
 
 なお、`#include <visualization_msgs/MarkerArray.h>`は点群処理結果を可視化するために必要となる ROS に含まれるヘッダファイルです。
 
