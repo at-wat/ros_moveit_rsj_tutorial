@@ -75,3 +75,6 @@ $ rosrun rviz rviz -d view_scan.rviz
 下図のように2次元の点群が表示されれば成功です。
 
 ![XtionScan](images/xtion_view_scan.png)
+
+この2次元点群は3次元センサが出力している3次元点群から`pointcloud_to_laserscan`ノードを使って、高さの範囲指定で切り出して生成しているものです。
+3次元点群そのものの処理については後に続く実習で説明します。

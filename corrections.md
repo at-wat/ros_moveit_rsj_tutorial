@@ -11,6 +11,18 @@ date: 2018-06-09
 
     修正後: 実習1-4 [ROSの便利機能](ros_useful_stuff.html)、三次元センサの利用 [YVT-35LXの場合](ros_3durg.html)、[Xtion Pro Liveの場合](ros_xtion.html)
 
+# Xtion PRO Live からのデータ取得
+1. `pointcloud_to_laserscan`に関する補足説明を追加しました。
+
+    この2次元点群は3次元センサが出力している3次元点群から`pointcloud_to_laserscan`ノードを使って、高さの範囲指定で切り出して生成しているものです。
+    3次元点群そのものの処理については後に続く実習で説明します。
+
+# YVT-35LX からのデータ取得
+1. `pointcloud_to_laserscan`に関する補足説明を追加しました。
+
+    この2次元点群は3次元センサが出力している3次元点群から`pointcloud_to_laserscan`ノードを使って、高さの範囲指定で切り出して生成しているものです。
+    3次元点群そのものの処理については後に続く実習で説明します。
+
 # 点群処理とロボットナビゲーションの統合
 1. 新たな演習課題「ROS navigationパッケージの利用」を追加しました。
 
